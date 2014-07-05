@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface MeViewController : UIViewController
+#import <ShareSDK/ShareSDK.h>
+@interface MeViewController : UIViewController<ISSShareViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UILabel *nickname;
 @property (weak, nonatomic) IBOutlet UIImageView *sex;

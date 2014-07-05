@@ -122,7 +122,7 @@
                                  @"userEquipment.equitNo": [[Config sharedConfig] getRegistrationID],
                                  @"userEquipment.osType": @"1",
                                  @"userOpenId": _user.openId,
-                                 @"userAuthType": _user.type,
+                                 @"userAuthType": _user.userAuthType,
                                  @"userRealName": _user.userRealName
                                  };
     
@@ -140,7 +140,12 @@
             
 
             _user._id = [responseObject objectForKey:@"userId"];
-            [weakSelf EaseMobRegister];
+            
+            [weakSelf showResultWithType:ResultSuccess];
+            [_user saveToNSUserDefaults];
+            [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+
 
         }else if ([state isEqualToString:@"10001"]){
             [weakSelf showResultWithType:ResultError];
@@ -156,41 +161,6 @@
 
 }
 
--(void)EaseMobRegister{
-        __weak __typeof(&*self)weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_user._id
-                                                         password:@"123456"
-                                                   withCompletion:
-     ^(NSString *username, NSString *password, EMError *error) {
-         
-         
-         if (!error) {
-        
-             [weakSelf showResultWithType:ResultSuccess];
-             [_user saveToNSUserDefaults];
-             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
-             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-
-         }else{
-             [weakSelf hideHud];
-             switch (error.errorCode) {
-                 case EMErrorServerNotReachable:
-                     [HDTool ToastNotification:@"连接服务器失败!" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 case EMErrorServerDuplicatedAccount:
-                     [HDTool ToastNotification:@"您注册的用户已存在!" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 case EMErrorServerTimeout:
-                     [HDTool ToastNotification:@"连接服务器超时!" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 default:
-                     [HDTool ToastNotification:@"注册失败" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-             }
-         }
-     } onQueue:nil];
-    
-}
 
 -(BOOL)isOK{
     

@@ -48,8 +48,8 @@
     
     [self initJpushSDK:launchOptions];
     
-//    NSString *id = [APService registrionID];
-    
+
+    [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {//表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
     }else{
@@ -142,6 +142,9 @@
         NSLog(@"IApplicationStateInactive时收到推送");
     }else if (application.applicationState==UIApplicationStateActive) {
         NSLog(@"UIApplicationStateActive时收到推送");
+        if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
+            NSLog(@"强退");
+        }
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");
     }

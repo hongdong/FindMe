@@ -129,7 +129,7 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     _alertView.center = CGPointMake(screenBounds.size.width / 2, screenBounds.size.height / 2);
     
     _loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, 30)];
-    _loadingLabel.textAlignment = UITextAlignmentCenter;
+    _loadingLabel.textAlignment = NSTextAlignmentCenter;
     _loadingLabel.backgroundColor = [UIColor clearColor];
     _loadingLabel.textColor = [UIColor whiteColor];
     _loadingLabel.font = [UIFont boldSystemFontOfSize:14];
@@ -158,7 +158,7 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     _alertView.center = CGPointMake(screenBounds.size.width / 2, screenBounds.size.height / 2);
 
     UILabel *_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, 15, 240, 30)];
-    _titleLabel.textAlignment = UITextAlignmentLeft;
+    _titleLabel.textAlignment = NSTextAlignmentLeft;
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.font = [UIFont boldSystemFontOfSize:20];
@@ -166,11 +166,11 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     [_alertView addSubview:_titleLabel];
     
     UILabel *_messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, 35, 240, 60)];
-    _messageLabel.textAlignment = UITextAlignmentLeft;
+    _messageLabel.textAlignment = NSTextAlignmentLeft;
     _messageLabel.backgroundColor = [UIColor clearColor];
     _messageLabel.textColor = [UIColor whiteColor];
     _messageLabel.font = [UIFont boldSystemFontOfSize:14];
-    _messageLabel.lineBreakMode = UILineBreakModeWordWrap;
+    _messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _messageLabel.numberOfLines = 3;
     _messageLabel.text = entity.message;
     [_alertView addSubview:_messageLabel];
@@ -226,7 +226,7 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     if(entity.title && entity.message)
     {
         UILabel *_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, 10, 240, 30)];
-        _titleLabel.textAlignment = UITextAlignmentLeft;
+        _titleLabel.textAlignment = NSTextAlignmentLeft;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.font = [UIFont boldSystemFontOfSize:20];
@@ -234,11 +234,11 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         [_alertView addSubview:_titleLabel];
         
         UILabel *_messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, 40, 240, 20)];
-        _messageLabel.textAlignment = UITextAlignmentLeft;
+        _messageLabel.textAlignment = NSTextAlignmentLeft;
         _messageLabel.backgroundColor = [UIColor clearColor];
         _messageLabel.textColor = [UIColor whiteColor];
         _messageLabel.font = [UIFont systemFontOfSize:14];
-        _messageLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _messageLabel.numberOfLines = 1;
         _messageLabel.text = entity.message;
         [_alertView addSubview:_messageLabel];
