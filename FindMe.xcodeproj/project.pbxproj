@@ -77,6 +77,9 @@
 		04169B5C1964FD0D00A64585 /* Expression_8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04169B1D1964FD0D00A64585 /* Expression_8@2x.png */; };
 		04169B5D1964FD0D00A64585 /* Expression_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04169B1E1964FD0D00A64585 /* Expression_9@2x.png */; };
 		04169B6E196587D000A64585 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 04169B6D196587D000A64585 /* Comment.m */; };
+		04A4E2221967D57400E9BC63 /* FindMeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */; };
+		04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2241967DC2500E9BC63 /* FirstPageView.m */; };
+		04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2271967DC3900E9BC63 /* SecondPageView.m */; };
 		04A62D001951B8D7007E8ACF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A62CFF1951B8D7007E8ACF /* ViewController.m */; };
 		04A62D041951BF53007E8ACF /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A62D031951BF53007E8ACF /* TableViewController.m */; };
 		04A763F9195D24DE00C92480 /* NYSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A763F4195D24DE00C92480 /* NYSegment.m */; };
@@ -473,6 +476,12 @@
 		04169B1E1964FD0D00A64585 /* Expression_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expression_9@2x.png"; sourceTree = "<group>"; };
 		04169B6C196587D000A64585 /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
 		04169B6D196587D000A64585 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comment.m; sourceTree = "<group>"; };
+		04A4E2201967D57400E9BC63 /* FindMeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindMeDetailViewController.h; sourceTree = "<group>"; };
+		04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindMeDetailViewController.m; sourceTree = "<group>"; };
+		04A4E2231967DC2500E9BC63 /* FirstPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPageView.h; sourceTree = "<group>"; };
+		04A4E2241967DC2500E9BC63 /* FirstPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstPageView.m; sourceTree = "<group>"; };
+		04A4E2261967DC3900E9BC63 /* SecondPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondPageView.h; sourceTree = "<group>"; };
+		04A4E2271967DC3900E9BC63 /* SecondPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondPageView.m; sourceTree = "<group>"; };
 		04A62CFE1951B8D7007E8ACF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04A62CFF1951B8D7007E8ACF /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04A62D021951BF53007E8ACF /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
@@ -1136,6 +1145,12 @@
 				04DA3AFA1966AA3C00E0AE3C /* LoginView.m */,
 				04A9609F1955081D002E30AF /* FindMeViewController.h */,
 				04A960A01955081D002E30AF /* FindMeViewController.m */,
+				04A4E2201967D57400E9BC63 /* FindMeDetailViewController.h */,
+				04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */,
+				04A4E2231967DC2500E9BC63 /* FirstPageView.h */,
+				04A4E2241967DC2500E9BC63 /* FirstPageView.m */,
+				04A4E2261967DC3900E9BC63 /* SecondPageView.h */,
+				04A4E2271967DC3900E9BC63 /* SecondPageView.m */,
 			);
 			name = FindMe;
 			sourceTree = "<group>";
@@ -2643,15 +2658,18 @@
 				04169ADA1964FCCF00A64585 /* ZBMessageTextView.m in Sources */,
 				04B315D51956C84100F93C73 /* UIScrollView+MJRefresh.m in Sources */,
 				04B275FD195A8297007AE0CE /* HDTool.m in Sources */,
+				04A4E2221967D57400E9BC63 /* FindMeDetailViewController.m in Sources */,
 				04A9616219559D1D002E30AF /* MJMember.m in Sources */,
 				04AA9B8B195C2168001C83C2 /* ChooseDepartmentViewController.m in Sources */,
 				04DA3AD51966623100E0AE3C /* MeViewController.m in Sources */,
 				04ADC8611960E99B009106A7 /* ChatSendHelper.m in Sources */,
+				04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */,
 				04AA9B87195BC9EF001C83C2 /* ChooseSchoolViewController.m in Sources */,
 				04B2D9C91963840500EF0C74 /* MessageModel.m in Sources */,
 				04B2D9DA19639C5200EF0C74 /* RCLabel.m in Sources */,
 				04DA3AF819667B4B00E0AE3C /* XYLoadingView.m in Sources */,
 				04A9614B1955851F002E30AF /* User.m in Sources */,
+				04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */,
 				04DA3AD819666E7F00E0AE3C /* DetailViewController.m in Sources */,
 				04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */,
 				04A9616719559D1D002E30AF /* NSObject+MJKeyValue.m in Sources */,

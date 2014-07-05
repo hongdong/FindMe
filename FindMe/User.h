@@ -27,10 +27,10 @@
 @property (strong,nonatomic) NSString *userAlbum;
 
 
-@property (strong,nonatomic) NSString *userAuth;
+@property (strong,nonatomic) NSString *userAuthType;
 
 
-
+@property (strong,nonatomic) NSString *registrationID;
 
 @property(strong,nonatomic)  NSString *constellation;
 

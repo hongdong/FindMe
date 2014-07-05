@@ -13,6 +13,7 @@
 #import "EMError.h"
 #import "ChooseSchoolViewController.h"
 #import "LoginView.h"
+#import "JMWhenTapped.h"
 @interface FindMeViewController (){
     User *_user;
     LoginView *_loginView;
@@ -43,7 +44,9 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         if ([[Config sharedConfig] isLogin]) {
-            NSLog(@"已经登入");
+            NSLog(@"后台登入");
+            User *user = [User getUserFromNSUserDefaults];
+            [self isOauth:user.openId forType:user.userAuthType andBack:@"1"];
         }else{
             NSLog(@"未登入，显示登入界面");
             NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomView" owner:self options:nil];
@@ -64,6 +67,25 @@
                                              selector:@selector(loginStateChange:)
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
+    
+    self.photo.layer.cornerRadius = 50.0f;
+    self.photo.layer.masksToBounds = YES;
+    __weak __typeof(&*self)weakSelf = self;
+
+    [self.photo whenTouchedDown:^{
+        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                        weakSelf.photo.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
+        } completion:nil];
+    }];
+    
+    [self.photo whenTouchedUp:^{
+        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            weakSelf.photo.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+        } completion:nil];
+        [self performSegueWithIdentifier:@"findmeDetail" sender:nil];
+    }];
+    
+    
     if (_loginView!=nil) {
         [self.view addSubview:_loginView];
     }
@@ -134,10 +156,10 @@
                                
                                
                                if (result) {
-                                   //[weakSelf showHudInView:self.view.window];
+
                                    [weakSelf initUser:userInfo AndSendType:sendType];
                                    
-                                   [weakSelf isOauth:[userInfo uid] forType:sendType];
+                                   [weakSelf isOauth:[userInfo uid] forType:sendType andBack:@"0"];
                                    
                                }else{
                                    
@@ -153,7 +175,7 @@
     [self hideHud];
 }
 - (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
-    [self showHudInView:self.view hint:@"登入中..."];
+    [self showHudInView:[UIApplication sharedApplication].keyWindow hint:@"登入中..."];
 }
 
 - (void)initUser:(id<ISSPlatformUser>) userInfo AndSendType:(NSString *) sendType{
@@ -170,18 +192,18 @@
         sex = @"未知";
     }
     _user.userSex = sex;
-    _user.type = sendType;
+    _user.userAuthType = sendType;
     
 }
 
-- (void)isOauth:(NSString *) uid forType:(NSString *) type{
+- (void)isOauth:(NSString *) uid forType:(NSString *) type andBack:(NSString *) back{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/grant_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"userOpenId"     : uid,
                                  @"userAuthType"       : type,
                                  @"equitNo"    : [[Config sharedConfig] getRegistrationID],
                                 @"osType"      : @"1",
-                                @"backLogin"   : @"0"};
+                                @"backLogin"   : back};
         __weak __typeof(&*self)weakSelf = self;
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -231,10 +253,10 @@
             [[Config sharedConfig] changeLoginState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
 
-//             [self moveToUpSide];
-
          }else {
              [self hideHud];
+            NSLog(@"%u",error.errorCode);
+             NSLog(@"%@",error.description);
              switch (error.errorCode) {
                  case EMErrorServerNotReachable:
                      [HDTool ToastNotification:@"连接服务器失败!" andView:self.view andLoading:NO andIsBottom:NO];

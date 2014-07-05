@@ -132,4 +132,9 @@
     return newimage;
     
 }
+
++(id)loadCustomViewByIndex:(NSUInteger)index{
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomView" owner:self options:nil];
+    return [nib objectAtIndex:index];
+}
 @end

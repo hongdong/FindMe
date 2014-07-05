@@ -29,6 +29,8 @@
 {
     [super viewDidLoad];
     User *user = [User getUserFromNSUserDefaults];
+    self.photo.layer.cornerRadius = 25.0f;
+    self.photo.layer.masksToBounds = YES;
     [self.photo setImageWithURL:[NSURL URLWithString:user.userPhoto]];
     self.nickname.text = user.userNickName;
     __weak __typeof(&*self)weakSelf = self;

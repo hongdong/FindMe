@@ -32,4 +32,6 @@
 
 //保持原来的长宽比，生成一个缩略图
 + (UIImage *)thumbnailWithImageWithoutScale:(UIImage *)image size:(CGSize)asize;
+
++(id)loadCustomViewByIndex:(NSUInteger)index;
 @end

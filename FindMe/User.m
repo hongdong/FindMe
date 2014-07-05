@@ -28,7 +28,7 @@
             weakSelf.userDeptNo = [[userInfo objectForKey:@"department"] objectForKey:@"_id"];
             weakSelf.userScName = [[userInfo objectForKey:@"school"] objectForKey:@"schoolName"];
             weakSelf.userScNo = [[userInfo objectForKey:@"school"] objectForKey:@"_id"];
-            weakSelf.userAuth = [userInfo objectForKey:@"userAuth"];
+            weakSelf.userAuthType = [userInfo objectForKey:@"userAuth"];
             weakSelf.constellation = [userInfo objectForKey:@"userConstellation"];
             weakSelf.userGrade = [userInfo objectForKey:@"userGrade"];
             weakSelf.userNickName = [userInfo objectForKey:@"userNickName"];

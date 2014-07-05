@@ -42,7 +42,7 @@
     self.phtot.layer.cornerRadius = 25.0f;
     self.phtot.layer.masksToBounds = YES;
     
-    NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"男神", @"女神"]];
+    NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"GG", @"MM"]];
     
     // Add desired targets/actions
     [segmentedControl addTarget:self action:@selector(segmentSelected) forControlEvents:UIControlEventValueChanged];

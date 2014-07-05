@@ -41,13 +41,20 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(kAPNetworkDidRegister:) name:kAPNetworkDidRegisterNotification object:nil];
+
     [self initShareSDK];
 
     [self initEaseMobSDK:application and:launchOptions];
     
     [self initJpushSDK:launchOptions];
+    
+//    NSString *id = [APService registrionID];
+    
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {//表示用户点击apn 通知导致app被启动运行
+        NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+    }else{
+        NSLog(@"点击ICON打开软件");
+    }
     return YES;
 }
 
@@ -55,7 +62,7 @@
     NSDictionary * userInfo = [notification userInfo];
     NSString *registrationID = [userInfo valueForKey:@"RegistrationID"];
     [[Config sharedConfig] saveRegistrationID:registrationID];
-    NSLog(@"registrationID%@",registrationID);
+    NSLog(@"registrationID:%@",registrationID);
 }
 
 -(void)initShareSDK{
@@ -72,6 +79,9 @@
 }
 
 -(void)initJpushSDK:(NSDictionary *)launchOptions{
+    
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(kAPNetworkDidRegister:) name:kAPNetworkDidRegisterNotification object:nil];
     // Required
     [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                                    UIRemoteNotificationTypeSound |
@@ -127,8 +137,14 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
-    
     [APService handleRemoteNotification:userInfo];
+    if (application.applicationState==UIApplicationStateInactive) {
+        NSLog(@"IApplicationStateInactive时收到推送");
+    }else if (application.applicationState==UIApplicationStateActive) {
+        NSLog(@"UIApplicationStateActive时收到推送");
+    }else if(application.applicationState==UIApplicationStateBackground){
+        NSLog(@"UIApplicationStateBackground时收到推送");
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
