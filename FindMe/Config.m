@@ -62,4 +62,9 @@
     [setting setObject:badge forKey:@"badge"];
     [setting synchronize];
 }
+
+-(void)cleanUser{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    [setting removeObjectForKey:@"user"];
+}
 @end

@@ -40,6 +40,7 @@
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
+        [[EaseMob sharedInstance].chatManager isAutoLoginEnabled];
     }
 }
 

@@ -14,4 +14,6 @@
 -(void)initBadge;
 
 -(void)minusBadge;
+
+-(void)cleanUser;
 @end

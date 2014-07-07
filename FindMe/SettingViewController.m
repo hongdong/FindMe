@@ -8,6 +8,8 @@
 
 #import "SettingViewController.h"
 #import "JMWhenTapped.h"
+#import "AFNetworking.h"
+#import "EaseMob.h"
 @interface SettingViewController ()
 
 @end
@@ -71,6 +73,30 @@
     
 }
 - (IBAction)signOutPressed:(id)sender {
+    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/login_out.do",Host];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __weak __typeof(&*self)weakSelf = self;
+    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+            [[Config sharedConfig] initBadge];
+            [[Config sharedConfig] cleanUser];
+            //注销环信,修改islogin  清除user  初始化badge
+            [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+                if (error) {
+
+                }
+                else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+                }
+            } onQueue:nil];
+            NSLog(@"注销成功");
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning
