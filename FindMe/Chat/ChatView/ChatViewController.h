@@ -10,8 +10,6 @@
 #import "EaseMobHeaders.h"
 @interface ChatViewController : UIViewController
 
-- (instancetype)initWithChatter:(NSString *)chatter;
-
-
+- (instancetype)initWithChatter:(NSString *)chatter andPhoto:(NSString *)url;
 
 @end

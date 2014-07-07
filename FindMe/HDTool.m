@@ -8,6 +8,7 @@
 
 #import "HDTool.h"
 #import "GCDiscreetNotificationView.h"
+#define LAST_RUN_VERSION_KEY        @"last_run_version_of_application"
 @implementation HDTool
 + (UIImage *)scale:(UIImage *)sourceImg toSize:(CGSize)size
 {
@@ -136,5 +137,30 @@
 +(id)loadCustomViewByIndex:(NSUInteger)index{
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomView" owner:self options:nil];
     return [nib objectAtIndex:index];
+}
+
++ (BOOL) isFirstLoad{
+    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary]
+                                objectForKey:@"CFBundleShortVersionString"];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *lastRunVersion = [defaults objectForKey:LAST_RUN_VERSION_KEY];
+    
+    if (!lastRunVersion) {
+        [defaults setObject:currentVersion forKey:LAST_RUN_VERSION_KEY];
+        return YES;
+        // App is being run for first time
+    }
+    else if (![lastRunVersion isEqualToString:currentVersion]) {
+        [defaults setObject:currentVersion forKey:LAST_RUN_VERSION_KEY];
+        return YES;
+        // App has been updated since last run
+    }
+    return NO;
+}
+
++(id)getControllerByStoryboardId:(NSString *)storyboardId{
+    return [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:storyboardId];
 }
 @end

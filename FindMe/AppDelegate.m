@@ -8,6 +8,7 @@
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
 #import "AppDelegate.h"
 #import "EaseMob.h"
 #import "APService.h"
@@ -35,6 +36,11 @@
     [navBar setTitleTextAttributes:@{
                                      UITextAttributeTextColor : [UIColor whiteColor]
                                      }];
+    
+    if ([HDTool isFirstLoad]) {
+        NSLog(@"这个版本第一次启动");
+        [[Config sharedConfig] initBadge];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -50,7 +56,8 @@
     
 
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
-    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {//表示用户点击apn 通知导致app被启动运行
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
+        //表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
     }else{
         NSLog(@"点击ICON打开软件");
@@ -76,6 +83,9 @@
     [ShareSDK connectSinaWeiboWithAppKey:@"570703814"
                                appSecret:@"a806fb887bc2cfbd8cfb9e8a8bf06317"
                              redirectUri:@"http://www.ifanmi.cn"];
+    
+    [ShareSDK connectWeChatWithAppId:@"wx2913cf7663ee3b2f"
+                           wechatCls:[WXApi class]];
 }
 
 -(void)initJpushSDK:(NSDictionary *)launchOptions{
@@ -143,7 +153,7 @@
     }else if (application.applicationState==UIApplicationStateActive) {
         NSLog(@"UIApplicationStateActive时收到推送");
         if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
-            NSLog(@"强退");
+            NSLog(@"强退,注销");
         }
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");

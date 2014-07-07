@@ -32,6 +32,10 @@
 
 //保持原来的长宽比，生成一个缩略图
 + (UIImage *)thumbnailWithImageWithoutScale:(UIImage *)image size:(CGSize)asize;
+//载入自己定义的View
++ (id)loadCustomViewByIndex:(NSUInteger)index;
+//判断APP是否是这个版本第一次启动
++ (BOOL) isFirstLoad;
 
-+(id)loadCustomViewByIndex:(NSUInteger)index;
++(id)getControllerByStoryboardId:(NSString *)storyboardId;
 @end

@@ -97,8 +97,8 @@
         selectedDeptNo = [_dataArray[indexPath.row] objectForKey:@"deptId"];
         selectedDeptName = [_dataArray[indexPath.row] objectForKey:@"deptName"];
     }
-    _user.userDeptNo = selectedDeptNo;
-    _user.userDeptName = selectedDeptName;
+    [_user.department setValue:selectedDeptNo forKey:@"_id"];
+    [_user.department setValue:selectedDeptName forKey:@"deptName"];
     [self performSegueWithIdentifier:@"chooseGrade" sender:_user];
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

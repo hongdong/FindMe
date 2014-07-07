@@ -193,7 +193,6 @@
 }
 
 #pragma mark - DXFaceDelegate
-
 - (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete
 {
     NSString *chatText = self.inputTextView.text;
@@ -207,19 +206,14 @@
             NSString *subStr = [chatText substringFromIndex:chatText.length-2];
             if ([(DXFaceView *)self.faceView stringIsFace:subStr]) {
                 self.inputTextView.text = [chatText substringToIndex:chatText.length-2];
-                
-                return;
             }
         }
-        
-        if (chatText.length > 0) {
+        else if (chatText.length > 0) {
             self.inputTextView.text = [chatText substringToIndex:chatText.length-1];
         }
     }
-    
     [self textViewDidChange:self.inputTextView];
 }
-
 - (void)sendFace
 {
     NSString *chatText = self.inputTextView.text;
@@ -347,14 +341,12 @@
     
     if (!self.moreView) {
         self.moreView = [[DXChatBarMoreView alloc] initWithFrame:CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.frame.size.width, 80)];
-        self.moreView.backgroundColor = [UIColor lightGrayColor];
         self.moreView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
     
     if (!self.faceView) {
         self.faceView = [[DXFaceView alloc] initWithFrame:CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.frame.size.width, 200)];
         [(DXFaceView *)self.faceView setDelegate:self];
-        self.faceView.backgroundColor = [UIColor lightGrayColor];
         self.faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
     

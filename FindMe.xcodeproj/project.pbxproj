@@ -92,7 +92,6 @@
 		04A4E2461967F58B00E9BC63 /* UIImageView+MJWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2451967F58B00E9BC63 /* UIImageView+MJWebCache.m */; };
 		04A4E24A1968278B00E9BC63 /* UIView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2491968278B00E9BC63 /* UIView+Common.m */; };
 		04A62D001951B8D7007E8ACF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A62CFF1951B8D7007E8ACF /* ViewController.m */; };
-		04A62D041951BF53007E8ACF /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A62D031951BF53007E8ACF /* TableViewController.m */; };
 		04A763F9195D24DE00C92480 /* NYSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A763F4195D24DE00C92480 /* NYSegment.m */; };
 		04A763FA195D24DE00C92480 /* NYSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A763F6195D24DE00C92480 /* NYSegmentedControl.m */; };
 		04A763FB195D24DE00C92480 /* NYSegmentIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A763F8195D24DE00C92480 /* NYSegmentIndicator.m */; };
@@ -155,6 +154,9 @@
 		04A961CA1955B194002E30AF /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A961C91955B194002E30AF /* libiconv.dylib */; };
 		04A961CC1955B1B7002E30AF /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A961CB1955B1B7002E30AF /* libresolv.dylib */; };
 		04A961CE1955B1D3002E30AF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */; };
+		04A9F270196A2830000A347E /* STDbKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F26F196A2830000A347E /* STDbKit.framework */; };
+		04A9F273196A9D18000A347E /* MessageNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9F272196A9D18000A347E /* MessageNavViewController.m */; };
+		04A9F27A196AAA19000A347E /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9F279196AAA19000A347E /* SettingViewController.m */; };
 		04AA9B81195BBF8B001C83C2 /* GCDiscreetNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AA9B80195BBF8B001C83C2 /* GCDiscreetNotificationView.m */; };
 		04AA9B83195BC8C4001C83C2 /* school.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04AA9B82195BC8C4001C83C2 /* school.plist */; };
 		04AA9B87195BC9EF001C83C2 /* ChooseSchoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AA9B86195BC9EF001C83C2 /* ChooseSchoolViewController.m */; };
@@ -307,8 +309,6 @@
 		04B315AB1956BF0600F93C73 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315AA1956BF0600F93C73 /* BaseTableViewCell.m */; };
 		04B315AE1956BFDC00F93C73 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315AD1956BFDC00F93C73 /* RealtimeSearchUtil.m */; };
 		04B315B11956BFF200F93C73 /* ChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B01956BFF200F93C73 /* ChineseToPinyin.m */; };
-		04B315B41956C01300F93C73 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B31956C01300F93C73 /* EMSearchBar.m */; };
-		04B315B71956C32700F93C73 /* EMSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B61956C32700F93C73 /* EMSearchDisplayController.m */; };
 		04B315BC1956C4B800F93C73 /* ApplyFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B91956C4B800F93C73 /* ApplyFriendCell.m */; };
 		04B315BD1956C4B800F93C73 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315BB1956C4B800F93C73 /* ApplyViewController.m */; };
 		04B315CF1956C84100F93C73 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BF1956C84100F93C73 /* MJRefresh.bundle */; };
@@ -372,7 +372,6 @@
 		04B317551956FDE600F93C73 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B317521956FDE600F93C73 /* NSDate+Category.m */; };
 		04B317561956FDE600F93C73 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B317541956FDE600F93C73 /* NSDateFormatter+Category.m */; };
 		04B3175C1957013300F93C73 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3175B1957013300F93C73 /* UIResponder+Router.m */; };
-		04B43E83195E7BC600DB70B0 /* MessageNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E82195E7BC600DB70B0 /* MessageNavViewController.m */; };
 		04B43E88195F003F00DB70B0 /* FriendNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E87195F003F00DB70B0 /* FriendNavViewController.m */; };
 		04B43E8B195F006800DB70B0 /* PostNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8A195F006800DB70B0 /* PostNavViewController.m */; };
 		04B43E8E195F020200DB70B0 /* MeNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8D195F020200DB70B0 /* MeNavViewController.m */; };
@@ -516,8 +515,6 @@
 		04A4E2491968278B00E9BC63 /* UIView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Common.m"; sourceTree = "<group>"; };
 		04A62CFE1951B8D7007E8ACF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04A62CFF1951B8D7007E8ACF /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		04A62D021951BF53007E8ACF /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
-		04A62D031951BF53007E8ACF /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		04A763F3195D24DE00C92480 /* NYSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSegment.h; sourceTree = "<group>"; };
 		04A763F4195D24DE00C92480 /* NYSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYSegment.m; sourceTree = "<group>"; };
 		04A763F5195D24DE00C92480 /* NYSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSegmentedControl.h; sourceTree = "<group>"; };
@@ -607,6 +604,11 @@
 		04A961C91955B194002E30AF /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		04A961CB1955B1B7002E30AF /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		04A9F26F196A2830000A347E /* STDbKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = STDbKit.framework; sourceTree = "<group>"; };
+		04A9F271196A9D18000A347E /* MessageNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageNavViewController.h; sourceTree = "<group>"; };
+		04A9F272196A9D18000A347E /* MessageNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageNavViewController.m; sourceTree = "<group>"; };
+		04A9F278196AAA19000A347E /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		04A9F279196AAA19000A347E /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		04AA9B7F195BBF8B001C83C2 /* GCDiscreetNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDiscreetNotificationView.h; sourceTree = "<group>"; };
 		04AA9B80195BBF8B001C83C2 /* GCDiscreetNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDiscreetNotificationView.m; sourceTree = "<group>"; };
 		04AA9B82195BC8C4001C83C2 /* school.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = school.plist; sourceTree = "<group>"; };
@@ -871,10 +873,6 @@
 		04B315AD1956BFDC00F93C73 /* RealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeSearchUtil.m; sourceTree = "<group>"; };
 		04B315AF1956BFF200F93C73 /* ChineseToPinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseToPinyin.h; sourceTree = "<group>"; };
 		04B315B01956BFF200F93C73 /* ChineseToPinyin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseToPinyin.m; sourceTree = "<group>"; };
-		04B315B21956C01300F93C73 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
-		04B315B31956C01300F93C73 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
-		04B315B51956C32700F93C73 /* EMSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchDisplayController.h; sourceTree = "<group>"; };
-		04B315B61956C32700F93C73 /* EMSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchDisplayController.m; sourceTree = "<group>"; };
 		04B315B81956C4B800F93C73 /* ApplyFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyFriendCell.h; sourceTree = "<group>"; };
 		04B315B91956C4B800F93C73 /* ApplyFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyFriendCell.m; sourceTree = "<group>"; };
 		04B315BA1956C4B800F93C73 /* ApplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyViewController.h; sourceTree = "<group>"; };
@@ -959,8 +957,6 @@
 		04B317541956FDE600F93C73 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		04B3175A1957013300F93C73 /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
 		04B3175B1957013300F93C73 /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
-		04B43E81195E7BC600DB70B0 /* MessageNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageNavViewController.h; sourceTree = "<group>"; };
-		04B43E82195E7BC600DB70B0 /* MessageNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageNavViewController.m; sourceTree = "<group>"; };
 		04B43E86195F003F00DB70B0 /* FriendNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendNavViewController.h; sourceTree = "<group>"; };
 		04B43E87195F003F00DB70B0 /* FriendNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendNavViewController.m; sourceTree = "<group>"; };
 		04B43E89195F006800DB70B0 /* PostNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNavViewController.h; sourceTree = "<group>"; };
@@ -1038,6 +1034,7 @@
 				04A9613419551E55002E30AF /* ShareSDKiPhoneDefaultShareViewUI.framework in Frameworks */,
 				04A9611919551E54002E30AF /* AGCommon.framework in Frameworks */,
 				04A9611219551E54002E30AF /* TencentWeiboConnection.framework in Frameworks */,
+				04A9F270196A2830000A347E /* STDbKit.framework in Frameworks */,
 				04A9612219551E54002E30AF /* TencentOpenAPI.framework in Frameworks */,
 				04AF10021951515500A3E74B /* Foundation.framework in Frameworks */,
 				04A9610A19551E54002E30AF /* QQConnection.framework in Frameworks */,
@@ -1183,7 +1180,6 @@
 				04B315DA1956FC7600F93C73 /* Chat */,
 				04B315A51956BD3800F93C73 /* Contacts */,
 				04A62CFD1951B85D007E8ACF /* FindMe */,
-				04A62D011951BF21007E8ACF /* Message */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1205,17 +1201,6 @@
 				04A4E2271967DC3900E9BC63 /* SecondPageView.m */,
 			);
 			name = FindMe;
-			sourceTree = "<group>";
-		};
-		04A62D011951BF21007E8ACF /* Message */ = {
-			isa = PBXGroup;
-			children = (
-				04B43E81195E7BC600DB70B0 /* MessageNavViewController.h */,
-				04B43E82195E7BC600DB70B0 /* MessageNavViewController.m */,
-				04A62D021951BF53007E8ACF /* TableViewController.h */,
-				04A62D031951BF53007E8ACF /* TableViewController.m */,
-			);
-			name = Message;
 			sourceTree = "<group>";
 		};
 		04A763F2195D24DE00C92480 /* NYSegmentedControl */ = {
@@ -1437,6 +1422,15 @@
 			path = MJExtension;
 			sourceTree = "<group>";
 		};
+		04A9F274196AA82B000A347E /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				04A9F278196AAA19000A347E /* SettingViewController.h */,
+				04A9F279196AAA19000A347E /* SettingViewController.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		04AA9B7E195BBF8B001C83C2 /* GCDiscreetNotificationView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1486,6 +1480,7 @@
 		04AF10001951515500A3E74B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04A9F26F196A2830000A347E /* STDbKit.framework */,
 				04B27604195AF99E007AE0CE /* CoreFoundation.framework */,
 				04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */,
 				04A961CB1955B1B7002E30AF /* libresolv.dylib */,
@@ -2015,10 +2010,6 @@
 				04B43E87195F003F00DB70B0 /* FriendNavViewController.m */,
 				04B315A61956BD5500F93C73 /* ContactsViewController.h */,
 				04B315A71956BD5500F93C73 /* ContactsViewController.m */,
-				04B315B21956C01300F93C73 /* EMSearchBar.h */,
-				04B315B31956C01300F93C73 /* EMSearchBar.m */,
-				04B315B51956C32700F93C73 /* EMSearchDisplayController.h */,
-				04B315B61956C32700F93C73 /* EMSearchDisplayController.m */,
 				04B315B81956C4B800F93C73 /* ApplyFriendCell.h */,
 				04B315B91956C4B800F93C73 /* ApplyFriendCell.m */,
 				04B315BA1956C4B800F93C73 /* ApplyViewController.h */,
@@ -2062,6 +2053,8 @@
 		04B315DB1956FC7600F93C73 /* ChatList */ = {
 			isa = PBXGroup;
 			children = (
+				04A9F271196A9D18000A347E /* MessageNavViewController.h */,
+				04A9F272196A9D18000A347E /* MessageNavViewController.m */,
 				04B315DC1956FC7600F93C73 /* ChatListCell.h */,
 				04B315DD1956FC7600F93C73 /* ChatListCell.m */,
 				04B315DE1956FC7600F93C73 /* ChatListViewController.h */,
@@ -2245,6 +2238,7 @@
 				04DA3AD41966623100E0AE3C /* MeViewController.m */,
 				04DA3AD619666E7F00E0AE3C /* DetailViewController.h */,
 				04DA3AD719666E7F00E0AE3C /* DetailViewController.m */,
+				04A9F274196AA82B000A347E /* Setting */,
 			);
 			name = Me;
 			sourceTree = "<group>";
@@ -2676,6 +2670,7 @@
 				04A9616119559D1D002E30AF /* MJIvar.m in Sources */,
 				04169AD11964FCBC00A64585 /* ZBExpressionSectionBar.m in Sources */,
 				04A4E23B1967EB1300E9BC63 /* MJPhotoProgressView.m in Sources */,
+				04A9F273196A9D18000A347E /* MessageNavViewController.m in Sources */,
 				04B2D9BB1963828D00EF0C74 /* HPTextViewInternal.m in Sources */,
 				04A9616019559D1D002E30AF /* MJArgument.m in Sources */,
 				04B2D9D01963859800EF0C74 /* Emoji.m in Sources */,
@@ -2706,7 +2701,6 @@
 				04A76406195D4DAE00C92480 /* ChooseConstellationViewController.m in Sources */,
 				04B315A81956BD5500F93C73 /* ContactsViewController.m in Sources */,
 				04ADC9701960F097009106A7 /* DXMessageToolBar.m in Sources */,
-				04B43E83195E7BC600DB70B0 /* MessageNavViewController.m in Sources */,
 				04A9616419559D1D002E30AF /* MJType.m in Sources */,
 				04DA3AF619667B4B00E0AE3C /* XYAlertViewManager.m in Sources */,
 				04B2D95C1963828D00EF0C74 /* EMChatViewCell.m in Sources */,
@@ -2722,7 +2716,6 @@
 				04A763FA195D24DE00C92480 /* NYSegmentedControl.m in Sources */,
 				04A763FE195D255F00C92480 /* PersonInfoViewController.m in Sources */,
 				04B2D95A1963828D00EF0C74 /* EMChatTimeCell.m in Sources */,
-				04B315B71956C32700F93C73 /* EMSearchDisplayController.m in Sources */,
 				04A4E2461967F58B00E9BC63 /* UIImageView+MJWebCache.m in Sources */,
 				04169ADA1964FCCF00A64585 /* ZBMessageTextView.m in Sources */,
 				04B315D51956C84100F93C73 /* UIScrollView+MJRefresh.m in Sources */,
@@ -2755,11 +2748,9 @@
 				04B316AE1956FC7600F93C73 /* ChatListCell.m in Sources */,
 				04A62D001951B8D7007E8ACF /* ViewController.m in Sources */,
 				04A4E2371967EB1300E9BC63 /* MJPhoto.m in Sources */,
-				04A62D041951BF53007E8ACF /* TableViewController.m in Sources */,
 				04DA3AF519667B4B00E0AE3C /* XYAlertView.m in Sources */,
 				04A9616519559D1D002E30AF /* MJTypeEncoding.m in Sources */,
 				04A8DE8C195338CE00404FE1 /* UIViewController+HUD.m in Sources */,
-				04B315B41956C01300F93C73 /* EMSearchBar.m in Sources */,
 				04B315D61956C84100F93C73 /* UIView+Extension.m in Sources */,
 				04A76403195D467900C92480 /* UIView+WhenTappedBlocks.m in Sources */,
 				04B2D9C11963838A00EF0C74 /* ConvertToCommonEmoticonsHelper.m in Sources */,
@@ -2782,6 +2773,7 @@
 				04B315BC1956C4B800F93C73 /* ApplyFriendCell.m in Sources */,
 				04B315D11956C84100F93C73 /* MJRefreshConst.m in Sources */,
 				04A9616319559D1D002E30AF /* MJMethod.m in Sources */,
+				04A9F27A196AAA19000A347E /* SettingViewController.m in Sources */,
 				04A9616819559D1D002E30AF /* NSObject+MJMember.m in Sources */,
 				04A960A11955081D002E30AF /* FindMeViewController.m in Sources */,
 			);
@@ -2935,6 +2927,7 @@
 					"$(PROJECT_DIR)/FindMe/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/FindMe/ShareSDK",
 					"$(PROJECT_DIR)/FindMe/ShareSDK/UI",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FindMe/FindMe-Prefix.pch";
@@ -3000,6 +2993,7 @@
 					"$(PROJECT_DIR)/FindMe/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/FindMe/ShareSDK",
 					"$(PROJECT_DIR)/FindMe/ShareSDK/UI",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FindMe/FindMe-Prefix.pch";

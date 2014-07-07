@@ -1,23 +1,16 @@
-//
-//  ContactsViewController.m
-//  ChatDemo-UI2.0
-//
-//  Created by dujiepeng on 14-5-23.
-//  Copyright (c) 2014年 dujiepeng. All rights reserved.
-//
-
 #import "ContactsViewController.h"
 #import "BaseTableViewCell.h"
 #import "RealtimeSearchUtil.h"
 #import "ChineseToPinyin.h"
-#import "EMSearchBar.h"
 #import "ApplyViewController.h"
-#import "EMSearchDisplayController.h"
 #import "EMBuddy.h"
 #import "EaseMob.h"
 #import "ChatViewController.h"
 #import "MJRefresh.h"
-@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+#import <AFNetworking.h>
+#import "User.h"
+#import "UIImageView+WebCache.h"
+@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -25,10 +18,8 @@
 
 @property (strong, nonatomic) UILabel *unapplyCountLabel;
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) ApplyViewController *applyController;
 
-@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -38,36 +29,40 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-//        _applysArray = [NSMutableArray array];
-//        
-//        _dataSource = [NSMutableArray array];
-//        _contactsSource = [NSMutableArray array];
-//        _sectionTitles = [NSMutableArray array];
+
+    }
+    return self;
+}
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _applysArray = [NSMutableArray array];
+        _dataSource = [NSMutableArray array];
+        _contactsSource = [NSMutableArray array];
+        _sectionTitles = [NSMutableArray array];
     }
     return self;
 }
 
--(void)awakeFromNib{
-    [super awakeFromNib];
-    _applysArray = [NSMutableArray array];
-    
-    _dataSource = [NSMutableArray array];
-    _contactsSource = [NSMutableArray array];
-    _sectionTitles = [NSMutableArray array];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self setEdgesForExtendedLayout:UIRectEdgeNone];
-    [self searchController];
-    self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-    [self.view addSubview:self.searchBar];
-    
-    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.title = @"好友";
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.view addSubview:self.tableView];
-    [self.tableView addHeaderWithTarget:self action:@selector(reloadDataSource)];
-    [self.tableView headerBeginRefreshing];
+    [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
+    [self loadLocalFriends];//读取本地好友列表
+//    [self myReloadDataSource];    
+}
+
+-(void)loadLocalFriends{
+    [self.dataSource removeAllObjects];
+    [self.contactsSource removeAllObjects];
+     self.contactsSource = [User allDbObjects];
+    [self.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,17 +79,7 @@
 
 #pragma mark - getter
 
-- (UISearchBar *)searchBar
-{
-    if (_searchBar == nil) {
-        _searchBar = [[EMSearchBar alloc] init];
-        _searchBar.delegate = self;
-        _searchBar.placeholder = @"搜索";
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
-    }
-    
-    return _searchBar;
-}
+
 
 - (UILabel *)unapplyCountLabel
 {
@@ -120,6 +105,11 @@
     {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        if (iOS7) {
+          _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+        }
+
+        _tableView.sectionIndexColor = HDRED;
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
@@ -130,70 +120,15 @@
     return _tableView;
 }
 
-- (EMSearchDisplayController *)searchController
-{
-    if (_searchController == nil) {
-        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.delegate = self;
-        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        __weak ContactsViewController *weakSelf = self;
-        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-            static NSString *CellIdentifier = @"ContactListCell";
-            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
-            // Configure the cell...
-            if (cell == nil) {
-                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            
-            EMBuddy *buudy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buudy.username;
-            
-            return cell;
-        }];
-        
-        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 50;
-        }];
-        
-        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-            if (loginUsername && loginUsername.length > 0) {
-                if ([loginUsername isEqualToString:buddy.username]) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能跟自己聊天" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                    [alertView show];
-                    
-                    return;
-                }
-            }
-            
-            [weakSelf.searchController.searchBar endEditing:YES];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username];
-            chatVC.title = buddy.username;
-            [weakSelf.navigationController pushViewController:chatVC animated:YES];
-        }];
-    }
-    
-    return _searchController;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return [self.dataSource count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     if (section == 0) {
         return 1;
     }
@@ -212,67 +147,26 @@
         }
         
         cell.imageView.image = [UIImage imageNamed:@"newFriends"];
-        cell.textLabel.text = @"申请与通知";
+        cell.textLabel.text = @"通知消息";
         [cell addSubview:self.unapplyCountLabel];
     }
     else{
         static NSString *CellIdentifier = @"ContactListCell";
         cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        // Configure the cell...
         if (cell == nil) {
             cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         
-
-            EMBuddy *buudy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buudy.username;
+            User *user = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
+            cell.textLabel.text = user.userNickName;
         
     }
     
     return cell;
 }
 
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    if (indexPath.section == 0) {
-        return NO;
-        [self isViewLoaded];
-    }
-    return YES;
-}
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-        if ([buddy.username isEqualToString:loginUsername]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能删除自己" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
-            
-            return;
-        }
-        
-        [tableView beginUpdates];
-        [[self.dataSource objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
-        [self.contactsSource removeObject:buddy];
-        [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [tableView  endUpdates];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error;
-            [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:&error];
-            if (!error) {
-                [[EaseMob sharedInstance].chatManager removeConversationByChatter:buddy.username deleteMessages:YES];
-            }
-        });
-    }
-}
 
 #pragma mark - Table view delegate
 
@@ -307,9 +201,10 @@
     [contentView addSubview:label];
     return contentView;
 }
-
+//索引
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
+
     NSMutableArray * existTitles = [NSMutableArray array];
     //section数组为空的title过滤掉，不显示
     for (int i = 0; i < [self.sectionTitles count]; i++) {
@@ -320,114 +215,28 @@
     return existTitles;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
             if (_applyController == nil) {
                 _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
             }
             
             _applyController.dataSource = self.applysArray;
             [self.navigationController pushViewController:_applyController animated:YES];
-        }
-        else if (indexPath.row == 1)
-        {
-            if (_applyController == nil) {
-                _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
-            }
-            
-            _applyController.dataSource = self.applysArray;
-            [self.navigationController pushViewController:_applyController animated:YES];
-        }
     }
     else{
-        EMBuddy *buddy = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        if (loginUsername && loginUsername.length > 0) {
-            if ([loginUsername isEqualToString:buddy.username]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能跟自己聊天" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alertView show];
-                
-                return;
-            }
-        }
-        
-        ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:buddy.username];
-        chatVC.title = buddy.username;
+        User *user = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+//        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:user._id andPhoto:user.userPhoto];
+        chatVC.title = user.userNickName;
         [self.navigationController pushViewController:chatVC animated:YES];
     }
 }
 
-#pragma mark - UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    [searchBar setShowsCancelButton:YES animated:YES];
-    
-    return YES;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:(NSString *)searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
-        if (results) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.searchController.resultsSource removeAllObjects];
-                [self.searchController.resultsSource addObjectsFromArray:results];
-                [self.searchController.searchResultsTableView reloadData];
-            });
-        }
-    }];
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
-    return YES;
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    searchBar.text = @"";
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-}
-
-#pragma mark - UISearchDisplayDelegate
-
-#pragma mark - scrollView delegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-//    [_slimeView scrollViewDidScroll];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    [_slimeView scrollViewDidEndDraging];
-}
-
-#pragma mark - slimeRefresh delegate
-//刷新列表
-//- (void)slimeRefreshStartRefresh:(id)refreshView
-//{
-//    [self reloadDataSource];
-//
-//}
 
 #pragma mark - private
 
@@ -449,22 +258,22 @@
     }
     
     //名字分section
-    for (EMBuddy *buddy in dataArray) {
+    for (User *user in dataArray) {
         //getUserName是实现中文拼音检索的核心，见NameIndex类
-        NSString *firstLetter = [ChineseToPinyin pinyinFromChineseString:buddy.username];
+        NSString *firstLetter = [ChineseToPinyin pinyinFromChineseString:user.userNickName];
         NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
         
         NSMutableArray *array = [sortedArray objectAtIndex:section];
-        [array addObject:buddy];
+        [array addObject:user];
     }
     
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
-        NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EMBuddy *obj1, EMBuddy *obj2) {
-            NSString *firstLetter1 = [ChineseToPinyin pinyinFromChineseString:obj1.username];
+        NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(User *obj1, User *obj2) {
+            NSString *firstLetter1 = [ChineseToPinyin pinyinFromChineseString:obj1.userNickName];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [ChineseToPinyin pinyinFromChineseString:obj2.username];
+            NSString *firstLetter2 = [ChineseToPinyin pinyinFromChineseString:obj2.userNickName];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
@@ -478,33 +287,38 @@
 }
 
 #pragma mark - dataSource
-
-- (void)reloadDataSource
+- (void)myReloadDataSource
 {
     [self.dataSource removeAllObjects];
     [self.contactsSource removeAllObjects];
     
-    NSArray *buddyList = [[EaseMob sharedInstance].chatManager buddyList];
-    for (EMBuddy *buddy in buddyList) {
-        if (buddy.followState != eEMBuddyFollowState_NotFollowed) {
-            [self.contactsSource addObject:buddy];
-        }
-    }
     
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-    if (loginUsername && loginUsername.length > 0) {
-        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-        [self.contactsSource addObject:loginBuddy];
-    }
-    
-    [self.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
-    
-    [_tableView reloadData];
-    
-    [self.tableView headerEndRefreshing];
-}
+    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_friend.do",Host];
 
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __weak __typeof(&*self)weakSelf = self;
+    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *friendList = [responseObject objectForKey:@"friendList"];
+        if (friendList!=nil) {
+            weakSelf.contactsSource = [[NSMutableArray alloc] initWithArray:[User objectArrayWithKeyValuesArray:friendList]];
+            for (User *user in weakSelf.contactsSource) {
+                if (![User existDbObjectsWhere:[NSString stringWithFormat:@"_id='%@'",user._id]]) {
+                        [user insertToDb];
+                }
+
+            }
+            [weakSelf.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
+            [weakSelf.tableView reloadData];
+            [weakSelf.tableView headerEndRefreshing];
+        }else{
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [weakSelf.tableView headerEndRefreshing];
+    }];
+    
+}
 #pragma mark - action
 
 - (void)reloadApplyView
@@ -535,10 +349,5 @@
         [_applyController.tableView reloadData];
     }
 }
-
-
-
-
-
 
 @end

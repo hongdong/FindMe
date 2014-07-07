@@ -29,6 +29,7 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wx2913cf7663ee3b2f</string>
 				<string>wb570703814</string>
 				<string>tencent101073798</string>
 			</array>

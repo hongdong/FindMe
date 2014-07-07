@@ -14,6 +14,7 @@
     [setting removeObjectForKey:@"user"];
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NSUserDefaultsUserChange" object:nil];
 }
 -(void)getUserInfo{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
@@ -24,12 +25,10 @@
         NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
         if (userInfo!=nil) {
             weakSelf._id = [userInfo objectForKey:@"_id"];
-            weakSelf.userDeptName = [[userInfo objectForKey:@"department"] objectForKey:@"deptName"];
-            weakSelf.userDeptNo = [[userInfo objectForKey:@"department"] objectForKey:@"_id"];
-            weakSelf.userScName = [[userInfo objectForKey:@"school"] objectForKey:@"schoolName"];
-            weakSelf.userScNo = [[userInfo objectForKey:@"school"] objectForKey:@"_id"];
+            weakSelf.department = [userInfo objectForKey:@"department"];
+            weakSelf.school = [userInfo objectForKey:@"school"];
             weakSelf.userAuthType = [userInfo objectForKey:@"userAuth"];
-            weakSelf.constellation = [userInfo objectForKey:@"userConstellation"];
+            weakSelf.userConstellation = [userInfo objectForKey:@"userConstellation"];
             weakSelf.userGrade = [userInfo objectForKey:@"userGrade"];
             weakSelf.userNickName = [userInfo objectForKey:@"userNickName"];
             weakSelf.userPhoto = [userInfo objectForKey:@"userPhoto"];
@@ -44,6 +43,19 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+}
+
+-(NSString *)getSchoolId{
+    return [self.school objectForKey:@"_id"];
+}
+-(NSString *)getSchoolName{
+    return [self.school objectForKey:@"schoolName"];
+}
+-(NSString *)getDepartmentId{
+    return [self.department objectForKey:@"_id"];
+}
+-(NSString *)getDepartmentName{
+    return [self.department objectForKey:@"deptName"];
 }
 
 +(id)getUserFromNSUserDefaults{

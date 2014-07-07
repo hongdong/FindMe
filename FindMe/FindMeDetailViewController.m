@@ -32,6 +32,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.userId!=nil&&self.user==nil) {
+        self.user = [[User alloc] init];
+        self.user._id = self.userId;
+        [self.user getUserInfo];
+    }
+    
     [self setUpScroll];
     
     myImageUrlArr = [[NSMutableArray alloc] init];
@@ -64,7 +71,7 @@
         imageview.clipsToBounds = YES;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
-        [imageview setImageWithURL: [NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"TopViewRight.png"] ];
+        [imageview setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)] ];
         [self.photoWallView addSubview: imageview];
     }
@@ -105,12 +112,30 @@
 
     FirstPageView *firstView = [HDTool loadCustomViewByIndex:2];
     firstView.contentMode = UIViewContentModeScaleAspectFill;
-    firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);;
+    firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    
+    [firstView.photo setImageWithURL:[NSURL URLWithString:self.user.userPhoto]];
+    firstView.realNameLbl.text = self.user.userRealName;
+    if ([self.user.userSex isEqualToString:@"男"]) {
+        firstView.sex.image = [UIImage imageNamed:@"boy"];
+    }else{
+        firstView.sex.image = [UIImage imageNamed:@"girl"];
+    }
+    
+    
     [_scrollView addSubview:firstView];
 
     SecondPageView *secondPageView = [HDTool loadCustomViewByIndex:3];
     secondPageView.contentMode = UIViewContentModeScaleAspectFill;
     secondPageView.frame = CGRectMake(_scrollView.frame.size.width, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    
+    secondPageView.nicknameLbl.text = self.user.userNickName;
+    secondPageView.constellationLbl.text = self.user.userConstellation;
+    secondPageView.school.text = [self.user getSchoolName];
+    secondPageView.departmentLbl.text = [self.user getDepartmentName];
+    secondPageView.gradeLbl.text = self.user.userGrade;
+    
+    
     [_scrollView addSubview:secondPageView];
     
     CGSize pageScrollViewSize = _scrollView.frame.size;

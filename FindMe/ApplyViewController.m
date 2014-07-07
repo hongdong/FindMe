@@ -33,9 +33,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    if (iOS7)
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;               //视图控制器，四条边不指定
+        self.extendedLayoutIncludesOpaqueBars = NO;                 //不透明的操作栏<br>    self.modalPresentationCapturesStatusBarAppearance = NO;
+    }
     // Uncomment the following line to preserve selection between presentations.
-    self.title = @"好友申请";
+    self.title = @"通知消息";
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     

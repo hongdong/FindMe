@@ -78,8 +78,6 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     CGRect frame = self.imageView.frame;
-    
-    [self.imageView setImage:_placeholderImage];
     self.imageView.frame = CGRectMake(10, 7, 45, 45);
     
     self.textLabel.text = _name;

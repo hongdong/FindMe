@@ -19,13 +19,13 @@
     if (self) {
         // Initialization code
         [self setupSubviews];
+        self.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }
     return self;
 }
 
 - (void)setupSubviews
 {
-    self.backgroundColor = [UIColor clearColor];
     CGFloat insets = (self.frame.size.width - 4 * CHAT_BUTTON_SIZE) / 5;
     
     _photoButton =[UIButton buttonWithType:UIButtonTypeCustom];

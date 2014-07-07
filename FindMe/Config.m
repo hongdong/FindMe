@@ -1,11 +1,3 @@
-//
-//  Config.m
-//  FindMe
-//
-//  Created by mac on 14-6-25.
-//  Copyright (c) 2014年 mac. All rights reserved.
-//
-
 #import "Config.h"
 
 @implementation Config
@@ -54,5 +46,20 @@
         return @"";
     }
     return value;
+}
+
+-(void)initBadge{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    [setting removeObjectForKey:@"badge"];
+    [setting setObject:@"0" forKey:@"badge"];
+    [setting synchronize];
+}
+-(void)minusBadge{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    int badgeNum = [[setting objectForKey:@"badge"] intValue]-1;
+    NSString *badge = [[NSString alloc] initWithFormat:@"%d",badgeNum];
+    [setting removeObjectForKey:@"badge"];
+    [setting setObject:badge forKey:@"badge"];
+    [setting synchronize];
 }
 @end

@@ -21,6 +21,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _facialView = [[FacialView alloc] initWithFrame: CGRectMake(5, 5, frame.size.width - 10, self.bounds.size.height - 10)];
         [_facialView loadFacialView:1 size:CGSizeMake(30, 30)];
         _facialView.delegate = self;

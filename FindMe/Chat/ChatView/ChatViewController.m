@@ -9,7 +9,6 @@
 #import "ChatViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
 #import "DXChatBarMoreView.h"
 #import "DXRecordView.h"
 #import "DXFaceView.h"
@@ -22,7 +21,7 @@
 #import "NSDate+Category.h"
 #import "DXMessageToolBar.h"
 #import "EaseMob.h"
-
+#import "FindMeDetailViewController.h"
 #import "MJRefresh.h"
 #define KPageCount 20
 @interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationViewDelegate, IDeviceManagerDelegate>
@@ -35,6 +34,7 @@
     NSInteger _recordingCount;
     
     dispatch_queue_t _messageQueue;
+    NSString *_photoUrl;
 }
 @property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
 @property (nonatomic) BOOL isChatGroup;
@@ -52,17 +52,15 @@
 
 @implementation ChatViewController
 
-- (instancetype)initWithChatter:(NSString *)chatter
+- (instancetype)initWithChatter:(NSString *)chatter andPhoto:(NSString *)url
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        // Custom initialization
+        _photoUrl = url;
         _isChatGroup = NO;
-        
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter isGroup:_isChatGroup];
         self.hidesBottomBarWhenPushed = YES;
-
     }
     return self;
 }
@@ -71,14 +69,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (iOS7)
+    {
+        self.edgesForExtendedLayout = UIRectEdgeBottom;               //视图控制器，四条边不指定
+        self.extendedLayoutIncludesOpaqueBars = NO;                 //不透明的操作栏
+        self.modalPresentationCapturesStatusBarAppearance = NO;
+    }
 
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = [UIColor whiteColor];
 
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllMessages:) name:@"RemoveAllMessages" object:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
     //通过会话管理者获取已收发消息
@@ -104,17 +107,21 @@
 - (void)setupBarButtonItem
 {
 
-        UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-        [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
-        [clearButton addTarget:self action:@selector(removeAllMessages:) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
+        UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [detailButton setImage:[UIImage imageNamed:@"userDetail"] forState:UIControlStateNormal];
+        [detailButton addTarget:self action:@selector(detailButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
     
 }
-
+-(void)detailButtonPressed:(id)sender{
+    FindMeDetailViewController *controller = [HDTool getControllerByStoryboardId:@"userDetailController"];
+    controller.userId = _conversation.chatter;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,10 +135,14 @@
 {
     [super viewWillDisappear:animated];
     
-    // 设置当前conversation的所有message为已读
+    // 设置当前conversation的所有message为已读,这是会给别人通知
     [_conversation markMessagesAsRead:YES];
     
     [self stopAudioPlaying];
+}
+//发给别人的消息已读回调
+- (void)didReceiveHasReadResponse:(EMReceiptResp *)resp{
+    
 }
 
 - (void)dealloc
@@ -140,16 +151,7 @@
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[[EaseMob sharedInstance] deviceManager] removeDelegate:self];
 }
-- (void)back
-{
-    //判断当前会话是否为空，若符合则删除该会话
-    EMMessage *message = [_conversation latestMessage];
-    if (message == nil) {
-        [[EaseMob sharedInstance].chatManager removeConversationByChatter:_conversation.chatter deleteMessages:YES];
-    }
-    
-    [self.navigationController popViewControllerAnimated:YES];
-}
+
 #pragma mark - getter
 
 - (NSMutableArray *)dataSource
@@ -170,7 +172,7 @@
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = [UIColor clearColor];
         _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -225,7 +227,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
@@ -252,6 +253,7 @@
         }
         else{
             MessageModel *model = (MessageModel *)obj;
+            model.headImageURL = [NSURL URLWithString:_photoUrl];
             NSString *cellIdentifier = [EMChatViewCell cellIdentifierForMessageModel:model];
             EMChatViewCell *cell = (EMChatViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (cell == nil) {
@@ -282,8 +284,6 @@
 }
 
 #pragma mark - GestureRecognizer
-
-// 点击背景隐藏
 -(void)keyBoardHidden
 {
     [self.chatToolBar endEditing:YES];
@@ -750,6 +750,8 @@
         [_tableView reloadData];
         [_tableView headerEndRefreshing];
         [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }else{
+        [_tableView headerEndRefreshing];
     }
 }
 
@@ -820,41 +822,6 @@
         
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-}
-
-
-
-- (void)removeAllMessages:(id)sender
-{
-    [_conversation loadAllMessages];
-    if (_conversation.messages.count == 0) {
-        [self showHint:@"消息已经清空"];
-        return;
-    }
-    
-    if ([sender isKindOfClass:[NSNotification class]]) {
-        NSString *groupId = (NSString *)[(NSNotification *)sender object];
-        if (_isChatGroup && [groupId isEqualToString:_conversation.chatter]) {
-            [_conversation removeAllMessages];
-            [_dataSource removeAllObjects];
-            [_tableView reloadData];
-            [self showHint:@"消息已经清空"];
-            return;
-        }
-    }
-    
-//    [WCAlertView showAlertWithTitle:@"提示"
-//                            message:@"请确认删除"
-//                 customizationBlock:^(WCAlertView *alertView) {
-//                     
-//                 } completionBlock:
-//     ^(NSUInteger buttonIndex, WCAlertView *alertView) {
-//         if (buttonIndex == 1) {
-//             [_conversation removeAllMessages];
-//             [_dataSource removeAllObjects];
-//             [self.tableView reloadData];
-//         }
-//     } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 }
 
 - (void)showMenuViewController:(UIView *)showInView andIndexPath:(NSIndexPath *)indexPath messageType:(MessageBodyType)messageType

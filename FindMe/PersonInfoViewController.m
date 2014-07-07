@@ -102,9 +102,9 @@
         return;
     }
     
-    [self showHudInView:self.view hint:@"请稍后..."];
+    [self showHudInView:self.view.window hint:@"请稍后..."];
     _user.userRealName = self.nameTextField.text;
-    _user.constellation = _constellationStr;
+    _user.userConstellation = _constellationStr;
     
     
     
@@ -112,11 +112,11 @@
     NSString *url = [NSString stringWithFormat:@"%@/data/user/rgst_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"userNickName": _user.userNickName,
-                                 @"school._id": _user.userScNo,
-                                 @"school.schoolName": _user.userScName,
-                                 @"department._id": _user.userDeptNo,
-                                 @"department.deptName": _user.userDeptName,
-                                 @"userConstellation": _user.constellation,
+                                 @"school._id": [_user getSchoolId],
+                                 @"school.schoolName": [_user getSchoolName],
+                                 @"department._id": [_user getDepartmentId],
+                                 @"department.deptName": [_user getDepartmentName],
+                                 @"userConstellation": _user.userConstellation,
                                  @"userGrade": _user.userGrade,
                                  @"userSex": _user.userSex,
                                  @"userEquipment.equitNo": [[Config sharedConfig] getRegistrationID],
@@ -132,21 +132,14 @@
     [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-            NSLog(@"进度 %lu%+lld+%lld",(unsigned long)bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
-        }];
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             
-
             _user._id = [responseObject objectForKey:@"userId"];
-            
             [weakSelf showResultWithType:ResultSuccess];
             [_user saveToNSUserDefaults];
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-
-
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:@YES userInfo:@{@"_id": _user._id}];
         }else if ([state isEqualToString:@"10001"]){
             [weakSelf showResultWithType:ResultError];
         }else{

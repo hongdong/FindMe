@@ -79,8 +79,10 @@
     self.feedTableView.backgroundColor = [UIColor colorWithRed:242.0/255 green:235.0/255 blue:241.0/255 alpha:1.0];
     
     [self.feedTableView addHeaderWithTarget:self action:@selector(headerRereshing)];
-    [self.feedTableView headerBeginRefreshing];
+
     [self.feedTableView addFooterWithTarget:self action:@selector(footerRereshing)];
+    
+    [self headerRereshing];
 }
 
 -(void)dealloc{
@@ -141,7 +143,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+    NSLog(@"有几行：%lu",(unsigned long)[_dataArr count]);
     return [_dataArr count];
 }
 
@@ -151,6 +153,8 @@
     if (!cell) {
         cell = [[XHFeedCell4 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+
+    NSLog(@"第%ld行",(long)indexPath.row);
     cell.post = _dataArr[indexPath.row];
     
     return cell;

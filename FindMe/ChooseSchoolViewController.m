@@ -44,6 +44,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self showHint:@"第一次登入，认真填写信息哦"];
 
 }
 
@@ -106,8 +107,9 @@
         selectedScNo = [dataArray[indexPath.row] objectForKey:@"scNo"];
         selectedScName = [dataArray[indexPath.row] objectForKey:@"scName"];
     }
-    _user.userScNo = selectedScNo;
-    _user.userScName = selectedScName;
+    [_user.school setValue:selectedScNo forKey:@"_id"];
+    [_user.school setValue:selectedScName forKey:@"schoolName"];
+
 
     [self showHudInView:self.view hint:@"加载中..."];
     [self departmentList:selectedScNo];
