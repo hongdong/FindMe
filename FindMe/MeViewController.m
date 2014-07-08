@@ -12,7 +12,9 @@
 #import "JMWhenTapped.h"
 #import <AGCommon/UINavigationBar+Common.h>
 #import <AGCommon/NSString+Common.h>
-@interface MeViewController ()
+@interface MeViewController (){
+    User *_user;
+}
 
 @end
 
@@ -26,25 +28,22 @@
     }
     return self;
 }
-
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _user = [User getUserFromNSUserDefaults];
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    User *user = [User getUserFromNSUserDefaults];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdate:) name:@"NSUserDefaultsUserChange" object:nil];
+    
     self.photo.layer.cornerRadius = 25.0f;
     self.photo.layer.masksToBounds = YES;
-    [self.photo setImageWithURL:[NSURL URLWithString:user.userPhoto]];
-    self.nickname.text = user.userNickName;
-    CGSize size = CGSizeMake(320,2000);
-    CGSize realsize = [user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-    self.nickname.frame = CGRectMake(self.nickname.frame.origin.x, self.nickname.frame.origin.y, realsize.width, realsize.height);
-    
-    self.sex.frame = CGRectMake(self.nickname.frame.origin.x+realsize.width + 5, self.sex.frame.origin.y, self.sex.frame.size.width, self.sex.frame.size.height);
-    if ([user.userSex isEqualToString:@"男"]) {
-        self.sex.image = [UIImage imageNamed:@"boy"];
-    }
-
-    self.qianming.text = user.userSignature;
+    [self setData];
     
     
     __weak __typeof(&*self)weakSelf = self;
@@ -61,6 +60,7 @@
     }];
     [self.photoWallView whenTouchedUp:^{
         weakSelf.photoWallView.backgroundColor = [UIColor whiteColor];
+        [weakSelf performSegueWithIdentifier:@"album" sender:nil];
     }];
     
     [self.addVView whenTouchedDown:^{
@@ -86,6 +86,30 @@
         weakSelf.settingView.backgroundColor = [UIColor whiteColor];
         [weakSelf performSegueWithIdentifier:@"setting" sender:nil];
     }];
+}
+
+-(void)setData{
+
+    [self.photo setImageWithURL:[NSURL URLWithString:_user.userPhoto]];
+    self.nickname.text = _user.userNickName;
+    CGSize size = CGSizeMake(320,2000);
+    CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    self.nickname.frame = CGRectMake(self.nickname.frame.origin.x, self.nickname.frame.origin.y, realsize.width, realsize.height);
+    
+    self.sex.frame = CGRectMake(self.nickname.frame.origin.x+realsize.width + 5, self.sex.frame.origin.y, self.sex.frame.size.width, self.sex.frame.size.height);
+    if ([_user.userSex isEqualToString:@"男"]) {
+        self.sex.image = [UIImage imageNamed:@"boy"];
+    }
+    
+    self.qianming.text = _user.userSignature;
+}
+-(void)userInfoUpdate:(NSNotification *)note{
+    _user = [User getUserFromNSUserDefaults];
+    [self setData];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NSUserDefaultsUserChange" object:nil];
 }
 -(void)showShare{
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"findme" ofType:@"png"];

@@ -165,6 +165,8 @@
 		04AB62ED195F9915007D31A6 /* MainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62EC195F9915007D31A6 /* MainTabViewController.m */; };
 		04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62F2195FDF37007D31A6 /* XHFeedController4.m */; };
 		04AB62F6195FDF3F007D31A6 /* XHFeedCell4.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62F5195FDF3F007D31A6 /* XHFeedCell4.m */; };
+		04AD984A196B63DD0080F009 /* IdentifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AD9849196B63DD0080F009 /* IdentifyViewController.m */; };
+		04AD984E196B84850080F009 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AD984D196B84850080F009 /* AlbumViewController.m */; };
 		04ADC8611960E99B009106A7 /* ChatSendHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC8601960E99B009106A7 /* ChatSendHelper.m */; };
 		04ADC96D1960EEFE009106A7 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC96C1960EEFE009106A7 /* XHMessageTextView.m */; };
 		04ADC9701960F097009106A7 /* DXMessageToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC96F1960F097009106A7 /* DXMessageToolBar.m */; };
@@ -375,7 +377,6 @@
 		04B43E88195F003F00DB70B0 /* FriendNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E87195F003F00DB70B0 /* FriendNavViewController.m */; };
 		04B43E8B195F006800DB70B0 /* PostNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8A195F006800DB70B0 /* PostNavViewController.m */; };
 		04B43E8E195F020200DB70B0 /* MeNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8D195F020200DB70B0 /* MeNavViewController.m */; };
-		04B4D59519526B1F00011087 /* HDHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B4D59419526B1F00011087 /* HDHttpClient.m */; };
 		04B8640B19624DCF00326067 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B8640A19624DCF00326067 /* NewPostViewController.m */; };
 		04B8640D1962B7E700326067 /* CustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04B8640C1962B7E700326067 /* CustomView.xib */; };
 		04C51C56196116BA00F5E30B /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C51C55196116BA00F5E30B /* Post.m */; };
@@ -624,6 +625,10 @@
 		04AB62F2195FDF37007D31A6 /* XHFeedController4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFeedController4.m; sourceTree = "<group>"; };
 		04AB62F4195FDF3F007D31A6 /* XHFeedCell4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHFeedCell4.h; sourceTree = "<group>"; };
 		04AB62F5195FDF3F007D31A6 /* XHFeedCell4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFeedCell4.m; sourceTree = "<group>"; };
+		04AD9848196B63DD0080F009 /* IdentifyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentifyViewController.h; sourceTree = "<group>"; };
+		04AD9849196B63DD0080F009 /* IdentifyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentifyViewController.m; sourceTree = "<group>"; };
+		04AD984C196B84850080F009 /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
+		04AD984D196B84850080F009 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		04ADC85F1960E99B009106A7 /* ChatSendHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSendHelper.h; sourceTree = "<group>"; };
 		04ADC8601960E99B009106A7 /* ChatSendHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSendHelper.m; sourceTree = "<group>"; };
 		04ADC96B1960EEFE009106A7 /* XHMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMessageTextView.h; sourceTree = "<group>"; };
@@ -963,8 +968,6 @@
 		04B43E8A195F006800DB70B0 /* PostNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNavViewController.m; sourceTree = "<group>"; };
 		04B43E8C195F020200DB70B0 /* MeNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeNavViewController.h; sourceTree = "<group>"; };
 		04B43E8D195F020200DB70B0 /* MeNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeNavViewController.m; sourceTree = "<group>"; };
-		04B4D59319526B1F00011087 /* HDHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDHttpClient.h; sourceTree = "<group>"; };
-		04B4D59419526B1F00011087 /* HDHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDHttpClient.m; sourceTree = "<group>"; };
 		04B8640919624DCF00326067 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewController.h; sourceTree = "<group>"; };
 		04B8640A19624DCF00326067 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewController.m; sourceTree = "<group>"; };
 		04B8640C1962B7E700326067 /* CustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomView.xib; sourceTree = "<group>"; };
@@ -1427,6 +1430,10 @@
 			children = (
 				04A9F278196AAA19000A347E /* SettingViewController.h */,
 				04A9F279196AAA19000A347E /* SettingViewController.m */,
+				04AD9848196B63DD0080F009 /* IdentifyViewController.h */,
+				04AD9849196B63DD0080F009 /* IdentifyViewController.m */,
+				04AD984C196B84850080F009 /* AlbumViewController.h */,
+				04AD984D196B84850080F009 /* AlbumViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -2252,8 +2259,6 @@
 				04B315AD1956BFDC00F93C73 /* RealtimeSearchUtil.m */,
 				04B315AF1956BFF200F93C73 /* ChineseToPinyin.h */,
 				04B315B01956BFF200F93C73 /* ChineseToPinyin.m */,
-				04B4D59319526B1F00011087 /* HDHttpClient.h */,
-				04B4D59419526B1F00011087 /* HDHttpClient.m */,
 				04B275F8195A8288007AE0CE /* Config.h */,
 				04B275F9195A8288007AE0CE /* Config.m */,
 				04B275FB195A8297007AE0CE /* HDTool.h */,
@@ -2740,7 +2745,6 @@
 				04B316BE1956FC7600F93C73 /* DXRecordView.m in Sources */,
 				04B317551956FDE600F93C73 /* NSDate+Category.m in Sources */,
 				04B316B71956FC7600F93C73 /* LocationViewController.m in Sources */,
-				04B4D59519526B1F00011087 /* HDHttpClient.m in Sources */,
 				04AB62ED195F9915007D31A6 /* MainTabViewController.m in Sources */,
 				04B315AE1956BFDC00F93C73 /* RealtimeSearchUtil.m in Sources */,
 				04B315D21956C84100F93C73 /* MJRefreshFooterView.m in Sources */,
@@ -2749,6 +2753,7 @@
 				04A62D001951B8D7007E8ACF /* ViewController.m in Sources */,
 				04A4E2371967EB1300E9BC63 /* MJPhoto.m in Sources */,
 				04DA3AF519667B4B00E0AE3C /* XYAlertView.m in Sources */,
+				04AD984A196B63DD0080F009 /* IdentifyViewController.m in Sources */,
 				04A9616519559D1D002E30AF /* MJTypeEncoding.m in Sources */,
 				04A8DE8C195338CE00404FE1 /* UIViewController+HUD.m in Sources */,
 				04B315D61956C84100F93C73 /* UIView+Extension.m in Sources */,
@@ -2772,6 +2777,7 @@
 				04B316B41956FC7600F93C73 /* ChatViewController.m in Sources */,
 				04B315BC1956C4B800F93C73 /* ApplyFriendCell.m in Sources */,
 				04B315D11956C84100F93C73 /* MJRefreshConst.m in Sources */,
+				04AD984E196B84850080F009 /* AlbumViewController.m in Sources */,
 				04A9616319559D1D002E30AF /* MJMethod.m in Sources */,
 				04A9F27A196AAA19000A347E /* SettingViewController.m in Sources */,
 				04A9616819559D1D002E30AF /* NSObject+MJMember.m in Sources */,

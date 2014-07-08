@@ -180,6 +180,7 @@
                         <segue destination="g0l-Br-CDe" kind="push" identifier="editInfo" id="byR-p2-KSn"/>
                         <segue destination="6BA-Bd-e1U" kind="push" identifier="attestation" id="cV3-JY-vz9"/>
                         <segue destination="kpe-bH-uHB" kind="push" identifier="setting" id="mTf-Gj-h7E"/>
+                        <segue destination="cFE-4K-zBC" kind="push" identifier="album" id="R5P-Jb-bgk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtm-Vz-Jhz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -194,7 +195,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome3" id="xrc-TQ-pYt">
+                            <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NavBar64" id="xrc-TQ-pYt">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
@@ -379,10 +380,42 @@
             </objects>
             <point key="canvasLocation" x="1754" y="3610"/>
         </scene>
-        <!--View Controller - 实名认证-->
+        <!--Album View Controller - 照片墙-->
+        <scene sceneID="Fl8-ww-qMd">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="cFE-4K-zBC" customClass="AlbumViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0LF-Vf-d7T">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DAI-hP-cE5">
+                                <rect key="frame" x="200" y="288" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" backgroundImage="addimage">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="cFE-4K-zBC" eventType="touchUpInside" id="Bxc-W4-BsA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="照片墙" id="cgu-rV-wWl"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="addButton" destination="DAI-hP-cE5" id="RkX-az-wU7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JdX-Tu-LG8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2185" y="3629"/>
+        </scene>
+        <!--Identify View Controller - 实名认证-->
         <scene sceneID="4Cd-AZ-BmR">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="6BA-Bd-e1U" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="6BA-Bd-e1U" customClass="IdentifyViewController" sceneMemberID="viewController">
                     <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="ET9-Sz-IHz">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -416,10 +449,6 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jt_red" id="X5o-KR-mPx">
-                                        <rect key="frame" x="290" y="14" width="10" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="福建工程学院" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BE5-ye-dUD">
                                         <rect key="frame" x="60" y="12" width="204" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -473,12 +502,19 @@
                                 <state key="normal" image="buttonBg">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="idenButtonPressed:" destination="6BA-Bd-e1U" eventType="touchUpInside" id="dLw-0J-7sP"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="实名认证" id="pJ2-Jt-AwB"/>
+                    <connections>
+                        <outlet property="schoolId" destination="01N-mb-Ktb" id="9rM-df-XWu"/>
+                        <outlet property="schoolPwd" destination="wcb-7O-hRd" id="orn-2h-vmU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gN5-w3-iO4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1782,6 +1818,7 @@
     </scenes>
     <resources>
         <image name="Expression_10.png" width="24" height="24"/>
+        <image name="NavBar64" width="320" height="64"/>
         <image name="QQ_login" width="58" height="58"/>
         <image name="VUser" width="13" height="13"/>
         <image name="addimage" width="52" height="52"/>
@@ -1800,7 +1837,6 @@
         <image name="share" width="30" height="30"/>
         <image name="signOut" width="300" height="30"/>
         <image name="v" width="30" height="30"/>
-        <image name="welcome3" width="320" height="568"/>
         <image name="xzd0" width="30" height="30"/>
         <image name="xzd1" width="30" height="30"/>
         <image name="xzd10" width="30" height="30"/>
