@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.tabBarItem.badgeValue = @"Hi";
 }
 
 -(void)dealloc{

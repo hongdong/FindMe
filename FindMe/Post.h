@@ -10,10 +10,10 @@
 @interface Post : NSObject
 @property(strong,nonatomic)NSString *_id;
 @property(strong,nonatomic)NSString *postContent;
-@property(strong,nonatomic)NSString *postMsgNumber;
+@property(strong,nonatomic)NSNumber *postMsgNumber;
 @property(strong,nonatomic)NSNumber *postOfficial;
 @property(strong,nonatomic)NSArray *postPhoto;
-@property(strong,nonatomic)NSString *postPraise;
+@property(strong,nonatomic)NSNumber *postPraise;
 @property(strong,nonatomic)NSString *postReadNumber;
 @property(strong,nonatomic)NSString *postReleaseTime;
 @property(strong,nonatomic)NSString *postTop;

@@ -60,6 +60,7 @@
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
         //表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+        
     }else{
         NSLog(@"点击ICON打开软件");
     }
@@ -150,9 +151,9 @@
     
     [APService handleRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
-        NSLog(@"IApplicationStateInactive时收到推送");
+        NSLog(@"IApplicationStateInactive时收到推送");//点击提醒进来时调用
     }else if (application.applicationState==UIApplicationStateActive) {
-        NSLog(@"UIApplicationStateActive时收到推送");
+        NSLog(@"UIApplicationStateActive时收到推送");//直接调用
         if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
             NSLog(@"强退,注销");
         }
@@ -183,6 +184,8 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
+    
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

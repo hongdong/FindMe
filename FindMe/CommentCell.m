@@ -8,6 +8,8 @@
 
 #import "CommentCell.h"
 #import "HtmlString.h"
+#import "NSDate+Category.h"
+#import "NSDateFormatter+Category.h"
 @implementation CommentCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -46,14 +48,18 @@
     NSString *transformStr = [HtmlString transformString:self.comment.postMsgContent];
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:transformStr];
     self.content.componentsAndPlainText = componentsDS;
+    
     CGSize optimalSize = [self.content optimumSize:YES];
     self.content.frame = CGRectMake(18, 8, 280, optimalSize.height);
     
     self.imageView.frame = CGRectMake(18, 8+self.content.frame.size.height+5, 20, 20);
     
     self.floorLbl.frame = CGRectMake(18+20+4+10, 8+self.content.frame.size.height+5, 26, 20);
+    self.floorLbl.text = [NSString stringWithFormat:@"%ld楼",(long)self.row+1];
     
     self.timeLbl.frame = CGRectMake(18+20+4+26+4+10, 8+self.content.frame.size.height+5, 80, 20);
+    NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:self.comment.postMsgTime];
+    self.timeLbl.text = [date formattedDateDescription];
     
     self.hostLbl.frame = CGRectMake(18+20+4+80+4+26+4, 8+self.content.frame.size.height+5, 26, 20);
  

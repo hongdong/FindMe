@@ -54,5 +54,8 @@
     CGSize optimalSize = [self.content optimumSize:YES];
     self.content.frame = CGRectMake(8, 8, 280, optimalSize.height);
     [self.contentView addSubview:self.content];
+    
+    self.replyLbl.text = [post.postMsgNumber stringValue];
+    self.markLal.text = [post.postPraise stringValue];
 }
 @end

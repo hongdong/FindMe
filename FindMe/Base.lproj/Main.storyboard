@@ -756,8 +756,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expression_10.png" id="hMh-YD-Fkq">
-                                                    <rect key="frame" x="20" y="3" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="girl" id="hMh-YD-Fkq">
+                                                    <rect key="frame" x="20" y="3" width="20" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1楼" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lpp-Gr-dwd">
@@ -801,15 +801,19 @@
                             <toolbar autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="rgF-Xw-YLR">
                                 <rect key="frame" x="0.0" y="460" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <barButtonItem style="plain" id="HWh-F2-53e">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rbB-hq-jb8">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rbB-hq-jb8">
                                             <rect key="frame" x="16" y="-3" width="80" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="mark">
                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="prisePressed:" destination="if3-9w-7tr" eventType="touchUpInside" id="0NM-hH-Bbk"/>
+                                            </connections>
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" id="IZR-Ve-b10">
@@ -846,6 +850,7 @@
                     <navigationItem key="navigationItem" id="GiU-xT-sIe"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="priseButton" destination="rbB-hq-jb8" id="wqJ-uK-bXZ"/>
                         <outlet property="tableView" destination="gmW-Ev-pxy" id="seQ-nV-ujf"/>
                     </connections>
                 </viewController>
@@ -1817,7 +1822,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Expression_10.png" width="24" height="24"/>
         <image name="NavBar64" width="320" height="64"/>
         <image name="QQ_login" width="58" height="58"/>
         <image name="VUser" width="13" height="13"/>

@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger,ZBMessageViewState) {
 @interface PostDetailViewController : UIViewController<ZBMessageInputViewDelegate,ZBMessageManagerFaceViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic,strong) Post *post;
+@property (weak, nonatomic) IBOutlet UIButton *priseButton;
 
 @property (nonatomic,strong) ZBMessageInputView *messageToolView;
 

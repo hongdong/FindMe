@@ -1,6 +1,7 @@
 
 #import "XHFeedController4.h"
 #import "XHFeedCell4.h"
+#import "XHFeedCell1.h"
 #import "MJRefresh.h"
 #import <AFNetworking.h>
 #import "User.h"
@@ -143,20 +144,29 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"有几行：%lu",(unsigned long)[_dataArr count]);
     return [_dataArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellIdentifier = @"FeedCell4";
-    XHFeedCell4* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!cell) {
-        cell = [[XHFeedCell4 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    
+    static NSString *cellIdentifier1 = @"FeedCell1";
+    static NSString *cellIdentifier4 = @"FeedCell4";
+    id cell;
+    Post *post = _dataArr[indexPath.row];
+    if (post.postPhoto==nil) {
+        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier1];
+        if (!cell) {
+            cell = [[XHFeedCell1 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier1];
+        }
+        ((XHFeedCell1 *)cell).post = post;
+    }else{
+        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier4];
+        if (!cell) {
+            cell = [[XHFeedCell4 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier4];
+        }
+        ((XHFeedCell4 *)cell).post = post;
     }
 
-    NSLog(@"第%ld行",(long)indexPath.row);
-    cell.post = _dataArr[indexPath.row];
-    
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

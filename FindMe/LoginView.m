@@ -35,7 +35,7 @@
 }
 
 -(void)setupScrollView{
-    _photoList = @[[UIImage imageNamed:@"welcome1"],[UIImage imageNamed:@"welcome2"],[UIImage imageNamed:@"welcome3"],[UIImage imageNamed:@"welcome4"],[UIImage imageNamed:@"welcome5"]];
+    _photoList = @[[UIImage imageNamed:@"int1"],[UIImage imageNamed:@"int2"],[UIImage imageNamed:@"int3"],[UIImage imageNamed:@"int4"]];
     NSInteger pageCount = [_photoList count];
     //    _pageScroll.frame = CGRectMake(0.0,
     //                                   0.0,

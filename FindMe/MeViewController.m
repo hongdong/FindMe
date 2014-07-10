@@ -31,7 +31,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _user = [User getUserFromNSUserDefaults];
+
     }
     return self;
 }
@@ -40,7 +40,7 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdate:) name:@"NSUserDefaultsUserChange" object:nil];
-    
+    _user = [User getUserFromNSUserDefaults];
     self.photo.layer.cornerRadius = 25.0f;
     self.photo.layer.masksToBounds = YES;
     [self setData];

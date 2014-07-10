@@ -8,6 +8,7 @@
 
 #import "PostDetailViewController.h"
 #import "PostDetailHeadView.h"
+#import "PostDetailHeadView1.h"
 #import "CommentCell.h"
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
@@ -16,10 +17,10 @@
 @interface PostDetailViewController (){
     
     NSArray *_dataArr;
-    PostDetailHeadView *_headView;
-    
     double animationDuration;
     CGRect keyboardRect;
+    NSString *_flag;
+    id _head;
 }
 
 @end
@@ -38,6 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"小秘密";
+    _flag = @"p";
     [self initilzer];
     [self getCommentByType:@"nl"];
 }
@@ -47,16 +50,27 @@
     
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"type":type,
-                                 @"index":@"0"};
+                                 @"index":@"0",
+                                 @"isNews":@"0"};
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *postMsg = [responseObject objectForKey:@"postMsg"];
         if (postMsg!=nil) {
+            if ([[postMsg objectForKey:@"isPraise"] boolValue]) {
+                [weakSelf.priseButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateNormal];
+
+                _flag = @"c";
+            }
+            weakSelf.priseButton.enabled = YES;
             NSArray *arr = [postMsg objectForKey:@"postMsgList"];
-            _dataArr = [Comment objectArrayWithKeyValuesArray:arr];
+            if (arr!=nil) {
+                _dataArr = [Comment objectArrayWithKeyValuesArray:arr];
+                [weakSelf.tableView reloadData];
+            }else{
+                NSLog(@"暂时没有回复");
+            }
             
-            [weakSelf.tableView reloadData];
         }else{
             
         }
@@ -79,7 +93,49 @@
 - (IBAction)replyPressed:(id)sender {
     [self.messageToolView.messageInputTextView becomeFirstResponder];
 }
+- (IBAction)prisePressed:(id)sender {
+    self.priseButton.enabled = NO;
+    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_praise.do",Host];
+    
+    NSDictionary *parameters = @{@"postId": self.post._id,
+                                 @"type":_flag};
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __weak __typeof(&*self)weakSelf = self;
+    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+            NSLog(@"操作完成");
+            _flag = [_flag isEqualToString:@"c"]?@"p":@"c";
+            if ([_flag isEqualToString:@"c"]) {
+                [weakSelf.priseButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateNormal];
+                weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]+1];
 
+            }else{
+                [weakSelf.priseButton setImage:[UIImage imageNamed:@"mark"] forState:UIControlStateNormal];
+                weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]-1];
+
+            }
+            [weakSelf resetHead];
+            weakSelf.priseButton.enabled = YES;
+        }else{
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
+        
+    }];
+}
+-(void)resetHead{
+    if (_post.postPhoto==nil) {
+        
+        [((PostDetailHeadView1 *)_head) setDataWithPost:self.post];
+    }else{
+        
+        [((PostDetailHeadView *)_head) setDataWithPost:self.post];
+    }
+}
 - (void)viewWillAppear:(BOOL)animated{
     
     [[NSNotificationCenter defaultCenter]addObserver:self
@@ -136,6 +192,15 @@
     }];
 }
 
+-(void)hideFaceView{
+    [UIView animateWithDuration:animationDuration animations:^{
+
+        self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame),CGRectGetHeight(self.faceView.frame));
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark - messageView animation
 - (void)messageViewAnimationWithMessageRect:(CGRect)rect  withMessageInputViewRect:(CGRect)inputViewRect andDuration:(double)duration andState:(ZBMessageViewState)state{
     
@@ -177,7 +242,7 @@
     
     CGFloat inputViewHeight;
     
-    if ([[[UIDevice currentDevice]systemVersion]floatValue]>=7) {
+    if (iOS7) {
         inputViewHeight = 45.0f;
     }
     else{
@@ -208,7 +273,7 @@
     [self.messageToolView.messageInputTextView resignFirstResponder];
     
     [self hideInputBar];
-    
+    [self hideFaceView];
     [self showHudInView:self.view hint:@"发送中..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_msg.do",Host];
 
@@ -220,10 +285,13 @@
         [weakSelf hideHud];
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
+            weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
             [weakSelf showResultWithType:ResultSuccess];
+            [weakSelf resetHead];
+            [weakSelf getCommentByType:@"nl"];
             weakSelf.messageToolView.messageInputTextView.text = @"";
             weakSelf.messageToolView.sendButton.enabled = NO;
-            [weakSelf getCommentByType:@"nl"];
+
         }else{
             [weakSelf showResultWithType:ResultError];
         }
@@ -373,10 +441,16 @@
 
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomView" owner:self options:nil];
-    _headView = [nib objectAtIndex:0];
-    [_headView setDataWithPost:self.post];
-    return _headView;
+    if (self.post.postPhoto==nil) {
+        _head = [HDTool loadCustomViewByIndex:5];
+        [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
+    }else{
+        _head = [HDTool loadCustomViewByIndex:0];
+        [(PostDetailHeadView *)_head setDataWithPost:self.post];
+
+    }
+
+    return _head;
 }
 
 
@@ -398,6 +472,8 @@
 {
     [self hideInputBar];
     [self.view endEditing:YES];
+    [self hideFaceView];
+    
 }
 
 
@@ -413,8 +489,9 @@
     if (cell == nil) {
         cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
+    
     cell.comment = _dataArr[indexPath.row];
-
+    cell.row = indexPath.row;
 
     return cell;
 }

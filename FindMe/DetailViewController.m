@@ -212,9 +212,10 @@
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             [weakSelf showResultWithType:ResultSuccess];
-#pragma warning 头像接口还需要完善
-            NSLog(@"修改头像成功");
+            _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
+            [_user saveToNSUserDefaults];
         }else if ([state isEqualToString:@"10001"]){
+            
         }else{
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

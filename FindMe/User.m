@@ -15,6 +15,7 @@
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NSUserDefaultsUserChange" object:nil];
+    NSLog(@"保存到本地完成");
 }
 -(void)getUserInfo{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
@@ -38,6 +39,10 @@
             weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
             weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
             weakSelf.userAlbum = [userInfo objectForKey:@"userAlbum"];
+            NSLog(@"获取用户资料完成");
+            
+            
+            [weakSelf saveToNSUserDefaults];
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -60,6 +65,9 @@
 
 +(id)getUserFromNSUserDefaults{
     NSDictionary *userDic = [[NSUserDefaults standardUserDefaults] objectForKey:@"user"];
+    if (userDic==nil) {
+        return nil;
+    }
     User *user = [User objectWithKeyValues:userDic];
     return user;
 }

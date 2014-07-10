@@ -11,7 +11,7 @@
 #import "Comment.h"
 @interface CommentCell : UITableViewCell
 
-
+@property (assign,nonatomic) NSInteger row;
 @property (weak, nonatomic) IBOutlet UILabel *floorLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *hostLbl;
