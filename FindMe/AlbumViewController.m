@@ -13,7 +13,6 @@
 #import "User.h"
 #import "AFNetworking.h"
 @interface AlbumViewController (){
-    NSMutableArray *myImageUrlArr;
     User *_user;
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
@@ -36,7 +35,6 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _user = [User getUserFromNSUserDefaults];
-        myImageUrlArr = [NSMutableArray arrayWithArray:[_user.userAlbum componentsSeparatedByString:@","]];
     }
     return self;
 }
@@ -54,7 +52,7 @@
     int BtnY = 5;
     
     int i = 0;
-    int count = [myImageUrlArr count];
+    int count = [_user.userAlbum count];
     for (i = 0; i < count; i++ ) {
         UIImageView * imageview = [[UIImageView alloc] init];
         imageview.frame = CGRectMake( (BtnW+BtnWS) * (i%3) + BtnX , (BtnH+BtnHS) *(i/3) + BtnY, BtnW, BtnH );
@@ -64,7 +62,7 @@
         imageview.clipsToBounds = YES;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
-        [imageview setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+        [imageview setImageWithURL:[NSURL URLWithString: [_user.userAlbum objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)] ];
         [self.view addSubview: imageview];
     }
@@ -75,6 +73,9 @@
         self.addButton.hidden = NO;
     }
 }
+
+
+
 - (IBAction)addButtonPressed:(id)sender {
     _actionSheet = [[LXActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"拍照",@"从手机相册选择"]];
     [_actionSheet showInView:self.view];
@@ -148,6 +149,10 @@
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             [weakSelf showResultWithType:ResultSuccess];
+            NSArray *userAlbum = [responseObject objectForKey:@"userAlbum"];
+            [_user.userAlbum addObjectsFromArray:userAlbum];
+            [_user saveToNSUserDefaults];
+            
         }else if ([state isEqualToString:@"10001"]){
         }else{
         }
@@ -185,18 +190,20 @@
 
 -(void)photoClick:(UITapGestureRecognizer *)imageTap
 {
-    NSLog(@"imageTag==%d", imageTap.view.tag );
+    NSLog(@"imageTag==%d", imageTap.view.tag);
     
     // 1.封装图片数据
-    NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [myImageUrlArr count] ];
-    for (int i = 0; i < [myImageUrlArr count]; i++) {
-        // 替换为中等尺寸图片
+    NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [_user.userAlbum count]];
+    for (int i = 0; i < [_user.userAlbum count]; i++) {
+        // 替换为大图
         
-        NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [myImageUrlArr objectAtIndex:i] ];
+        NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [_user.userAlbum objectAtIndex:i]];
+        NSMutableString *temp = [[NSMutableString alloc] initWithString:getImageStrUrl];
+        [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
         MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString: getImageStrUrl ]; // 图片路径
+        photo.url = [NSURL URLWithString:temp]; // 图片路径
         
-        UIImageView * imageView = (UIImageView *)[self.view viewWithTag: imageTap.view.tag ];
+        UIImageView * imageView = (UIImageView *)[self.view viewWithTag: imageTap.view.tag];
         photo.srcImageView = imageView;
         [photos addObject:photo];
     }
@@ -211,18 +218,8 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

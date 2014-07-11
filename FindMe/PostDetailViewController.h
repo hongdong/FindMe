@@ -10,7 +10,7 @@
 #import "Post.h"
 #import "ZBMessageInputView.h"
 #import "ZBMessageManagerFaceView.h"
-
+#import "XHFeedController4.h"
 typedef NS_ENUM(NSInteger,ZBMessageViewState) {
     ZBMessageViewStateShowFace,
     ZBMessageViewStateShowShare,
@@ -18,6 +18,9 @@ typedef NS_ENUM(NSInteger,ZBMessageViewState) {
 };
 
 @interface PostDetailViewController : UIViewController<ZBMessageInputViewDelegate,ZBMessageManagerFaceViewDelegate>
+
+@property (weak,nonatomic) XHFeedController4 *delegate;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic,strong) Post *post;
 @property (weak, nonatomic) IBOutlet UIButton *priseButton;

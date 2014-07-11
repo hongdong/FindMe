@@ -36,12 +36,16 @@
 
 #define socialContainerSepatorY 6
 #define socialContainerHeight 37
-@implementation XHFeedCell4
+@implementation XHFeedCell4{
+    NSDateFormatter *_dateFormatter;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        _dateFormatter = [NSDateFormatter defaultDateFormatter];
+        
         self.contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _feedContainer = [[UIView alloc] initWithFrame:CGRectZero];
         _feedContainer.backgroundColor = [UIColor whiteColor];
@@ -148,7 +152,7 @@
 //    _socialContainer.frame = CGRectMake(0, _updateLabel.frame.origin.y + _updateLabel.frame.size.height + socialContainerSepatorY, _feedContainer.frame.size.width, socialContainerHeight);
 
     
-    NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:self.post.postReleaseTime];
+    NSDate *date = [_dateFormatter dateFromString:self.post.postReleaseTime];
     self.dateLabel.text = [date formattedDateDescription];
     self.likeCountLabel.text = [NSString stringWithFormat:@"赞 %@",self.post.postPraise];
     self.commentCountLabel.text = [NSString stringWithFormat:@"回复 %@",self.post.postMsgNumber];

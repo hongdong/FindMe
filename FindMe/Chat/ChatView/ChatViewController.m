@@ -23,6 +23,7 @@
 #import "EaseMob.h"
 #import "FindMeDetailViewController.h"
 #import "MJRefresh.h"
+#import "User.h"
 #define KPageCount 20
 @interface ChatViewController ()<UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IChatManagerDelegate, DXChatBarMoreViewDelegate, DXMessageToolBarDelegate, LocationViewDelegate, IDeviceManagerDelegate>
 {
@@ -35,6 +36,8 @@
     
     dispatch_queue_t _messageQueue;
     NSString *_photoUrl;
+    
+    User *_user;
 }
 @property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
 @property (nonatomic) BOOL isChatGroup;
@@ -58,6 +61,8 @@
     if (self) {
         _photoUrl = url;
         _isChatGroup = NO;
+        
+        _user = [User getUserFromNSUserDefaults];
         //根据接收者的username获取当前会话的管理者
         _conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:chatter isGroup:_isChatGroup];
         self.hidesBottomBarWhenPushed = YES;
@@ -253,7 +258,12 @@
         }
         else{
             MessageModel *model = (MessageModel *)obj;
-            model.headImageURL = [NSURL URLWithString:_photoUrl];
+            if (model.isSender) {
+                model.headImageURL = [NSURL URLWithString:_user.userPhoto];
+            }else{
+                model.headImageURL = [NSURL URLWithString:_photoUrl];
+            }
+
             NSString *cellIdentifier = [EMChatViewCell cellIdentifierForMessageModel:model];
             EMChatViewCell *cell = (EMChatViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (cell == nil) {

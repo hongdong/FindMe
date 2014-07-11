@@ -107,10 +107,7 @@
         selectedScNo = [dataArray[indexPath.row] objectForKey:@"scNo"];
         selectedScName = [dataArray[indexPath.row] objectForKey:@"scName"];
     }
-    [_user.school setValue:selectedScNo forKey:@"_id"];
-    [_user.school setValue:selectedScName forKey:@"schoolName"];
-
-
+    _user.school = [[NSMutableDictionary alloc] initWithDictionary:@{@"_id": selectedScNo,@"schoolName": selectedScName}];
     [self showHudInView:self.view hint:@"加载中..."];
     [self departmentList:selectedScNo];
 }

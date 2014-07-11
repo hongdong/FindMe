@@ -41,12 +41,10 @@
     self.phtot.layer.cornerRadius = 25.0f;
     self.phtot.layer.masksToBounds = YES;
     
-    NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"GG", @"MM"]];
-    
-    // Add desired targets/actions
-    [segmentedControl addTarget:self action:@selector(segmentSelected) forControlEvents:UIControlEventValueChanged];
+    NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"男生", @"女生"]];
+    _user.userSex = @"男";//没改动的话默认是男
+    [segmentedControl addTarget:self action:@selector(segmentSelected:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.center = CGPointMake(self.sexView.center.x - 80, 2);
-    // Customize and size the control
     segmentedControl.titleTextColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
     segmentedControl.selectedTitleTextColor = [UIColor whiteColor];
     segmentedControl.borderWidth = 1.0f;
@@ -54,8 +52,8 @@
     segmentedControl.drawsGradientBackground = YES;
     segmentedControl.segmentIndicatorInset = 2.0f;
     segmentedControl.drawsSegmentIndicatorGradientBackground = YES;
-    segmentedControl.segmentIndicatorGradientTopColor = [UIColor colorWithRed:0.30 green:0.50 blue:0.88f alpha:1.0f];
-    segmentedControl.segmentIndicatorGradientBottomColor = [UIColor colorWithRed:0.20 green:0.35 blue:0.75f alpha:1.0f];
+    segmentedControl.segmentIndicatorGradientTopColor = HDRED;
+    segmentedControl.segmentIndicatorGradientBottomColor = HDRED;
     segmentedControl.segmentIndicatorAnimationDuration = 0.3f;
     segmentedControl.segmentIndicatorBorderWidth = 0.0f;
     [segmentedControl sizeToFit];
@@ -149,8 +147,12 @@
         NSLog(@"Error: %@", error);
     }];
 }
-- (void)segmentSelected {
-
+- (void)segmentSelected:(NYSegmentedControl *)sender {
+    if(sender.selectedSegmentIndex==0){
+        _user.userSex = @"男";
+    }else{
+        _user.userSex = @"女";
+    }
 }
 
 

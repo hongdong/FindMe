@@ -97,8 +97,8 @@
         selectedDeptNo = [_dataArray[indexPath.row] objectForKey:@"deptId"];
         selectedDeptName = [_dataArray[indexPath.row] objectForKey:@"deptName"];
     }
-    [_user.department setValue:selectedDeptNo forKey:@"_id"];
-    [_user.department setValue:selectedDeptName forKey:@"deptName"];
+    _user.department = [[NSMutableDictionary alloc] initWithDictionary:@{@"_id": selectedDeptNo,@"deptName": selectedDeptName}];
+
     [self performSegueWithIdentifier:@"chooseGrade" sender:_user];
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

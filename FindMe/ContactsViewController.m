@@ -301,6 +301,7 @@
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
             weakSelf.contactsSource = [[NSMutableArray alloc] initWithArray:[User objectArrayWithKeyValuesArray:friendList]];
+            [User removeDbObjectsWhere:@"1=1"];
             for (User *user in weakSelf.contactsSource) {
                 if (![User existDbObjectsWhere:[NSString stringWithFormat:@"_id='%@'",user._id]]) {
                         [user insertToDb];

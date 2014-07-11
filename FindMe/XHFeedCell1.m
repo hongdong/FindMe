@@ -33,12 +33,16 @@
 
 #define socialContainerSepatorY 6
 #define socialContainerHeight 37
-@implementation XHFeedCell1
+@implementation XHFeedCell1{
+    NSDateFormatter *_dateFormatter;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        _dateFormatter = [NSDateFormatter defaultDateFormatter];
+        
         self.contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _feedContainer = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -136,7 +140,7 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     _feedContainer.backgroundColor = [UIColor randomColor];
-    NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:self.post.postReleaseTime];
+    NSDate *date = [_dateFormatter dateFromString:self.post.postReleaseTime];
     self.dateLabel.text = [date formattedDateDescription];
     self.updateLabel.text = self.post.postContent;
     

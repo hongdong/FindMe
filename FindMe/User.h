@@ -30,11 +30,11 @@
 
 @property (strong,nonatomic) NSString *isOnLine;
 @property (strong,nonatomic) NSString *userLoginCount;
-@property (strong,nonatomic) NSString *userAlbum;
+@property (strong,nonatomic) NSMutableArray *userAlbum;
 
 
 @property (strong,nonatomic) NSString *userAuthType;
-
+@property (strong,nonatomic) NSNumber *userAuth;
 
 @property (strong,nonatomic) NSString *registrationID;
 
@@ -48,6 +48,8 @@
 -(void)saveToNSUserDefaults;
 
 -(void)getUserInfo;
+
+-(void)freshSession;
 
 +(id)getUserFromNSUserDefaults;
 @end

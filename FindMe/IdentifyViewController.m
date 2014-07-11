@@ -7,8 +7,10 @@
 //
 
 #import "IdentifyViewController.h"
-
-@interface IdentifyViewController ()
+#import "User.h"
+@interface IdentifyViewController (){
+    User *_user;
+}
 
 @end
 
@@ -26,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _user = [User getUserFromNSUserDefaults];
+    self.schoolLbl.text = [_user getSchoolName];
     [self setUpForDismissKeyboard];
 }
 

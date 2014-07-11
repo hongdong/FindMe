@@ -11,5 +11,6 @@
 @interface IdentifyViewController : UIViewController<UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *schoolId;
 @property (weak, nonatomic) IBOutlet UITextField *schoolPwd;
+@property (weak, nonatomic) IBOutlet UILabel *schoolLbl;
 
 @end

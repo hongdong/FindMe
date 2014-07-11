@@ -21,6 +21,7 @@
     CGRect keyboardRect;
     NSString *_flag;
     id _head;
+    NSString *_didChange;
 }
 
 @end
@@ -39,7 +40,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (self.post.postPhoto==nil) {
+        _head = [HDTool loadCustomViewByIndex:5];
+        [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
+    }else{
+        _head = [HDTool loadCustomViewByIndex:0];
+        [(PostDetailHeadView *)_head setDataWithPost:self.post];
+        
+    }
+    self.tableView.tableHeaderView = _head;
     self.navigationItem.title = @"小秘密";
+    _didChange = @"0";
     _flag = @"p";
     [self initilzer];
     [self getCommentByType:@"nl"];
@@ -104,7 +115,7 @@
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"操作完成");
+            _didChange = @"1";
             _flag = [_flag isEqualToString:@"c"]?@"p":@"c";
             if ([_flag isEqualToString:@"c"]) {
                 [weakSelf.priseButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateNormal];
@@ -286,6 +297,7 @@
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
+            _didChange = @"1";
             [weakSelf showResultWithType:ResultSuccess];
             [weakSelf resetHead];
             [weakSelf getCommentByType:@"nl"];
@@ -440,33 +452,34 @@
 }
 
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if (self.post.postPhoto==nil) {
-        _head = [HDTool loadCustomViewByIndex:5];
-        [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
-    }else{
-        _head = [HDTool loadCustomViewByIndex:0];
-        [(PostDetailHeadView *)_head setDataWithPost:self.post];
-
-    }
-
-    return _head;
-}
+//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    [tableView dequeueReusableHeaderFooterViewWithIdentifier:<#(NSString *)#>]
+//    if (self.post.postPhoto==nil) {
+//        _head = [HDTool loadCustomViewByIndex:5];
+//        [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
+//    }else{
+//        _head = [HDTool loadCustomViewByIndex:0];
+//        [(PostDetailHeadView *)_head setDataWithPost:self.post];
+//
+//    }
+//
+//    return _head;
+//}
 
 
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 300;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0;
 }
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-
-    return [[UIView alloc] init];
-}
+//-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+//
+//    return [[UIView alloc] init];
+//}
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -499,9 +512,14 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if ([_didChange isEqualToString:@"1"]&&self.delegate) {
+        [self.delegate changeRowWithPost:self.post];
+    }
 
+}
 
 @end

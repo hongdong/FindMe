@@ -5,11 +5,11 @@
 #import "MJRefresh.h"
 #import <AFNetworking.h>
 #import "User.h"
-#import "Post.h"
 #import "BBBadgeBarButtonItem.h"
 #import "PostDetailViewController.h"
 @interface XHFeedController4 (){
-    NSArray *_dataArr;
+    NSMutableArray *_dataArr;
+    NSInteger _seletedRow;
 }
 
 @end
@@ -26,7 +26,13 @@
     return self;
 }
 
-
+-(void)changeRowWithPost:(Post *)post{
+    _dataArr[_seletedRow] = post;
+    NSIndexPath  *indexPath=[NSIndexPath indexPathForRow:_seletedRow inSection:0];
+    NSArray      *indexArray=[NSArray  arrayWithObject:indexPath];
+    [self.feedTableView   reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+//    [self.feedTableView reloadData];
+}
 
 - (UITableView *)feedTableView {
     if (!_feedTableView) {
@@ -51,11 +57,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"PostListwillRefresh" object:nil];
 	
-    _dataArr = [[NSArray alloc] init];
+    _dataArr = [[NSMutableArray alloc] init];
     
     self.title = @"圈子";
     UIButton *postMessage = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [postMessage addTarget:self action:@selector(newPost:) forControlEvents:UIControlEventTouchUpInside];
+    [postMessage addTarget:self action:@selector(postMessage:) forControlEvents:UIControlEventTouchUpInside];
     [postMessage setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
     BBBadgeBarButtonItem *postMessageItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:postMessage];
     postMessageItem.badgeValue = @"2";
@@ -95,6 +101,9 @@
 -(void)newPost:(id)sender{
     [self performSegueWithIdentifier:@"newPost" sender:nil];
 }
+-(void)postMessage:(id)sender{
+   [self performSegueWithIdentifier:@"postMessage" sender:nil];
+}
 
 #pragma mark 开始进入刷新状态
 - (void)headerRereshing
@@ -115,7 +124,7 @@
     NSString *type = (postId?@"ol":@"nl");
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": type}];
     if ([type isEqualToString:@"nl"]) {
-        _dataArr = [[NSArray alloc] init];
+        [_dataArr removeAllObjects];
     }else{
         [parameters setValue:postId forKey:@"postId"];
     }
@@ -124,14 +133,14 @@
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *postList = [responseObject objectForKey:@"postList"];
         if (postList!=nil) {
-            _dataArr = [_dataArr arrayByAddingObjectsFromArray:[Post objectArrayWithKeyValuesArray:postList]];
+            [_dataArr addObjectsFromArray:[Post objectArrayWithKeyValuesArray:postList]];
             [weakSelf.feedTableView reloadData];
-            [weakSelf.feedTableView headerEndRefreshing];
-            [weakSelf.feedTableView footerEndRefreshing];
+
         }else{
             
         }
-        
+        [weakSelf.feedTableView headerEndRefreshing];
+        [weakSelf.feedTableView footerEndRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [weakSelf.feedTableView headerEndRefreshing];
         [weakSelf.feedTableView footerEndRefreshing];
@@ -171,6 +180,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //[self.feedTableView deselectRowAtIndexPath:indexPath animated:YES];
+    _seletedRow = indexPath.row;
     [self performSegueWithIdentifier:@"postDetail" sender:_dataArr[indexPath.row]];
 }
 
@@ -178,6 +188,7 @@
     if ([segue.identifier isEqualToString:@"postDetail"]) {
         PostDetailViewController *controller = (PostDetailViewController *)segue.destinationViewController;
         controller.post = sender;
+        controller.delegate = self;
     }
 }
 - (void)didReceiveMemoryWarning

@@ -36,23 +36,41 @@
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/postImage.png"]];
-    [manager POST:urlStr parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-    [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
-    }success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001"]) {
-            [weakSelf showResultWithType:ResultSuccess];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
-            [weakSelf.navigationController popViewControllerAnimated:YES];
-        }else{
+    if (_existImage) {
+        NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/postImage.png"]];
+        [manager POST:urlStr parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
+        }success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *state = [responseObject objectForKey:@"state"];
+            if ([state isEqualToString:@"20001"]) {
+                [weakSelf showResultWithType:ResultSuccess];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }else{
+                [weakSelf showResultWithType:ResultError];
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
             [weakSelf showResultWithType:ResultError];
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+    }else{
+        [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *state = [responseObject objectForKey:@"state"];
+            if ([state isEqualToString:@"20001"]) {
+                [weakSelf showResultWithType:ResultSuccess];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }else{
+                [weakSelf showResultWithType:ResultError];
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            [weakSelf showResultWithType:ResultError];
+        }];
+    }
 
-        [weakSelf showResultWithType:ResultError];
-    }];
 }
 - (IBAction)addimagePressed:(id)sender {
     [self.view endEditing:YES];

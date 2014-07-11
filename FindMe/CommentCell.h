@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RCLabel.h"
+#import "HBCoreLabel.h"
 #import "Comment.h"
 @interface CommentCell : UITableViewCell
 
@@ -17,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *hostLbl;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 
-@property(nonatomic,strong) RCLabel *content;
+@property(nonatomic,strong) HBCoreLabel *content;
 
 @property(nonatomic,strong) Comment *comment;
 //-(void)setData;

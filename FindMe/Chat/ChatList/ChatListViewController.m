@@ -48,6 +48,10 @@
     self.navigationItem.title = @"消息";
     [self.view addSubview:self.tableView];
 
+//    if (![[Config sharedConfig] isLogin]) {
+//        [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
+//    }
+    
     [self.tableView addHeaderWithTarget:self action:@selector(refreshDataSource)];
     
     [self networkStateView];

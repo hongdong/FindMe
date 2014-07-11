@@ -103,7 +103,7 @@
     _user.userGrade = [NSString stringWithFormat:@"%d",_lastestYear-indexPath.row];
 
     NSString *checkInfoStr = [NSString stringWithFormat:@"你是%@%@%@级的童鞋",[_user getSchoolName],[_user getDepartmentName],_user.userGrade];
-    _alert = [[AMSmoothAlertView alloc]initDropAlertWithTitle:@"提醒" andText:checkInfoStr andCancelButton:YES forAlertType:AlertInfo andColor:[UIColor colorWithRed:0.607 green:0.372 blue:0.862 alpha:1]];
+    _alert = [[AMSmoothAlertView alloc]initDropAlertWithTitle:@"提醒" andText:checkInfoStr andCancelButton:YES forAlertType:AlertInfo andColor:HDRED];
     [_alert.defaultButton setTitle:@"确认" forState:UIControlStateNormal];
     [_alert.defaultButton addTarget:self action:@selector(submitPressed:) forControlEvents:UIControlEventTouchUpInside];
     [_alert.cancelButton setTitle:@"重填" forState:UIControlStateNormal];

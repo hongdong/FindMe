@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "EaseMob.h"
 #import "APService.h"
+#import "User.h"
 @implementation AppDelegate
 
 
@@ -64,6 +65,12 @@
     }else{
         NSLog(@"点击ICON打开软件");
     }
+    
+//    if ([[Config sharedConfig] isLogin]) {
+//        User *user = [User getUserFromNSUserDefaults];
+//        [user freshSession];
+//    }
+    
     return YES;
 }
 
@@ -156,6 +163,14 @@
         NSLog(@"UIApplicationStateActive时收到推送");//直接调用
         if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
             NSLog(@"强退,注销");
+        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
+            NSLog(@"水贴有更新");
+        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
+            NSLog(@"到点匹配了");
+        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
+            NSLog(@"有人like");
+        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
+            NSLog(@"成为好朋友了");
         }
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");
@@ -166,6 +181,7 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationWillResignActive:application];
+    NSLog(@"ResignActive");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -185,13 +201,17 @@
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
     
-    
+//    if ([[Config sharedConfig] isLogin]) {
+//        User *user = [User getUserFromNSUserDefaults];
+//        [user freshSession];
+//    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationWillTerminate:application];
+    NSLog(@"Terminate");
 }
 
 @end

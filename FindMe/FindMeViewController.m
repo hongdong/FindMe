@@ -16,10 +16,12 @@
 #import "JMWhenTapped.h"
 #import "UIImageView+WebCache.h"
 #import "FindMeDetailViewController.h"
+#import "CoverView.h"
 @interface FindMeViewController (){
     User *_user;
     User *_matchUser;
     LoginView *_loginView;
+    CoverView *_coverView;
 }
 
 @end
@@ -40,6 +42,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
+        _coverView = [HDTool loadCustomViewByIndex:4];
         if ([[Config sharedConfig] isLogin]) {
             NSLog(@"后台登入");
             User *user = [User getUserFromNSUserDefaults];
@@ -88,23 +91,27 @@
         } completion:nil];
         [self performSegueWithIdentifier:@"findmeDetail" sender:_matchUser];
     }];
-    
-    
+    [self.view addSubview:_coverView];
     if (_loginView!=nil) {
         [self.view addSubview:_loginView];
     }else{
-        [self getMatch:nil];
+        
+//        [self getMatch:nil];
     }
+
 }
+
+
 - (IBAction)likePressed:(id)sender {
+    [self showCover];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"likeUserId": _matchUser._id};
     __weak __typeof(&*self)weakSelf = self;
-    [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            
+            NSLog(@"LIKE成功");
         }else if ([state isEqualToString:@"20002"]){
             
         }else{
@@ -115,36 +122,57 @@
     }];
 }
 - (IBAction)passPressed:(id)sender {
+    [self showCover];
     [self getMatch:_matchUser._id];
 }
+
+-(void)hideCover{
+    [UIView animateWithDuration:0.7 //速度0.7秒
+                     animations:^{//修改rView坐标
+                         _coverView.frame = CGRectMake(_coverView.frame.origin.x,
+                                                       -_coverView.frame.size.height-64,
+                                                       _coverView.frame.size.width,
+                                                       _coverView.frame.size.height);
+                     }
+                     completion:^(BOOL finished){
+//                                 [_coverView removeFromSuperview];
+                     }];
+}
+-(void)showCover{
+    [UIView animateWithDuration:0.7 //速度0.7秒
+                     animations:^{//修改rView坐标
+                         _coverView.frame = CGRectMake(_coverView.frame.origin.x,
+                                                       0,
+                                                       _coverView.frame.size.width,
+                                                       _coverView.frame.size.height);
+                     }
+                     completion:^(BOOL finished){
+//                                 [_coverView removeFromSuperview];
+                     }];
+}
+
 -(void)getMatch:(NSString *)userMatchId{
-    //现实心灵鸡汤
-    UIView *view = [HDTool loadCustomViewByIndex:4];
-    [self.view addSubview:view];
+//    //现实心灵鸡汤
+//    UIView *view = [HDTool loadCustomViewByIndex:4];
+//    [self.view addSubview:view];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
     NSDictionary *parameters = nil;
     if (userMatchId!=nil) {
-        parameters = @{@"parameters": parameters};
+        parameters = @{@"userMatchId": userMatchId};
     }
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
         if (userMatch!=nil) {
         _matchUser = [User objectWithKeyValues:userMatch];
-            [weakSelf.photo setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
-            weakSelf.nickname.text = _matchUser.userNickName;
+            [weakSelf setMatchPeople];
+            
                 //隐藏心灵鸡汤
-            [UIView animateWithDuration:0.7 //速度0.7秒
-                             animations:^{//修改rView坐标
-                                 view.frame = CGRectMake(view.frame.origin.x,
-                                                         -view.frame.size.height-64,
-                                                         view.frame.size.width,
-                                                         view.frame.size.height);
-                             }
-                             completion:^(BOOL finished){
-                                 [view removeFromSuperview];
-                             }];
+            [weakSelf hideCover];
+        }else{
+            NSLog(@"今天没了");
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -152,7 +180,27 @@
     }];
 }
 
+-(void)setMatchPeople{
+    if (_matchUser!=nil) {
+        [self.photo setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+        self.nickname.text = _matchUser.userNickName;
+        self.grade.text = _matchUser.userGrade;
+        if ([_matchUser.userSex isEqualToString:@"男"]) {
+            self.sex.image = [UIImage imageNamed:@"boy"];
+        }else{
+            self.sex.image = [UIImage imageNamed:@"girl"];
+        }
+        self.xzLbl.text = _matchUser.userConstellation;
+        self.schoolLbl.text = [_matchUser getSchoolName];
+        self.departmentLbl.text = [_matchUser getDepartmentName];
+        self.qianmingLbl.text = _matchUser.userSignature;
+        if ([_matchUser.userAuth intValue]==1) {
+            self.xzimg.hidden = NO;
+        }
+    }
 
+    
+}
 
 -(void)easeMobShouldLogin:(NSNotification *)notification{
     if ([notification.userInfo objectForKey:@"_id"]!=nil) {
@@ -165,14 +213,17 @@
     _user = [User getUserFromNSUserDefaults];
 }
 -(void)loginStateChange:(NSNotification *)notification{
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    BOOL isLogin = loginInfo && [loginInfo count] > 0;
-    if (notification.object) {
-        isLogin = [notification.object boolValue] && isLogin;
-    }
-    
+//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//    BOOL isLogin = loginInfo && [loginInfo count] > 0;
+//    if (notification.object) {
+//        isLogin = [notification.object boolValue] && isLogin;
+//    }
+    BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
-        [_loginView moveToUpSide];
+        if (_loginView!=nil) {
+            [_loginView moveToUpSide];
+        }
+        [self getMatch:nil];
     }
     else{
 
@@ -270,7 +321,7 @@
             
             [_user getUserInfo];
             
-            [_user saveToNSUserDefaults];//保存登入信息
+//            [_user saveToNSUserDefaults];//保存登入信息
 
             [weakSelf EaseMobLoginWithUsername:[responseObject objectForKey:@"userId"]];//IM登入
             
@@ -304,6 +355,7 @@
 
 
 -(void)EaseMobLoginWithUsername:(NSString *)username{
+    __weak __typeof(&*self)weakSelf = self;
     [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
                                                         password:@"123456"
                                                       completion:
@@ -311,12 +363,11 @@
 
          if (loginInfo && !error) {
             NSLog(@"IM登入成功");
-            [self showResultWithType:ResultSuccess];
+            [weakSelf showResultWithType:ResultSuccess];
             [[Config sharedConfig] changeLoginState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-
          }else {
-             [self hideHud];
+             [weakSelf hideHud];
             NSLog(@"%u",error.errorCode);
              NSLog(@"%@",error.description);
              switch (error.errorCode) {
