@@ -7,9 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MatchParser.h"
-@interface Post : NSObject<MatchParserDelegate>{
-        __weak MatchParser* _match;
+@interface Post : NSObject{
 }
 @property(strong,nonatomic)NSString *_id;
 @property(strong,nonatomic)NSString *postContent;
@@ -22,13 +20,5 @@
 @property(strong,nonatomic)NSString *postTop;
 @property(strong,nonatomic)NSDictionary *postUser;
 
-@property(nonatomic,weak,getter =getMatch) MatchParser * match;
-
-
--(MatchParser*)createMatch:(float)width;
-
--(void)setMatch;
-
-+(NSCache*)shareCacheForPost;
 @end
 

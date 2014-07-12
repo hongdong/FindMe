@@ -16,6 +16,7 @@
     User *_user;
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
+    
 }
 
 @end
@@ -43,12 +44,22 @@
 {
     [super viewDidLoad];
     
+    [self showPhoto];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self showHint:@"长按可以删除照片"];
+}
+
+-(void)showPhoto{
     int BtnW = 100;
     int BtnWS = 6;
     int BtnX = 4;
     
     int BtnH = 100;
-    int BtnHS = 0;
+    int BtnHS = 6;
     int BtnY = 5;
     
     int i = 0;
@@ -63,10 +74,15 @@
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
         [imageview setImageWithURL:[NSURL URLWithString: [_user.userAlbum objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
-        [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)] ];
+        [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deletePhoto:)];
+        longPress.minimumPressDuration = 0.8; //定义按的时间
+        [imageview addGestureRecognizer:longPress];
+        
         [self.view addSubview: imageview];
     }
-
+    
     if (count<9) {
         self.addButton.frame = CGRectMake((BtnW+BtnWS) * (count%3) + BtnX , (BtnH+BtnHS) *(count/3) + BtnY, BtnW, BtnH );
         self.addButton.enabled = YES;
@@ -74,7 +90,50 @@
     }
 }
 
+-(void)reshowPhoto{
+    
+    int BtnW = 100;
+    int BtnWS = 6;
+    int BtnX = 4;
+    
+    int BtnH = 100;
+    int BtnHS = 6;
+    int BtnY = 5;
+    
+    UIImageView * imageview = [[UIImageView alloc] init];
+    CGRect frame = [self.view viewWithTag:20000].frame;
+    imageview.frame = frame;
+    imageview.tag = 10000 + [_user.userAlbum count] - 1;
+    imageview.userInteractionEnabled = YES;
+    // 内容模式
+    imageview.clipsToBounds = YES;
+    imageview.contentMode = UIViewContentModeScaleAspectFill;
+    
+    [imageview setImageWithURL:[NSURL URLWithString: [_user.userAlbum lastObject]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+    [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
+    
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deletePhoto:)];
+    longPress.minimumPressDuration = 0.8; //定义按的时间
+    [imageview addGestureRecognizer:longPress];
+    
+    [self.view addSubview: imageview];
+    
+    if ([_user.userAlbum count]==9) {
+        self.addButton.enabled = NO;
+        self.addButton.hidden = YES;
+    }else{
+        self.addButton.frame = CGRectMake((BtnW+BtnWS) * ([_user.userAlbum count]%3) + BtnX , (BtnH+BtnHS) *([_user.userAlbum count]/3) + BtnY, BtnW, BtnH );
+    }
+}
 
+-(void)deletePhoto:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        NSLog(@"删除tag%ld的照片",(long)gestureRecognizer.view.tag);
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"提醒" message:@"确定删除该照片吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+        [alert show];
+    }
+}
 
 - (IBAction)addButtonPressed:(id)sender {
     _actionSheet = [[LXActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"拍照",@"从手机相册选择"]];
@@ -152,6 +211,7 @@
             NSArray *userAlbum = [responseObject objectForKey:@"userAlbum"];
             [_user.userAlbum addObjectsFromArray:userAlbum];
             [_user saveToNSUserDefaults];
+            [weakSelf reshowPhoto];
             
         }else if ([state isEqualToString:@"10001"]){
         }else{
@@ -203,7 +263,7 @@
         MJPhoto *photo = [[MJPhoto alloc] init];
         photo.url = [NSURL URLWithString:temp]; // 图片路径
         
-        UIImageView * imageView = (UIImageView *)[self.view viewWithTag: imageTap.view.tag];
+        UIImageView * imageView = (UIImageView *)[self.view viewWithTag:imageTap.view.tag];
         photo.srcImageView = imageView;
         [photos addObject:photo];
     }

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RCLabel.h"
 #import "Post.h"
 @interface PostDetailHeadView : UIView
 @property (weak, nonatomic) IBOutlet UIImageView *image;
@@ -15,8 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *markLal;
 @property (weak, nonatomic) IBOutlet UILabel *replyLbl;
-
-@property(nonatomic,strong) RCLabel *content;
+@property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 
 -(void)setDataWithPost:(Post *) post;
 @end

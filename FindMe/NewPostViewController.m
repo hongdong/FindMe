@@ -189,7 +189,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
+#pragma textView Delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    int  remainTextNum = 140;
+    //计算剩下多少文字可以输入
+    if(range.location>=140)
+    {
+        remainTextNum = 0;
+        
+        return NO;
+    }
+    else
+    {
+        NSString  * nsTextContent = textView.text;
+        int existTextNum=[nsTextContent length];
+        remainTextNum = 140-existTextNum;
+        self.remainTextNum.text = [NSString stringWithFormat:@"%d",remainTextNum];
+        return YES;
+    }
+}
 
 @end

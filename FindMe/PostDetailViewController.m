@@ -452,23 +452,6 @@
 }
 
 
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    [tableView dequeueReusableHeaderFooterViewWithIdentifier:<#(NSString *)#>]
-//    if (self.post.postPhoto==nil) {
-//        _head = [HDTool loadCustomViewByIndex:5];
-//        [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
-//    }else{
-//        _head = [HDTool loadCustomViewByIndex:0];
-//        [(PostDetailHeadView *)_head setDataWithPost:self.post];
-//
-//    }
-//
-//    return _head;
-//}
-
-
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 0;
 }
@@ -476,10 +459,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0;
 }
-//-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-//
-//    return [[UIView alloc] init];
-//}
+
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -492,7 +472,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{//计算行高
     
-    return [CommentCell getHeight:_dataArr[indexPath.row]];
+    return [((Comment *)_dataArr[indexPath.row]) getMatch].height + 40;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

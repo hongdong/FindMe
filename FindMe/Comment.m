@@ -40,7 +40,9 @@
         }
     }
 }
-
+-(void)updateMatch:(void(^)(NSMutableAttributedString * string, NSRange range))link{
+    
+}
 -(MatchParser*)getMatch:(void(^)(MatchParser *parser,id data))complete data:(id)data
 {
     if (_match&&[_match isKindOfClass:[MatchParser class]]) {

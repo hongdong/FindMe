@@ -7,7 +7,6 @@
 //
 
 #import "CommentCell.h"
-#import "HtmlString.h"
 #import "NSDate+Category.h"
 #import "NSDateFormatter+Category.h"
 @implementation CommentCell{
@@ -70,17 +69,6 @@
     [super setSelected:selected animated:animated];
 
 }
-+ (CGFloat)getHeight:(Comment *)comment{
-    UIFont *updateLabelFont = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
-    NSString *transformStr = [HtmlString transformString:comment.postMsgContent];
-    RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:transformStr];
-    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectZero];
-    tempLabel.frame = CGRectMake(8, 8, 280, 0);
-    [tempLabel setFont:updateLabelFont];
-    tempLabel.componentsAndPlainText = componentsDS;
-    tempLabel.lineBreakMode =NSLineBreakByCharWrapping;
-    CGSize optimalSize = [tempLabel optimumSize:YES];
-    return optimalSize.height + 40;
-}
+
 
 @end

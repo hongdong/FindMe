@@ -107,7 +107,6 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"likeUserId": _matchUser._id};
-    __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
@@ -235,12 +234,12 @@
 #pragma loginViewDelegate
 - (void)login:(UIButton *)sender{
     [self showHudInView:self.view.window hint:@"登入中..."];
-    ShareType type;
+    ShareType type = ShareTypeSinaWeibo;
     NSString * sendType;
     if (sender.tag==101) {
         type = ShareTypeSinaWeibo;
         sendType = @"SinaWeibo";
-    }else if(sender.tag==100){
+    } else {
         type = ShareTypeQQSpace;
         sendType = @"QZone";
     }

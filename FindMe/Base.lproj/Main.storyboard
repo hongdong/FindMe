@@ -65,7 +65,7 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="QQ_login" id="FBI-7o-FHg">
+                                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="FBI-7o-FHg">
                                         <rect key="frame" x="8" y="8" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -199,7 +199,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="QQ_login" id="yZ3-3F-hLK">
+                            <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yZ3-3F-hLK">
                                 <rect key="frame" x="125" y="15" width="70" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -388,7 +388,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DAI-hP-cE5">
+                            <button hidden="YES" opaque="NO" tag="20000" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DAI-hP-cE5">
                                 <rect key="frame" x="200" y="288" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="addimage">
@@ -410,7 +410,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JdX-Tu-LG8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2185" y="3629"/>
+            <point key="canvasLocation" x="2198" y="3429"/>
         </scene>
         <!--Identify View Controller - 实名认证-->
         <scene sceneID="4Cd-AZ-BmR">
@@ -913,19 +913,22 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Dhs-ac-itS" customClass="XHMessageTextView">
-                                        <rect key="frame" x="10" y="5" width="300" height="52"/>
+                                        <rect key="frame" x="10" y="5" width="300" height="76"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="LoD-Tm-EPN" id="nts-aV-Byd"/>
+                                        </connections>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="B8h-zN-wLG">
-                                        <rect key="frame" x="17" y="60" width="20" height="20"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3RK-0A-j9L">
+                                        <rect key="frame" x="284" y="61" width="24" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="face">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -958,7 +961,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="新消息" id="NHl-F4-sFJ">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Soi-4c-ZGI">
+                        <barButtonItem key="rightBarButtonItem" id="Soi-4c-ZGI">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LfK-Tv-LMm">
                                 <rect key="frame" x="274" y="13" width="30" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -975,8 +978,8 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addimage" destination="TZ4-63-umE" id="0fI-pK-3WM"/>
-                        <outlet property="changeKeyboard" destination="B8h-zN-wLG" id="0qU-An-1zy"/>
                         <outlet property="content" destination="Dhs-ac-itS" id="0Bf-rg-wGN"/>
+                        <outlet property="remainTextNum" destination="3RK-0A-j9L" id="bgM-R6-anv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HeD-Sg-DKA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1063,11 +1066,11 @@
             </objects>
             <point key="canvasLocation" x="862" y="848"/>
         </scene>
-        <!--View Controller - FindMe-->
+        <!--View Controller - 番迷-->
         <scene sceneID="akh-Gj-cXv">
             <objects>
                 <navigationController storyboardIdentifier="findme" definesPresentationContext="YES" id="WpX-Rg-SV7" customClass="ViewController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="FindMe" id="Fk1-bP-B3H"/>
+                    <tabBarItem key="tabBarItem" title="番迷" id="Fk1-bP-B3H"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rr5-o4-Dpv">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1380,7 +1383,7 @@
                                 <rect key="frame" x="0.0" y="10" width="320" height="72"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="7N3-3N-qGX">
+                                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultImage" id="7N3-3N-qGX">
                                         <rect key="frame" x="15" y="13" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <accessibility key="accessibilityConfiguration">
@@ -1867,12 +1870,11 @@
     </scenes>
     <resources>
         <image name="NavBar64" width="320" height="64"/>
-        <image name="QQ_login" width="58" height="58"/>
         <image name="VUser" width="13" height="13"/>
         <image name="addimage" width="52" height="52"/>
         <image name="buttonBg" width="300" height="30"/>
         <image name="close" width="25" height="25"/>
-        <image name="face" width="28" height="28"/>
+        <image name="defaultImage" width="150" height="164"/>
         <image name="findmeBg1" width="320" height="280"/>
         <image name="girl" width="19" height="19"/>
         <image name="isupdate" width="30" height="34"/>

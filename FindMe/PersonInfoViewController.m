@@ -18,6 +18,7 @@
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
     NSString *_constellationStr;
+    BOOL _existPhoto;
 }
 
 @end
@@ -158,6 +159,11 @@
 
 -(BOOL)isOK{
     
+    if (!_existPhoto) {
+        [HDTool ToastNotification:@"头像还没选呢" andView:self.view andLoading:NO andIsBottom:NO];
+        return NO;
+    }
+    
     NSString *temp = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if(temp.length==0)
@@ -165,7 +171,7 @@
         [HDTool ToastNotification:@"名字不能为空" andView:self.view andLoading:NO andIsBottom:NO];
         return NO;
     }
-    temp = [_constellationStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ]];
+    temp = [_constellationStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (temp.length==0) {
         [HDTool ToastNotification:@"星座不选吗" andView:self.view andLoading:NO andIsBottom:NO];
         return NO;
@@ -312,6 +318,7 @@
 
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName{
     self.phtot.image = tempImage;
+    _existPhoto = YES;
     NSData* imageData = UIImagePNGRepresentation(tempImage);
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];

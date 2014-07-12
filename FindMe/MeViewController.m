@@ -90,7 +90,7 @@
 
 -(void)setData{
 
-    [self.photo setImageWithURL:[NSURL URLWithString:_user.userPhoto]];
+    [self.photo setImageWithURL:[NSURL URLWithString:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     self.nickname.text = _user.userNickName;
     CGSize size = CGSizeMake(320,2000);
     CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];

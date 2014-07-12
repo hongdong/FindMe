@@ -75,7 +75,6 @@
 - (IBAction)signOutPressed:(id)sender {
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/login_out.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    __weak __typeof(&*self)weakSelf = self;
     [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {

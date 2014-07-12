@@ -12,7 +12,6 @@
     
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property(strong,nonatomic)NSArray *dataArray;
 @property(nonatomic)NSInteger lastestYear;
 @property(strong,nonatomic)User *user;
 

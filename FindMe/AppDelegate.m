@@ -61,7 +61,7 @@
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
         //表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
-        
+        NSLog(@"%@",remoteNotification);
     }else{
         NSLog(@"点击ICON打开软件");
     }

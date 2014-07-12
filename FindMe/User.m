@@ -41,7 +41,9 @@
             weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
             weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
             weakSelf.userAlbum = [userInfo objectForKey:@"userAlbum"];
-            
+            if (weakSelf.userAlbum==nil) {
+                weakSelf.userAlbum = [[NSMutableArray alloc] init];
+            }
             NSLog(@"获取用户资料完成");
             
             
@@ -84,7 +86,6 @@
                                  @"equitNo"    : [[Config sharedConfig] getRegistrationID],
                                  @"osType"      : @"1",
                                  @"backLogin"   : @"1"};
-    __weak __typeof(&*self)weakSelf = self;
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *state = [responseObject objectForKey:@"state"];

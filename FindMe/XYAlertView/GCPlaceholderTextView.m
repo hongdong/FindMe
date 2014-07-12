@@ -48,8 +48,7 @@
         self.text = aPlaceholder;
     }
     
-    [placeholder release];
-    placeholder = [aPlaceholder retain];
+    placeholder = aPlaceholder;
     
     [self endEditing:nil];
 }
@@ -109,11 +108,10 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-    [realTextColor release];
-    [placeholder release];
+    realTextColor=nil;
+    placeholder=nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [super dealloc];
+
 }
 
 @end

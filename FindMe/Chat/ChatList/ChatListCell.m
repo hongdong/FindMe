@@ -77,7 +77,7 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    CGRect frame = self.imageView.frame;
+//    CGRect frame = self.imageView.frame;
     self.imageView.frame = CGRectMake(10, 7, 45, 45);
     
     self.textLabel.text = _name;
@@ -100,7 +100,7 @@
         [_unreadLabel setHidden:YES];
     }
     
-    frame = _lineView.frame;
+    CGRect frame = _lineView.frame;
     frame.origin.y = self.contentView.frame.size.height - 1;
     _lineView.frame = frame;
 }

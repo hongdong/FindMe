@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RCLabel.h"
 #import "HBCoreLabel.h"
 #import "Comment.h"
 @interface CommentCell : UITableViewCell
@@ -22,5 +21,4 @@
 
 @property(nonatomic,strong) Comment *comment;
 //-(void)setData;
-+ (CGFloat)getHeight:(Comment *)comment;
 @end

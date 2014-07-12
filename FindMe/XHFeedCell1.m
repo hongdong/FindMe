@@ -52,9 +52,7 @@
         [[_feedContainer layer] setBorderWidth:0.1];
         [[_feedContainer layer] setBorderColor:[UIColor lightGrayColor].CGColor];
         
-        UIColor* mainColor = [UIColor colorWithRed:100.0/255 green:35.0/255 blue:87.0/255 alpha:1.0f];
         UIColor* countColor = [UIColor colorWithRed:116.0/255 green:99.0/255 blue:113.0/255 alpha:1.0f];
-        UIColor* neutralColor = [UIColor colorWithWhite:0.5 alpha:1.0];
         
         NSString* fontName = @"Avenir-Book";
         NSString* boldFontName = @"Avenir-Black";
@@ -70,7 +68,8 @@
         UIFont *updateLabelFont = [UIFont fontWithName:fontName size:13.0f];
         _updateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _updateLabel.textAlignment = NSTextAlignmentCenter;
-        _updateLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        _updateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _updateLabel.numberOfLines = 0;
         _updateLabel.backgroundColor = [UIColor clearColor];
         _updateLabel.textColor =  [UIColor whiteColor];
         _updateLabel.font = updateLabelFont;

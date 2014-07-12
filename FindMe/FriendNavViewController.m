@@ -19,6 +19,7 @@
     if (self) {
         [self.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tb2s"]
                       withFinishedUnselectedImage:[UIImage imageNamed:@"tb2"]];
+        self.tabBarItem.tag = 2;
     }
     return self;
 }

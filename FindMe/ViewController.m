@@ -28,7 +28,7 @@
         [self.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tb0s"]
                       withFinishedUnselectedImage:[UIImage imageNamed:@"tb0"]];
         
-
+        self.tabBarItem.tag = 0;
     }
     return self;
 }

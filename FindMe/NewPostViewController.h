@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "XHMessageTextView.h"
 #import "LXActionSheet.h"
-@interface NewPostViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate>
+@interface NewPostViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet XHMessageTextView *content;
-@property (weak, nonatomic) IBOutlet UIButton *changeKeyboard;
 @property (weak, nonatomic) IBOutlet UIButton *addimage;
+@property (weak, nonatomic) IBOutlet UILabel *remainTextNum;
 
 @end

@@ -60,36 +60,6 @@
 #define COCOAPODS_VERSION_MINOR_BBBadgeBarButtonItem 0
 #define COCOAPODS_VERSION_PATCH_BBBadgeBarButtonItem 0
 
-// CUSLayout
-#define COCOAPODS_POD_AVAILABLE_CUSLayout
-#define COCOAPODS_VERSION_MAJOR_CUSLayout 1
-#define COCOAPODS_VERSION_MINOR_CUSLayout 1
-#define COCOAPODS_VERSION_PATCH_CUSLayout 3
-
-// CUSLayout/algorithm
-#define COCOAPODS_POD_AVAILABLE_CUSLayout_algorithm
-#define COCOAPODS_VERSION_MAJOR_CUSLayout_algorithm 1
-#define COCOAPODS_VERSION_MINOR_CUSLayout_algorithm 1
-#define COCOAPODS_VERSION_PATCH_CUSLayout_algorithm 3
-
-// CUSLayout/core
-#define COCOAPODS_POD_AVAILABLE_CUSLayout_core
-#define COCOAPODS_VERSION_MAJOR_CUSLayout_core 1
-#define COCOAPODS_VERSION_MINOR_CUSLayout_core 1
-#define COCOAPODS_VERSION_PATCH_CUSLayout_core 3
-
-// CUSLayout/extend
-#define COCOAPODS_POD_AVAILABLE_CUSLayout_extend
-#define COCOAPODS_VERSION_MAJOR_CUSLayout_extend 1
-#define COCOAPODS_VERSION_MINOR_CUSLayout_extend 1
-#define COCOAPODS_VERSION_PATCH_CUSLayout_extend 3
-
-// CUSLayout/util
-#define COCOAPODS_POD_AVAILABLE_CUSLayout_util
-#define COCOAPODS_VERSION_MAJOR_CUSLayout_util 1
-#define COCOAPODS_VERSION_MINOR_CUSLayout_util 1
-#define COCOAPODS_VERSION_PATCH_CUSLayout_util 3
-
 // DACircularProgress
 #define COCOAPODS_POD_AVAILABLE_DACircularProgress
 #define COCOAPODS_VERSION_MAJOR_DACircularProgress 2

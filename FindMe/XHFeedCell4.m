@@ -1,7 +1,6 @@
 
 #import "XHFeedCell4.h"
 #import "UIImageView+WebCache.h"
-#import "HtmlString.h"
 #import "NSDate+Category.h"
 #import "NSDateFormatter+Category.h"
 #define feedContainerX 20
@@ -18,9 +17,9 @@
 #define dateLabelSpeatorY 20
 #define dateLabelWidth 224
 
-#define updateLabelX 11
+#define updateLabelX 10
 #define updateLabelY 181
-#define updateLabelWidth 263
+#define updateLabelWidth 262
 #define updateLabelHeight 80
 
 
@@ -71,9 +70,9 @@
 
         
         UIFont *updateLabelFont = [UIFont fontWithName:fontName size:13.0f];
-        _updateLabel = [[RCLabel alloc] initWithFrame:CGRectZero];
+        _updateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _updateLabel.textAlignment = NSTextAlignmentCenter;
         _updateLabel.lineBreakMode = NSLineBreakByCharWrapping;
-//        _updateLabel.backgroundColor = [UIColor redColor];
         _updateLabel.textColor =  neutralColor;
         _updateLabel.font = updateLabelFont;
         
@@ -129,11 +128,6 @@
         
         [self.contentView addSubview:self.feedContainer];
 
-        
-        
-        
-        
-        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
@@ -142,15 +136,7 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
 
-    
-    
-    NSString *transformStr = [HtmlString transformString:self.post.postContent];
-    RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:transformStr];
-    self.updateLabel.componentsAndPlainText = componentsDS;//给textView添加内容
-    CGSize optimalSize = [self.updateLabel optimumSize:YES];
-    self.updateLabel.frame = CGRectMake(self.updateLabel.frame.origin.x, self.updateLabel.frame.origin.y, self.updateLabel.frame.size.width, optimalSize.height);
-//    _socialContainer.frame = CGRectMake(0, _updateLabel.frame.origin.y + _updateLabel.frame.size.height + socialContainerSepatorY, _feedContainer.frame.size.width, socialContainerHeight);
-
+    self.updateLabel.text = self.post.postContent;
     
     NSDate *date = [_dateFormatter dateFromString:self.post.postReleaseTime];
     self.dateLabel.text = [date formattedDateDescription];
@@ -169,26 +155,10 @@
 
 }
 
-+(CGFloat)getCellHightWithPost:(Post *)post{//计算实际textVIew高度
-    
-    
-    UIFont *updateLabelFont = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
-    NSString *transformStr = [HtmlString transformString:post.postContent];
-    RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:transformStr];
-    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectZero];
-    tempLabel.frame = CGRectMake(updateLabelX, updateLabelY, updateLabelWidth, updateLabelHeight);
-    [tempLabel setFont:updateLabelFont];
-    tempLabel.componentsAndPlainText = componentsDS;
-    tempLabel.lineBreakMode =NSLineBreakByCharWrapping;
-    CGSize optimalSize = [tempLabel optimumSize:YES];
-    return optimalSize.height + profileImageViewSize + commentCountLabelWidth + socialContainerHeight;
-}
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
      
-    // Configure the view for the selected state
 }
 
 @end

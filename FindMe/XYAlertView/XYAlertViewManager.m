@@ -344,7 +344,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         if(!keyWindow)
         {
             NSArray *windows = [UIApplication sharedApplication].windows;
-            if(windows.count > 0) keyWindow = [windows lastObject];
+            if(windows.count > 0)
+//            keyWindow = [windows lastObject];
             keyWindow = [windows objectAtIndex:0];
         }
         UIView *containerView = [[keyWindow subviews] objectAtIndex:0];
@@ -402,7 +403,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         if(!keyWindow)
         {
             NSArray *windows = [UIApplication sharedApplication].windows;
-            if(windows.count > 0) keyWindow = [windows lastObject];
+            if(windows.count > 0)
+//            keyWindow = [windows lastObject];
             keyWindow = [windows objectAtIndex:0];
         }
         UIView *containerView = [[keyWindow subviews] objectAtIndex:0];
@@ -472,7 +474,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         if(!keyWindow)
         {
             NSArray *windows = [UIApplication sharedApplication].windows;
-            if(windows.count > 0) keyWindow = [windows lastObject];
+            if(windows.count > 0)
+//            keyWindow = [windows lastObject];
             keyWindow = [windows objectAtIndex:0];
         }
         UIView *containerView = [[keyWindow subviews] objectAtIndex:0];

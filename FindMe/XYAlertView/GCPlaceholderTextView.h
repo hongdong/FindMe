@@ -11,6 +11,6 @@
 
 @interface GCPlaceholderTextView : UITextView 
 
-@property(nonatomic, retain) NSString *placeholder;
+@property(nonatomic, strong) NSString *placeholder;
 
 @end

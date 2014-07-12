@@ -21,6 +21,12 @@
     return self;
 }
 
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    self.contentLbl.lineBreakMode = NSLineBreakByWordWrapping;
+    self.contentLbl.numberOfLines = 0;
+}
+
 -(void)setDataWithPost:(Post *) post{
     self.bgView.backgroundColor = [UIColor randomColor];
     self.contentLbl.text = post.postContent;

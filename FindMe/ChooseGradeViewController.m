@@ -21,7 +21,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -36,28 +35,13 @@
 
     NSDate *now = [NSDate date];
 
-    
-
     NSCalendar *calendar = [NSCalendar currentCalendar];
 
-    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSUInteger unitFlags = NSYearCalendarUnit;
 
     NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
 
     _lastestYear = [dateComponent year];
-
-    int month = [dateComponent month];
-
-    int day = [dateComponent day];
-
-    int hour = [dateComponent hour];
-
-    int minute = [dateComponent minute];
-
-    int second = [dateComponent second];
-
-
-    _dataArray = @[@"2008",@"2009",@"2010",@"2011",@"2012",@"2013",@"2014",@"2015"];
     
 //    _alert = [[AMSmoothAlertView alloc]initDropAlertWithTitle:@"提醒" andText:@"" andCancelButton:YES forAlertType:AlertInfo andColor:[UIColor colorWithRed:0.607 green:0.372 blue:0.862 alpha:1]];
 //    [_alert.defaultButton setTitle:@"确认" forState:UIControlStateNormal];
