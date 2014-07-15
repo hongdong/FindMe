@@ -5,7 +5,11 @@
 
 -(BOOL)isLogin;
 
+-(BOOL)isOnline;
+
 -(void)changeLoginState:(NSString *)isLogin;
+
+-(void)changeOnlineState:(NSString *)isOnline;
 
 -(void)saveRegistrationID:(NSString *)registrationID;
 

@@ -101,7 +101,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="Mdx-vE-nCZ">
-                                <rect key="frame" x="0.0" y="202" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="188" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="v" id="GMG-Nb-w57">
@@ -129,7 +129,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="Guj-IK-v6e">
-                                <rect key="frame" x="0.0" y="273" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="242" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share" id="SSL-nv-4gb">
@@ -146,7 +146,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="zb6-XN-sFd">
-                                <rect key="frame" x="0.0" y="336" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="316" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="setting" id="CBK-lf-PZl">
@@ -154,11 +154,15 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sql-RA-lrH">
-                                        <rect key="frame" x="45" y="15" width="28" height="17"/>
+                                        <rect key="frame" x="45" y="13" width="28" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jt_red" id="5Me-Tz-RHc">
+                                        <rect key="frame" x="301" y="14" width="10" height="16"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -185,7 +189,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtm-Vz-Jhz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1294" y="3660"/>
+            <point key="canvasLocation" x="1267" y="3610"/>
         </scene>
         <!--Detail View Controller - 我的资料-->
         <scene sceneID="ZBU-cb-C1o">
@@ -704,10 +708,10 @@
             </objects>
             <point key="canvasLocation" x="1815" y="4327"/>
         </scene>
-        <!--View Controller - 用户反馈-->
+        <!--Feedback View Controller - 用户反馈-->
         <scene sceneID="QLN-33-MaA">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="g7G-Sp-Z0S" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="g7G-Sp-Z0S" customClass="FeedbackViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Uf0-sg-uZb">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -732,6 +736,9 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="用户反馈" id="4Hf-Pa-8nU"/>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="textView" destination="Tya-HD-UhQ" id="ZPc-9B-SHi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p8i-KE-s0J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -752,7 +759,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="42j-U5-anX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2408" y="4591"/>
+            <point key="canvasLocation" x="2764" y="4879"/>
         </scene>
         <!--View Controller - 使用协议-->
         <scene sceneID="0hj-89-Qv1">
@@ -1293,13 +1300,12 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="136" sectionHeaderHeight="22" sectionFooterHeight="22" id="AX0-kw-Fcc">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fansCell" rowHeight="136" id="9sC-Pv-5Kc" customClass="FansCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="136"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9sC-Pv-5Kc" id="oFB-D2-SKY">
+                                <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9sC-Pv-5Kc" id="oFB-D2-SKY">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="136"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>

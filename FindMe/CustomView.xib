@@ -327,7 +327,7 @@
                 <outlet property="time" destination="T41-6c-n0a" id="0Bs-VA-77D"/>
             </connections>
         </view>
-        <view contentMode="scaleToFill" id="Gvp-eo-s4E">
+        <view tag="100" contentMode="scaleToFill" id="Gvp-eo-s4E">
             <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

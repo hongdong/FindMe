@@ -51,12 +51,12 @@
         [fansButton setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
         _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:fansButton];
         _fansItem.badgeValue = @"2";
-        _fansItem.badgeOriginX = 13;
+        _fansItem.badgeOriginX = 10;
         _fansItem.badgeOriginY = -9;
         if ([[Config sharedConfig] isLogin]) {
-            NSLog(@"后台登入");
-            User *user = [User getUserFromNSUserDefaults];
-            [self isOauth:user.openId forType:user.userAuthType andBack:@"1"];
+//            NSLog(@"后台登入");
+            _user = [User getUserFromNSUserDefaults];
+//            [self isOauth:user.openId forType:user.userAuthType andBack:@"1"];
         }else{
             NSLog(@"未登入，显示登入界面");
             _loginView = [HDTool loadCustomViewByIndex:1];
@@ -78,11 +78,11 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChange:)
-                                                 name:@"NSUserDefaultsUserChange"
+                                                 name:UserInfoChange
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(easeMobShouldLogin:)
-                                                 name:@"EaseMobShouldLogin"
+                                                 name:EaseMobShouldLogin
                                                object:nil];
     
     self.photo.layer.cornerRadius = 75.0f;
@@ -108,13 +108,23 @@
     if (_loginView!=nil) {
         [self.view addSubview:_loginView];
     }else{
-        
-//        [self getMatch:nil];
+        if ([[Config sharedConfig] isOnline]) {
+            [self getMatch:nil];
+        }else{
+            NSLog(@"还在登入中");
+        }
     }
 
 }
 
 -(void)fansButtonPressed:(id)sender{
+    if (![[Config sharedConfig] isOnline]) {
+        [self showHint:@"你还没登入"];
+        return;
+    }else if (![_user.userSex isEqualToString:@"女"]){
+        [self showHint:@"目前只有女生开通了粉丝服务"];
+        return;
+    }
     [self performSegueWithIdentifier:@"fans" sender:nil];
 }
 - (IBAction)likePressed:(id)sender {
@@ -334,7 +344,7 @@
             _user._id = [responseObject objectForKey:@"userId"];
             
             [_user getUserInfo];
-            
+            [[Config sharedConfig] changeLoginState:@"1"];
 //            [_user saveToNSUserDefaults];//保存登入信息
 
             [weakSelf EaseMobLoginWithUsername:[responseObject objectForKey:@"userId"]];//IM登入
@@ -378,7 +388,7 @@
          if (loginInfo && !error) {
             NSLog(@"IM登入成功");
             [weakSelf showResultWithType:ResultSuccess];
-            [[Config sharedConfig] changeLoginState:@"1"];
+             [[Config sharedConfig] changeOnlineState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }else {
              [weakSelf hideHud];

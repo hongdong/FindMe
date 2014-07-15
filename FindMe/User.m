@@ -46,8 +46,10 @@
             }
             NSLog(@"获取用户资料完成");
             
-            
-            [weakSelf saveToNSUserDefaults];
+            if ([self.class getUserFromNSUserDefaults]==nil) {
+                    [weakSelf saveToNSUserDefaults];
+            }
+
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -80,7 +82,7 @@
 -(void)freshSession{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/grant_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager.operationQueue setMaxConcurrentOperationCount:1];
+//    [manager.operationQueue setMaxConcurrentOperationCount:1];
     NSDictionary *parameters = @{@"userOpenId"     : self.openId,
                                  @"userAuthType"       : self.userAuthType,
                                  @"equitNo"    : [[Config sharedConfig] getRegistrationID],
@@ -89,9 +91,11 @@
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *state = [responseObject objectForKey:@"state"];
+        
         if ([state isEqualToString:@"20001"]) {
             NSLog(@"刷新session成功");
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:nil];
+        [[Config sharedConfig] changeOnlineState:@"1"];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:EaseMobShouldLogin object:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             
         }else if ([state isEqualToString:@"10001"]){

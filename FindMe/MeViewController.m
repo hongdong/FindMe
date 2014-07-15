@@ -38,8 +38,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdate:) name:@"NSUserDefaultsUserChange" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdate:) name:UserInfoChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    if (![[Config sharedConfig] isLogin]) {
+        [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
+        return;
+    }
+    [self setup];
+}
+
+
+-(void)loginChange:(NSNotification *)notification{
+
+    BOOL isLogin = [notification.object boolValue];
+    if (isLogin) {
+        [[self.view viewWithTag:100] removeFromSuperview];
+        [self setup];
+    }
+    else{
+        NSLog(@"添加未登入Cover");
+    }
+}
+
+-(void)setup{
     _user = [User getUserFromNSUserDefaults];
     self.photo.layer.cornerRadius = 25.0f;
     self.photo.layer.masksToBounds = YES;
@@ -109,7 +130,8 @@
 }
 
 -(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NSUserDefaultsUserChange" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UserInfoChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 -(void)showShare{
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"findme" ofType:@"png"];

@@ -25,10 +25,29 @@
     }
 }
 
+-(BOOL)isOnline{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    NSString * value = [setting objectForKey:@"isOnline"];
+    if (value && [value isEqualToString:@"1"]) {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 -(void)changeLoginState:(NSString *)isLogin{
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     [setting removeObjectForKey:@"isLogin"];
     [setting setObject:isLogin forKey:@"isLogin"];
+    [setting synchronize];
+}
+
+-(void)changeOnlineState:(NSString *)isOnline{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    [setting removeObjectForKey:@"isOnline"];
+    [setting setObject:isOnline forKey:@"isOnline"];
     [setting synchronize];
 }
 

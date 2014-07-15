@@ -102,6 +102,7 @@
 		04A76406195D4DAE00C92480 /* ChooseConstellationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A76405195D4DAE00C92480 /* ChooseConstellationViewController.m */; };
 		04A7640A195D7BC300C92480 /* LXActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A76409195D7BC300C92480 /* LXActionSheet.m */; };
 		04A81956196CEAF5001FF6E3 /* XHFeedCell1.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A81955196CEAF5001FF6E3 /* XHFeedCell1.m */; };
+		04A8A1C91974F22E0044B56A /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8A1C81974F22E0044B56A /* FeedbackViewController.m */; };
 		04A8DE8C195338CE00404FE1 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8DE8B195338CE00404FE1 /* UIViewController+HUD.m */; };
 		04A960A11955081D002E30AF /* FindMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A960A01955081D002E30AF /* FindMeViewController.m */; };
 		04A9610A19551E54002E30AF /* QQConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A960B819551E54002E30AF /* QQConnection.framework */; };
@@ -746,6 +747,8 @@
 		04A76409195D7BC300C92480 /* LXActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXActionSheet.m; sourceTree = "<group>"; };
 		04A81954196CEAF5001FF6E3 /* XHFeedCell1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHFeedCell1.h; sourceTree = "<group>"; };
 		04A81955196CEAF5001FF6E3 /* XHFeedCell1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFeedCell1.m; sourceTree = "<group>"; };
+		04A8A1C71974F22E0044B56A /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		04A8A1C81974F22E0044B56A /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		04A8DE8A195338CE00404FE1 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		04A8DE8B195338CE00404FE1 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
 		04A8DE8D195339C000404FE1 /* HDDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HDDefine.h; sourceTree = "<group>"; };
@@ -1867,6 +1870,8 @@
 				04AD9849196B63DD0080F009 /* IdentifyViewController.m */,
 				04AD984C196B84850080F009 /* AlbumViewController.h */,
 				04AD984D196B84850080F009 /* AlbumViewController.m */,
+				04A8A1C71974F22E0044B56A /* FeedbackViewController.h */,
+				04A8A1C81974F22E0044B56A /* FeedbackViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -3558,6 +3563,7 @@
 				04B2D9BA1963828D00EF0C74 /* HPGrowingTextView.m in Sources */,
 				04B2D9561963828D00EF0C74 /* EMChatLocationBubbleView.m in Sources */,
 				04169AD31964FCBC00A64585 /* ZBMessageManagerFaceView.m in Sources */,
+				04A8A1C91974F22E0044B56A /* FeedbackViewController.m in Sources */,
 				04B315D01956C84100F93C73 /* MJRefreshBaseView.m in Sources */,
 				04C51C56196116BA00F5E30B /* Post.m in Sources */,
 				04A763F9195D24DE00C92480 /* NYSegment.m in Sources */,

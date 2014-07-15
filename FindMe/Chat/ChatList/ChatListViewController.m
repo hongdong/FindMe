@@ -354,7 +354,7 @@
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
 {
-    return [UIImage imageNamed:@"face"];
+    return [UIImage imageNamed:@"graylogo"];
 }
 
 
