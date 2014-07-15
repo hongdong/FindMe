@@ -41,6 +41,7 @@
     }];
     [self.qchcView whenTouchedUp:^{
         weakSelf.qchcView.backgroundColor = [UIColor whiteColor];
+        [weakSelf showHint:@"清理完成"];
     }];
     
     [self.jcgxView whenTouchedDown:^{
@@ -55,6 +56,7 @@
     }];
     [self.syxyView whenTouchedUp:^{
         weakSelf.syxyView.backgroundColor = [UIColor whiteColor];
+        [weakSelf performSegueWithIdentifier:@"syxy" sender:nil];
     }];
     
     [self.gywmView whenTouchedDown:^{
@@ -62,6 +64,7 @@
     }];
     [self.gywmView whenTouchedUp:^{
         weakSelf.gywmView.backgroundColor = [UIColor whiteColor];
+        [weakSelf performSegueWithIdentifier:@"gywm" sender:nil];
     }];
     
     [self.yyfkView whenTouchedDown:^{
@@ -69,6 +72,7 @@
     }];
     [self.yyfkView whenTouchedUp:^{
         weakSelf.yyfkView.backgroundColor = [UIColor whiteColor];
+        [weakSelf performSegueWithIdentifier:@"yhfk" sender:nil];
     }];
     
 }

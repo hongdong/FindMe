@@ -695,11 +695,90 @@
                         <outlet property="qchcView" destination="Fzu-pm-u2z" id="dFG-mP-pHC"/>
                         <outlet property="syxyView" destination="tYu-Db-fKt" id="Ex8-4I-Xmf"/>
                         <outlet property="yyfkView" destination="1bP-nd-qfL" id="EWo-6a-2Xv"/>
+                        <segue destination="991-xF-EtA" kind="push" identifier="syxy" id="am0-O7-UQ2"/>
+                        <segue destination="sdc-6t-ytV" kind="push" identifier="gywm" id="cRg-77-IwI"/>
+                        <segue destination="g7G-Sp-Z0S" kind="push" identifier="yhfk" id="DFL-cy-NFc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u83-cK-u5Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1855" y="4321"/>
+            <point key="canvasLocation" x="1815" y="4327"/>
+        </scene>
+        <!--View Controller - 用户反馈-->
+        <scene sceneID="QLN-33-MaA">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="g7G-Sp-Z0S" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Uf0-sg-uZb">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="痛打程序猿" id="Tya-HD-UhQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UcI-c1-Jai">
+                                <rect key="frame" x="10" y="102" width="300" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="buttonBg">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="用户反馈" id="4Hf-Pa-8nU"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p8i-KE-s0J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2185" y="5008"/>
+        </scene>
+        <!--View Controller - 关于我们-->
+        <scene sceneID="hmp-kt-TpU">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="sdc-6t-ytV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LbX-UE-cdl">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="关于我们" id="0OC-9v-Nem"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="42j-U5-anX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2408" y="4591"/>
+        </scene>
+        <!--View Controller - 使用协议-->
+        <scene sceneID="0hj-89-Qv1">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="991-xF-EtA" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eYi-eJ-OfY">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="说些什么呢" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IPl-Tc-LXV">
+                                <rect key="frame" x="118" y="241" width="85" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="使用协议" id="a2v-yn-pOt"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yxC-iT-08K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2310" y="4132"/>
         </scene>
         <!--Me Nav View Controller - 我-->
         <scene sceneID="yuS-1y-APA">
@@ -1200,11 +1279,85 @@
                         <outlet property="xzimg" destination="ugP-Cb-D39" id="Axx-Zv-LQo"/>
                         <segue destination="WQt-3w-r1B" kind="push" identifier="chooseSchool" id="Pdd-qU-RcD"/>
                         <segue destination="ymi-dX-rR4" kind="push" identifier="findmeDetail" id="yKs-oQ-H8N"/>
+                        <segue destination="YWb-zk-iy7" kind="push" identifier="fans" id="oVY-zT-pzk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTY-ws-Zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="901" y="-4"/>
+            <point key="canvasLocation" x="897" y="-9"/>
+        </scene>
+        <!--Fans View Controller - 粉丝团-->
+        <scene sceneID="I42-sO-qyg">
+            <objects>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="YWb-zk-iy7" customClass="FansViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="136" sectionHeaderHeight="22" sectionFooterHeight="22" id="AX0-kw-Fcc">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fansCell" rowHeight="136" id="9sC-Pv-5Kc" customClass="FansCell">
+                                <rect key="frame" x="0.0" y="22" width="320" height="136"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9sC-Pv-5Kc" id="oFB-D2-SKY">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="136"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="meinv" id="w6V-6N-BX3">
+                                            <rect key="frame" x="15" y="12" width="110" height="111"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="洪小东" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fQN-8r-26Z">
+                                            <rect key="frame" x="142" y="11" width="51" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="福建工程学院" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6NO-pe-Z93">
+                                            <rect key="frame" x="142" y="40" width="158" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="计算机系" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QSf-ga-C4J">
+                                            <rect key="frame" x="142" y="74" width="158" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2010级" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="31d-Uv-eX6">
+                                            <rect key="frame" x="142" y="105" width="56" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="departmentLbl" destination="QSf-ga-C4J" id="ICq-nM-j06"/>
+                                    <outlet property="gradeLbl" destination="31d-Uv-eX6" id="EIf-kX-Pu0"/>
+                                    <outlet property="nicknameLbl" destination="fQN-8r-26Z" id="KOi-Hc-zbc"/>
+                                    <outlet property="photo" destination="w6V-6N-BX3" id="w9J-V4-2Za"/>
+                                    <outlet property="schoolLbl" destination="6NO-pe-Z93" id="zbc-W7-0Dx"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="YWb-zk-iy7" id="iDO-hW-4Jv"/>
+                            <outlet property="delegate" destination="YWb-zk-iy7" id="rxd-i9-dIN"/>
+                        </connections>
+                    </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="粉丝团" id="3gm-W0-y22"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GmW-pA-1G3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="937" y="-680"/>
         </scene>
         <!--Find Me Detail View Controller - 照片墙-->
         <scene sceneID="e6A-wQ-nrx">
@@ -1881,6 +2034,7 @@
         <image name="jt_red" width="191" height="329"/>
         <image name="like" width="174" height="36"/>
         <image name="mark" width="25" height="26"/>
+        <image name="meinv" width="159" height="160"/>
         <image name="pass" width="116" height="36"/>
         <image name="photos" width="30" height="30"/>
         <image name="reply" width="24" height="26"/>

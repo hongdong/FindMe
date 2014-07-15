@@ -17,11 +17,13 @@
 #import "UIImageView+WebCache.h"
 #import "FindMeDetailViewController.h"
 #import "CoverView.h"
+#import "BBBadgeBarButtonItem.h"
 @interface FindMeViewController (){
     User *_user;
     User *_matchUser;
     LoginView *_loginView;
     CoverView *_coverView;
+    BBBadgeBarButtonItem *_fansItem;
 }
 
 @end
@@ -43,6 +45,14 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _coverView = [HDTool loadCustomViewByIndex:4];
+        
+        UIButton *fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [fansButton setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
+        _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:fansButton];
+        _fansItem.badgeValue = @"2";
+        _fansItem.badgeOriginX = 13;
+        _fansItem.badgeOriginY = -9;
         if ([[Config sharedConfig] isLogin]) {
             NSLog(@"后台登入");
             User *user = [User getUserFromNSUserDefaults];
@@ -91,7 +101,10 @@
         } completion:nil];
         [self performSegueWithIdentifier:@"findmeDetail" sender:_matchUser];
     }];
+    
     [self.view addSubview:_coverView];
+    self.navigationItem.rightBarButtonItem = _fansItem;
+    
     if (_loginView!=nil) {
         [self.view addSubview:_loginView];
     }else{
@@ -101,18 +114,20 @@
 
 }
 
-
+-(void)fansButtonPressed:(id)sender{
+    [self performSegueWithIdentifier:@"fans" sender:nil];
+}
 - (IBAction)likePressed:(id)sender {
     [self showCover];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"likeUserId": _matchUser._id};
+    NSDictionary *parameters = @{@"type":@"1",@"likeUserId": _matchUser._id};
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             NSLog(@"LIKE成功");
         }else if ([state isEqualToString:@"20002"]){
-            
+            NSLog(@"你们已经成为朋友了");
         }else{
             
         }
@@ -157,14 +172,14 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
-    NSDictionary *parameters = nil;
+    NSMutableDictionary *parameters = [@{@"type": @"1"} mutableCopy];
     if (userMatchId!=nil) {
-        parameters = @{@"userMatchId": userMatchId};
+        [parameters setValue:userMatchId forKey:@"userMatchId"];
     }
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
-        if (userMatch!=nil) {
+        if (userMatch!=nil&&userMatch.count!=0) {
         _matchUser = [User objectWithKeyValues:userMatch];
             [weakSelf setMatchPeople];
             

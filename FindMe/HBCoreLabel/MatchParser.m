@@ -51,22 +51,23 @@ static void deallocCallback(void * ref){
 {
     static NSDictionary * dic=nil;
     if(dic==nil){
-        NSString* path=[[NSBundle mainBundle] pathForResource:@"faceMap_ch" ofType:@"plist"];
+        NSString* path=[[NSBundle mainBundle] pathForResource:@"expression" ofType:@"plist"];
         dic =[NSDictionary dictionaryWithContentsOfFile:path];
     }
     return dic;
 }
 +(NSString*)faceKeyForValue:(NSString*)value  map:(NSDictionary*) map
 {
-    NSArray * keys=[map allKeys];
-    int count=[keys count];
-    for(int i=0;i<count;i++)
-    {
-        NSString * key=[keys objectAtIndex:i];
-        if([[map objectForKey:key] isEqualToString:value])
-            return key;
-    }
-    return nil;
+//    NSArray * keys=[map allKeys];
+//    int count=[keys count];
+//    for(int i=0;i<count;i++)
+//    {
+//        NSString * key=[keys objectAtIndex:i];
+//        if([[map objectForKey:key] isEqualToString:value])
+//            return key;
+//    }
+//    return nil;
+    return [map objectForKey:value];
 }
 
 -(void)match:(NSString*)source
@@ -87,7 +88,7 @@ static void deallocCallback(void * ref){
         NSString * icon=[MatchParser faceKeyForValue:string map:[MatchParser getFaceMap]];
         [text appendString:[source substringWithRange:NSMakeRange(location, result.range.location-location)]];
         if(icon!=nil){
-            NSMutableString * iconStr=[NSMutableString stringWithFormat:@"%@.png",icon];
+            NSMutableString * iconStr=[NSMutableString stringWithFormat:@"%@",icon];
             NSMutableDictionary * dic=[NSMutableDictionary dictionaryWithObjectsAndKeys:iconStr,MatchParserImage,[NSNumber numberWithInteger:[text length]],MatchParserLocation,[NSNull null],MatchParserRects, nil];
             [imageArr addObject:dic];
             [text appendString:@" "];
@@ -201,7 +202,7 @@ static void deallocCallback(void * ref){
         NSString * icon=[MatchParser faceKeyForValue:string map:[MatchParser getFaceMap]];
         [text appendString:[source substringWithRange:NSMakeRange(location, result.range.location-location)]];
         if(icon!=nil){
-            NSMutableString * iconStr=[NSMutableString stringWithFormat:@"%@.png",icon];
+            NSMutableString * iconStr=[NSMutableString stringWithFormat:@"%@",icon];
             NSMutableDictionary * dic=[NSMutableDictionary dictionaryWithObjectsAndKeys:iconStr,MatchParserImage,[NSNumber numberWithInteger:[text length]+offset],MatchParserLocation,[NSNull null],MatchParserRects,[NSNull null],MatchParserLine, nil];
             [imageArr addObject:dic];
             [text appendString:@" "];

@@ -603,6 +603,8 @@
 		04DA3AF719667B4B00E0AE3C /* XYInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA3AEA19667B4B00E0AE3C /* XYInputView.m */; };
 		04DA3AF819667B4B00E0AE3C /* XYLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA3AEC19667B4B00E0AE3C /* XYLoadingView.m */; };
 		04DA3AFB1966AA3C00E0AE3C /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA3AFA1966AA3C00E0AE3C /* LoginView.m */; };
+		04F007861973791500E2F6FD /* FansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F007851973791500E2F6FD /* FansViewController.m */; };
+		04F007891973793D00E2F6FD /* FansCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F007881973793D00E2F6FD /* FansCell.m */; };
 		9FED4FC75D60427788D81610 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B65EEEDD2B814E2D8856D086 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -1417,6 +1419,10 @@
 		04DA3AEC19667B4B00E0AE3C /* XYLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYLoadingView.m; sourceTree = "<group>"; };
 		04DA3AF91966AA3C00E0AE3C /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
 		04DA3AFA1966AA3C00E0AE3C /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		04F007841973791500E2F6FD /* FansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FansViewController.h; sourceTree = "<group>"; };
+		04F007851973791500E2F6FD /* FansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FansViewController.m; sourceTree = "<group>"; };
+		04F007871973793D00E2F6FD /* FansCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FansCell.h; sourceTree = "<group>"; };
+		04F007881973793D00E2F6FD /* FansCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FansCell.m; sourceTree = "<group>"; };
 		B65EEEDD2B814E2D8856D086 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C426F25D674D49D598D38618 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1610,6 +1616,7 @@
 		04A62CFD1951B85D007E8ACF /* FindMe */ = {
 			isa = PBXGroup;
 			children = (
+				04F00783197378DB00E2F6FD /* Fans */,
 				04A62CFE1951B8D7007E8ACF /* ViewController.h */,
 				04A62CFF1951B8D7007E8ACF /* ViewController.m */,
 				04DA3AF91966AA3C00E0AE3C /* LoginView.h */,
@@ -2940,6 +2947,17 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		04F00783197378DB00E2F6FD /* Fans */ = {
+			isa = PBXGroup;
+			children = (
+				04F007841973791500E2F6FD /* FansViewController.h */,
+				04F007851973791500E2F6FD /* FansViewController.m */,
+				04F007871973793D00E2F6FD /* FansCell.h */,
+				04F007881973793D00E2F6FD /* FansCell.m */,
+			);
+			name = Fans;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3581,7 +3599,9 @@
 				04A9614B1955851F002E30AF /* User.m in Sources */,
 				04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */,
 				04DA3AD819666E7F00E0AE3C /* DetailViewController.m in Sources */,
+				04F007891973793D00E2F6FD /* FansCell.m in Sources */,
 				04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */,
+				04F007861973791500E2F6FD /* FansViewController.m in Sources */,
 				04A9616719559D1D002E30AF /* NSObject+MJKeyValue.m in Sources */,
 				04B3175C1957013300F93C73 /* UIResponder+Router.m in Sources */,
 				04A4E2431967F00000E9BC63 /* MBProgressHUD+Add.m in Sources */,

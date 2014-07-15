@@ -24,8 +24,10 @@ PODS:
     - GPUImage
   - BBBadgeBarButtonItem (1.0)
   - DACircularProgress (2.2.0)
+  - DZNEmptyDataSet (1.3.3)
   - GPUImage (0.1.4)
   - MBProgressHUD (0.8)
+  - MCSwipeTableViewCell (2.1.0)
   - MWPhotoBrowser (1.4.0):
     - DACircularProgress
     - MBProgressHUD (~> 0.8)
@@ -41,7 +43,9 @@ DEPENDENCIES:
   - AFNetworking
   - AMSmoothAlert
   - BBBadgeBarButtonItem
+  - DZNEmptyDataSet
   - MBProgressHUD
+  - MCSwipeTableViewCell
   - MWPhotoBrowser
   - SDWebImage
   - THProgressView
@@ -51,8 +55,10 @@ SPEC CHECKSUMS:
   AMSmoothAlert: 1b4bf6688b698a606a963c336b5060490f4d3db2
   BBBadgeBarButtonItem: 9fd6089e0694ee1e9dfb96fb66fbcb4bfa22f3ee
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
+  DZNEmptyDataSet: aa20600aff620af3d78edbff4bc47282972e815f
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
   MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537
   PSTCollectionView: a63299550ad566b579479d07cb5e2bf61148686b
   SDWebImage: c6989652c1cdf27cbdf3f56957e2030f825af5bc

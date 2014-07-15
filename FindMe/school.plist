@@ -4,12 +4,6 @@
 <array>
 	<dict>
 		<key>scNo</key>
-		<string>0</string>
-		<key>scName</key>
-		<string>找不到学校，通知我们</string>
-	</dict>
-	<dict>
-		<key>scNo</key>
 		<string>2014042916362524331055107</string>
 		<key>scName</key>
 		<string>厦门大学</string>

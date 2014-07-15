@@ -1,10 +1,3 @@
-//
-//  ChooseSchoolViewController.m
-//  FindMe
-//
-//  Created by mac on 14-4-28.
-//  Copyright (c) 2014年 mac. All rights reserved.
-//
 #import "AFNetworking.h"
 #import "ChooseSchoolViewController.h"
 #import "ChooseDepartmentViewController.h"
@@ -51,7 +44,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 #pragma UITableViewDataSource
 

@@ -6,6 +6,8 @@ pod 'SDWebImage'
 pod 'MWPhotoBrowser'
 pod 'AMSmoothAlert'
 pod 'BBBadgeBarButtonItem'
+pod 'MCSwipeTableViewCell'
+pod 'DZNEmptyDataSet'
 post_install do |installer|
     installer.project.targets.each do |target|
         target.build_configurations.each do |configuration|

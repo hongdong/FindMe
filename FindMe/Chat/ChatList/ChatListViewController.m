@@ -15,8 +15,8 @@
 #import "MJRefresh.h"
 #import "User.h"
 #import "UIImageView+WebCache.h"
-
-@interface ChatListViewController ()<UITableViewDelegate,UITableViewDataSource, IChatManagerDelegate>
+#import "UIScrollView+EmptyDataSet.h"
+@interface ChatListViewController ()<UITableViewDelegate,UITableViewDataSource, IChatManagerDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (strong, nonatomic) NSMutableArray        *dataSource;
 @property (strong, nonatomic) UITableView           *tableView;
@@ -98,6 +98,10 @@
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        
+        _tableView.emptyDataSetSource = self;
+        _tableView.emptyDataSetDelegate = self;
+        
         _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_tableView registerClass:[ChatListCell class] forCellReuseIdentifier:@"chatListCell"];
@@ -287,6 +291,11 @@
 
 - (void)dealloc{
     [self unregisterNotifications];
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    
+    _tableView.emptyDataSetSource = nil;
+    _tableView.emptyDataSetDelegate = nil;
 }
 
 #pragma mark - public
@@ -308,5 +317,45 @@
         _tableView.tableHeaderView = nil;
     }
 }
+
+#pragma mark - DZNEmptyDataSetSource Methods
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    text = @"暂无消息";
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
+    textColor = HDRED;
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    text = @"你还没有消息，赶快找朋友聊一聊。";
+    font = [UIFont systemFontOfSize:13.0];
+    textColor = HDRED;
+    paragraph.lineSpacing = 4.0;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    return attributedString;
+}
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIImage imageNamed:@"face"];
+}
+
 
 @end
