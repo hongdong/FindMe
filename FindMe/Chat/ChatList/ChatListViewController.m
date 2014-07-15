@@ -329,7 +329,9 @@
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     text = @"暂无消息";
     font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-    textColor = HDRED;
+//    textColor = HDRED;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
 
@@ -346,8 +348,11 @@
     paragraph.alignment = NSTextAlignmentCenter;
     text = @"你还没有消息，赶快找朋友聊一聊。";
     font = [UIFont systemFontOfSize:13.0];
-    textColor = HDRED;
+//    textColor = HDRED;
     paragraph.lineSpacing = 4.0;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    if (paragraph) [attributes setObject:paragraph forKey:NSParagraphStyleAttributeName];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
     return attributedString;
 }

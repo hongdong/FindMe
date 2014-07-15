@@ -191,7 +191,9 @@
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     text = @"暂无粉丝";
     font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-    textColor = HDRED;
+//    textColor = HDRED;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
 
@@ -207,16 +209,23 @@
     paragraph.lineBreakMode = NSLineBreakByWordWrapping;
     paragraph.alignment = NSTextAlignmentCenter;
     text = @"你不会丑到连粉丝都木有吧，赶快更换你的照片。";
-    font = [UIFont systemFontOfSize:13.0];
-    textColor = HDRED;
+    font = [UIFont systemFontOfSize:12.0];
+//    textColor = HDRED;
     paragraph.lineSpacing = 4.0;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    if (paragraph) [attributes setObject:paragraph forKey:NSParagraphStyleAttributeName];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
     return attributedString;
 }
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
 {
-    return [UIImage imageNamed:@"face"];
+    return [UIImage imageNamed:@"graylogo"];
+}
+- (UIColor *)backgroundColorForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIColor whiteColor];
 }
 
 @end

@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIView *photoWallView;
 
 @property(strong,nonatomic) NSString *userId;
+@property (weak, nonatomic) IBOutlet UILabel *emptyLbl;
 
 @property(nonatomic,strong) User *user;
 @end

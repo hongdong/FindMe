@@ -41,7 +41,7 @@
 }
 
 -(void)setDataWithPost:(Post *) post{
-    [self.image setImageWithURL:[NSURL URLWithString:post.postPhoto[0]]];
+    [self.image setImageWithURL:[NSURL URLWithString:post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     
     self.contentLbl.text = post.postContent;
     

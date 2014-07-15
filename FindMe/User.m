@@ -57,6 +57,44 @@
     }];
 }
 
+
+-(void)getUserInfo:(void (^)())complete{
+    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
+    NSDictionary *parameters = @{@"userId": self._id};
+    __weak __typeof(&*self)weakSelf = self;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
+        if (userInfo!=nil) {
+            weakSelf._id = [userInfo objectForKey:@"_id"];
+            weakSelf.userRealName = [userInfo objectForKey:@"userRealName"];
+            weakSelf.department = [userInfo objectForKey:@"department"];
+            weakSelf.school = [userInfo objectForKey:@"school"];
+            weakSelf.userAuthType = [userInfo objectForKey:@"userAuthType"];
+            weakSelf.userAuth = [userInfo objectForKey:@"userAuth"];
+            weakSelf.userConstellation = [userInfo objectForKey:@"userConstellation"];
+            weakSelf.userGrade = [userInfo objectForKey:@"userGrade"];
+            weakSelf.userNickName = [userInfo objectForKey:@"userNickName"];
+            weakSelf.userPhoto = [userInfo objectForKey:@"userPhoto"];
+            weakSelf.openId = [userInfo objectForKey:@"userOpenId"];
+            weakSelf.userSex = [userInfo objectForKey:@"userSex"];
+            weakSelf.userSignature = [userInfo objectForKey:@"userSignature"];
+            weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
+            weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
+            weakSelf.userAlbum = [userInfo objectForKey:@"userAlbum"];
+            if (weakSelf.userAlbum==nil) {
+                weakSelf.userAlbum = [[NSMutableArray alloc] init];
+            }
+            NSLog(@"获取用户资料完成");
+            if (complete!=nil) {
+                complete();
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 -(NSString *)getSchoolId{
     return [self.school objectForKey:@"_id"];
 }

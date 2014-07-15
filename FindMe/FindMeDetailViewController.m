@@ -28,21 +28,30 @@
     }
     return self;
 }
-
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.user = [[User alloc] init];
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    __weak __typeof(&*self)weakSelf = self;
     if (self.userId!=nil&&self.user==nil) {
-        self.user = [[User alloc] init];
         self.user._id = self.userId;
-        [self.user getUserInfo];
+        
+        [self.user getUserInfo:^{
+            [weakSelf setUpScroll];
+            [weakSelf setPhoto];
+        }];
     }
-    
-    [self setUpScroll];
-    
-    myImageUrlArr = [[NSMutableArray alloc] init];
-    
+
+}
+
+-(void)setPhoto{
+    myImageUrlArr = self.user.userAlbum;
     int BtnW = 100;
     int BtnWS = 6;
     int BtnX = 4;
@@ -64,13 +73,9 @@
         [imageview setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         
-
-        
         [self.photoWallView addSubview: imageview];
     }
 }
-
-
 
 -(void)photoClick:(UITapGestureRecognizer *)imageTap
 {

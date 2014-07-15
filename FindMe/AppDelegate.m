@@ -67,10 +67,10 @@
         NSLog(@"点击ICON打开软件");
     }
     
-    if ([[Config sharedConfig] isLogin]) {
-        User *user = [User getUserFromNSUserDefaults];
-        [user freshSession];
-    }
+//    if ([[Config sharedConfig] isLogin]) {
+//        User *user = [User getUserFromNSUserDefaults];
+//        [user freshSession];
+//    }
     
     return YES;
 }
@@ -182,6 +182,7 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationWillResignActive:application];
+    [[Config sharedConfig] changeOnlineState:@"0"];
     NSLog(@"ResignActive");
 }
 
@@ -202,10 +203,11 @@
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
     
-//    if ([[Config sharedConfig] isLogin]) {
-//        User *user = [User getUserFromNSUserDefaults];
-//        [user freshSession];
-//    }
+    if ([[Config sharedConfig] isLogin]) {
+        User *user = [User getUserFromNSUserDefaults];
+        [user freshSession];
+    }
+    NSLog(@"DidBecomeActive");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

@@ -1407,6 +1407,15 @@
                             <view contentMode="scaleToFill" id="5PF-hH-Yr2">
                                 <rect key="frame" x="0.0" y="199" width="320" height="305"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ta还没上传照片" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mle-Ix-fXk">
+                                        <rect key="frame" x="100" y="144" width="120" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -1416,6 +1425,7 @@
                     <navigationItem key="navigationItem" title="照片墙" id="Jyk-Vh-m66"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="emptyLbl" destination="mle-Ix-fXk" id="9ab-Uj-cz7"/>
                         <outlet property="pageControl" destination="VKL-hN-ZeK" id="a0w-4P-Mh4"/>
                         <outlet property="photoWallView" destination="5PF-hH-Yr2" id="loy-CX-jGc"/>
                         <outlet property="qianming" destination="652-OW-iB0" id="rVf-kl-5v5"/>

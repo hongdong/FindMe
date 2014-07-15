@@ -2,7 +2,6 @@
 #import "BaseTableViewCell.h"
 #import "RealtimeSearchUtil.h"
 #import "ChineseToPinyin.h"
-#import "ApplyViewController.h"
 #import "EMBuddy.h"
 #import "EaseMob.h"
 #import "ChatViewController.h"
@@ -10,7 +9,8 @@
 #import <AFNetworking.h>
 #import "User.h"
 #import "UIImageView+WebCache.h"
-@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate>
+#import "UIScrollView+EmptyDataSet.h"
+@interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (strong, nonatomic) NSMutableArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -18,7 +18,6 @@
 
 @property (strong, nonatomic) UILabel *unapplyCountLabel;
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) ApplyViewController *applyController;
 
 
 @end
@@ -114,6 +113,9 @@
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        
+        _tableView.emptyDataSetSource = self;
+        _tableView.emptyDataSetDelegate = self;
         _tableView.tableFooterView = [[UIView alloc] init];
     }
     
@@ -124,44 +126,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [self.dataSource count] + 1;
+    return [self.dataSource count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 1;
-    }
     
-    return [[self.dataSource objectAtIndex:(section - 1)] count];
+    return [[self.dataSource objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BaseTableViewCell *cell;
-    
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
-        if (cell == nil) {
-            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FriendCell"];
-        }
-        
-        cell.imageView.image = [UIImage imageNamed:@"newFriends"];
-        cell.textLabel.text = @"通知消息";
-        [cell addSubview:self.unapplyCountLabel];
-    }
-    else{
+
         static NSString *CellIdentifier = @"ContactListCell";
         cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         
-            User *user = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+            User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
             [cell.imageView setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
             cell.textLabel.text = user.userNickName;
-        
-    }
+    
+    
     
     return cell;
 }
@@ -177,7 +165,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 || [[self.dataSource objectAtIndex:(section - 1)] count] == 0)
+    if ([[self.dataSource objectAtIndex:section] count] == 0)
     {
         return 0;
     }
@@ -188,7 +176,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 || [[self.dataSource objectAtIndex:(section - 1)] count] == 0)
+    if ([[self.dataSource objectAtIndex:section] count] == 0)
     {
         return nil;
     }
@@ -218,23 +206,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (indexPath.section == 0) {
-            if (_applyController == nil) {
-                _applyController = [[ApplyViewController alloc] initWithStyle:UITableViewStylePlain];
-            }
-            
-            _applyController.dataSource = self.applysArray;
-            [self.navigationController pushViewController:_applyController animated:YES];
-    }
-    else{
+
         User *user = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
 //        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
 //        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
         ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:user._id andPhoto:user.userPhoto];
         chatVC.title = user.userNickName;
         [self.navigationController pushViewController:chatVC animated:YES];
-    }
+    
 }
 
 
@@ -344,11 +323,51 @@
         self.unapplyCountLabel.frame = rect;
         self.unapplyCountLabel.hidden = NO;
     }
+
+}
+
+#pragma mark - DZNEmptyDataSetSource Methods
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
     
-    if(_applyController)
-    {
-        [_applyController.tableView reloadData];
-    }
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    text = @"暂无好友";
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
+    //    textColor = HDRED;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    text = @"你还没有好友，赶快更换照片了。";
+    font = [UIFont systemFontOfSize:13.0];
+    //    textColor = HDRED;
+    paragraph.lineSpacing = 4.0;
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    if (paragraph) [attributes setObject:paragraph forKey:NSParagraphStyleAttributeName];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    return attributedString;
+}
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIImage imageNamed:@"graylogo"];
 }
 
 @end
