@@ -10,7 +10,8 @@
 #import "FansCell.h"
 #import "AFNetworking.h"
 #import "User.h"
-@interface FansViewController ()<MCSwipeTableViewCellDelegate>{
+#import "UIScrollView+EmptyDataSet.h"
+@interface FansViewController ()<MCSwipeTableViewCellDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
 }
 
@@ -32,6 +33,10 @@
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [backgroundView setBackgroundColor:[UIColor colorWithRed:227.0 / 255.0 green:227.0 / 255.0 blue:227.0 / 255.0 alpha:1.0]];
     [self.tableView setBackgroundView:backgroundView];
+    
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    
     self.tableView.tableHeaderView = [[UIView alloc] init];
     
     [self getFans];
@@ -173,6 +178,45 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [_dataArr removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark - DZNEmptyDataSetSource Methods
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    text = @"暂无粉丝";
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
+    textColor = HDRED;
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    text = @"你不会丑到连粉丝都木有吧，赶快更换你的照片。";
+    font = [UIFont systemFontOfSize:13.0];
+    textColor = HDRED;
+    paragraph.lineSpacing = 4.0;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    return attributedString;
+}
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIImage imageNamed:@"face"];
 }
 
 @end

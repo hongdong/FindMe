@@ -13,8 +13,8 @@
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
 #import "Comment.h"
-
-@interface PostDetailViewController (){
+#import "UIScrollView+EmptyDataSet.h"
+@interface PostDetailViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     
     NSArray *_dataArr;
     double animationDuration;
@@ -49,6 +49,9 @@
         
     }
     self.tableView.tableHeaderView = _head;
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    
     self.navigationItem.title = @"小秘密";
     _didChange = @"0";
     _flag = @"p";
@@ -499,6 +502,51 @@
     if ([_didChange isEqualToString:@"1"]&&self.delegate) {
         [self.delegate changeRowWithPost:self.post];
     }
+
+}
+
+
+#pragma mark - DZNEmptyDataSetSource Methods
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    text = @"吐槽星人";
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
+    textColor = HDRED;
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    text = @"怎么能不吐槽";
+    font = [UIFont systemFontOfSize:13.0];
+    textColor = HDRED;
+    paragraph.lineSpacing = 4.0;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    return attributedString;
+}
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIImage imageNamed:@"face"];
+}
+- (CGPoint)offsetForEmptyDataSet:(UIScrollView *)scrollView
+{
+        return CGPointMake(0, self.tableView.tableHeaderView.frame.size.height/2);
 
 }
 
