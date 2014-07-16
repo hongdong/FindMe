@@ -155,7 +155,7 @@
             // Load async from web (using SDWebImage)
             @try {
                 SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                _webImageOperation = [manager downloadWithURL:_photoURL
+                _webImageOperation = [manager downloadImageWithURL:_photoURL
                                                       options:0
                                                      progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                          if (expectedSize > 0) {
@@ -166,7 +166,7 @@
                                                              [[NSNotificationCenter defaultCenter] postNotificationName:MWPHOTO_PROGRESS_NOTIFICATION object:dict];
                                                          }
                                                      }
-                                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
                                                         if (error) {
                                                             MWLog(@"SDWebImage failed to download image: %@", error);
                                                         }

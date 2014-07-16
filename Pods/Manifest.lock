@@ -28,15 +28,16 @@ PODS:
   - GPUImage (0.1.4)
   - MBProgressHUD (0.8)
   - MCSwipeTableViewCell (2.1.0)
+  - MDCFocusView (0.1.0)
   - MWPhotoBrowser (1.4.0):
     - DACircularProgress
     - MBProgressHUD (~> 0.8)
     - PSTCollectionView (~> 1.2)
     - SDWebImage (~> 3.5.4)
   - PSTCollectionView (1.2.1)
-  - SDWebImage (3.6):
+  - SDWebImage (3.7.0):
     - SDWebImage/Core
-  - SDWebImage/Core (3.6)
+  - SDWebImage/Core (3.7.0)
   - THProgressView (1.0)
 
 DEPENDENCIES:
@@ -46,6 +47,7 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - MBProgressHUD
   - MCSwipeTableViewCell
+  - MDCFocusView
   - MWPhotoBrowser
   - SDWebImage
   - THProgressView
@@ -59,9 +61,10 @@ SPEC CHECKSUMS:
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
+  MDCFocusView: 186d3e1b7b707f64435fa7ff4bcd5874a17fd940
   MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537
   PSTCollectionView: a63299550ad566b579479d07cb5e2bf61148686b
-  SDWebImage: c6989652c1cdf27cbdf3f56957e2030f825af5bc
+  SDWebImage: 791cb0f588046cb0bb7802ae8ae8f5462947b773
   THProgressView: 083589a96d15ee94329a27cab1d1a79111722efa
 
 COCOAPODS: 0.33.1

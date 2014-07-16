@@ -75,7 +75,7 @@
         imageview.clipsToBounds = YES;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
-        [imageview setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+        [imageview sd_setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         
         [self.photoWallView addSubview: imageview];
@@ -120,7 +120,7 @@
     firstView.contentMode = UIViewContentModeScaleAspectFill;
     firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
     
-    [firstView.photo setImageWithURL:[NSURL URLWithString:self.user.userPhoto]];
+    [firstView.photo sd_setImageWithURL:[NSURL URLWithString:self.user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     firstView.realNameLbl.text = self.user.userRealName;
     if ([self.user.userSex isEqualToString:@"男"]) {
         firstView.sex.image = [UIImage imageNamed:@"boy"];

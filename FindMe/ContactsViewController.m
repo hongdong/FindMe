@@ -146,7 +146,7 @@
         }
         
             User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [cell.imageView setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
             cell.textLabel.text = user.userNickName;
     
     

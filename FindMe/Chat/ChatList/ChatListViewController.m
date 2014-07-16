@@ -219,7 +219,7 @@
     NSArray *users = [User dbObjectsWhere:sql orderby:nil];
     User *user = users[0];
     cell.name = user.userNickName;
-    [cell.imageView setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
     cell.detailMsg = [self subTitleMessageByConversation:conversation];
     cell.time = [self lastMessageTimeByConversation:conversation];
     cell.unreadCount = [self unreadMessageCountByConversation:conversation];

@@ -73,7 +73,7 @@
         imageview.clipsToBounds = YES;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
-        [imageview setImageWithURL:[NSURL URLWithString: [_user.userAlbum objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+        [imageview sd_setImageWithURL:[NSURL URLWithString: [_user.userAlbum objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deletePhoto:)];
@@ -109,7 +109,7 @@
     imageview.clipsToBounds = YES;
     imageview.contentMode = UIViewContentModeScaleAspectFill;
     
-    [imageview setImageWithURL:[NSURL URLWithString: [_user.userAlbum lastObject]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+    [imageview sd_setImageWithURL:[NSURL URLWithString: [_user.userAlbum lastObject]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
     [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
     
     

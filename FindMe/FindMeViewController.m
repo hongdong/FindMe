@@ -18,12 +18,15 @@
 #import "FindMeDetailViewController.h"
 #import "CoverView.h"
 #import "BBBadgeBarButtonItem.h"
+#import "MDCFocusView.h"
+#import "MDCSpotlightView.h"
 @interface FindMeViewController (){
     User *_user;
     User *_matchUser;
     LoginView *_loginView;
     CoverView *_coverView;
     BBBadgeBarButtonItem *_fansItem;
+    MDCFocusView *_focusView;
 }
 
 @end
@@ -45,7 +48,6 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _coverView = [HDTool loadCustomViewByIndex:4];
-        
         UIButton *fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [fansButton setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
@@ -54,16 +56,34 @@
         _fansItem.badgeOriginX = 10;
         _fansItem.badgeOriginY = -9;
         if ([[Config sharedConfig] isLogin]) {
-//            NSLog(@"后台登入");
             _user = [User getUserFromNSUserDefaults];
-//            [self isOauth:user.openId forType:user.userAuthType andBack:@"1"];
         }else{
             NSLog(@"未登入，显示登入界面");
             _loginView = [HDTool loadCustomViewByIndex:1];
             _loginView.delegate = self;
         }
+        
+        if ([HDTool isFirstLoad]) {
+            _focusView = [MDCFocusView new];
+            _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+            _focusView.focalPointViewClass = [MDCSpotlightView class];
+            [_focusView addSubview:[self buildLabelWithText:@"番迷君每天至多给你推荐三个有缘人，当你点击了pass后就能看到下一个人，切记不能回头。"]];
+        }
     }
     return self;
+}
+
+- (UILabel *)buildLabelWithText:(NSString *)text {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 200, 300)];
+    label.numberOfLines = 10;
+    label.font = [UIFont boldSystemFontOfSize:16.0f];
+    label.shadowColor = [UIColor grayColor];
+    label.shadowOffset = CGSizeMake(0, 1);
+    label.text = text;
+    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
+    
+    return label;
 }
 
 - (void)viewDidLoad
@@ -206,7 +226,7 @@
 
 -(void)setMatchPeople{
     if (_matchUser!=nil) {
-        [self.photo setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+        [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
         self.nickname.text = _matchUser.userNickName;
         self.grade.text = _matchUser.userGrade;
         if ([_matchUser.userSex isEqualToString:@"男"]) {
