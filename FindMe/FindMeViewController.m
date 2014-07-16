@@ -343,10 +343,11 @@
             NSLog(@"登入成功");
             _user._id = [responseObject objectForKey:@"userId"];
             
-            [_user getUserInfo];
+            [_user getUserInfo:^{
+                [_user saveToNSUserDefaults];//保存登入信息
+            }];
+            
             [[Config sharedConfig] changeLoginState:@"1"];
-//            [_user saveToNSUserDefaults];//保存登入信息
-
             [weakSelf EaseMobLoginWithUsername:[responseObject objectForKey:@"userId"]];//IM登入
             
         }else if ([state isEqualToString:@"10001"]){

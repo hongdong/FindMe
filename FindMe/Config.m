@@ -58,6 +58,25 @@
     [setting synchronize];
 }
 
+-(void)saveResignActiveDate{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    [setting removeObjectForKey:@"resignActiveDate"];
+    NSDate *resignActiveDate = [NSDate date];
+    [setting setObject:resignActiveDate forKey:@"resignActiveDate"];
+    [setting synchronize];
+}
+
+-(BOOL)needFresh{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    NSDate * resignActiveDate = [setting objectForKey:@"resignActiveDate"];
+    NSTimeInterval timeInterval = -[resignActiveDate timeIntervalSinceNow];
+    if (timeInterval>60*30) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
 -(NSString *)getRegistrationID{
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     NSString * value = [setting objectForKey:@"registrationID"];

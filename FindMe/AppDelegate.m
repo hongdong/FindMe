@@ -49,7 +49,8 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-
+    
+    [[Config sharedConfig] changeOnlineState:@"0"];//点击ICON打开软件的肯定要重新刷新session
     
     [self initShareSDK];
 
@@ -182,7 +183,8 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationWillResignActive:application];
-    [[Config sharedConfig] changeOnlineState:@"0"];
+//    [[Config sharedConfig] changeOnlineState:@"0"];
+    [[Config sharedConfig] saveResignActiveDate];
     NSLog(@"ResignActive");
 }
 
@@ -204,6 +206,12 @@
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
     
     if ([[Config sharedConfig] isLogin]) {
+        if ([[Config sharedConfig] needFresh]) {
+            [[Config sharedConfig] changeOnlineState:@"0"];
+        }
+    }
+    
+    if (![[Config sharedConfig] isOnline]) {
         User *user = [User getUserFromNSUserDefaults];
         [user freshSession];
     }
@@ -214,6 +222,7 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationWillTerminate:application];
+
     [[Config sharedConfig] changeOnlineState:@"0"];
     NSLog(@"Terminate");
 }

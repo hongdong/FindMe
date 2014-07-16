@@ -20,4 +20,8 @@
 -(void)minusBadge;
 
 -(void)cleanUser;
+
+-(void)saveResignActiveDate;
+
+-(BOOL)needFresh;
 @end

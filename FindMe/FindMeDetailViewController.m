@@ -13,7 +13,7 @@
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
 @interface FindMeDetailViewController (){
-        NSMutableArray * myImageUrlArr;
+        NSMutableArray *myImageUrlArr;
 }
 
 @end
@@ -52,6 +52,9 @@
 
 -(void)setPhoto{
     myImageUrlArr = self.user.userAlbum;
+    if (myImageUrlArr==nil||[myImageUrlArr count]==0) {
+        return;
+    }
     int BtnW = 100;
     int BtnWS = 6;
     int BtnX = 4;
@@ -59,6 +62,8 @@
     int BtnH = 100;
     int BtnHS = 0;
     int BtnY = 0;
+    
+    self.emptyLbl.hidden = YES;
     
     int i = 0;
     for (i = 0; i < [myImageUrlArr count]; i++ ) {
