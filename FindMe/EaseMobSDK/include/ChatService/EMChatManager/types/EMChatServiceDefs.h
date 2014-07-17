@@ -72,4 +72,27 @@ typedef enum {
     eGroupLeaveReason_Destroyed
 }EMGroupLeaveReason;
 
+
+#define kPushNotificationMaskDisplayStyle      0x01
+#define kPushNotificationMaskNickname          0x01<<1
+#define kPushNotificationMaskNoDisturbing      0x01<<2
+#define kPushNotificationMaskNoDisturbingStart 0x01<<3
+#define kPushNotificationMaskNoDisturbingEnd   0x01<<4
+
+/*!
+ @enum
+ @brief 推送消息的定制信息
+ @constant ePushNotificationDisplayStyle_simpleBanner   简单显示一条"您有一条新消息"的文本
+ @constant ePushNotificationDisplayStyle_messageSummary 会显示一条具有消息内容的推送消息
+ @constant ePushNotificationDisplayStyle_messageDetail  尚未使用, 目前等同于ePushNotificationDisplayStyle_messageSummary
+ */
+typedef enum {
+    ePushNotificationDisplayStyle_simpleBanner = 0,
+    ePushNotificationDisplayStyle_messageSummary,
+    ePushNotificationDisplayStyle_messageDetail = ePushNotificationDisplayStyle_messageSummary
+}EMPushNotificationDisplayStyle;
+
+
+#define EM_DEPRECATED_IOS(_easemobIntro, _easemobDep, ...) __attribute__((deprecated("")))
+
 #endif

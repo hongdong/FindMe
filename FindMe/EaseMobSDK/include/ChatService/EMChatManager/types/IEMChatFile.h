@@ -1,14 +1,17 @@
-//
-//  IEMChatFile.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/23/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header IEMChatFile.h
+ @abstract 基于文件类的聊天对象接口
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 #import "IEMChatObject.h"
 
+/*!
+ @class
+ @brief 基于文件类的聊天对象协议
+ */
 @protocol IEMChatFile <IEMChatObject>
 
 @required

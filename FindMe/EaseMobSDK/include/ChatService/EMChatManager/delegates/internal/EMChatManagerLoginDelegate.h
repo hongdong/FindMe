@@ -47,6 +47,14 @@
 
 /*!
  @method
+ @brief 当前登录账号已经被从服务器端删除
+ @discussion
+ @result
+ */
+- (void)didRemovedFromServer;
+
+/*!
+ @method
  @brief 当前登陆用户掉线重连后发生的通知回调
  @discussion
  @result

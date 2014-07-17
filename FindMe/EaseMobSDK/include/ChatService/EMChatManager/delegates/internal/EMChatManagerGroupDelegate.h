@@ -83,6 +83,39 @@
 
 /*!
  @method
+ @brief 收到加入群组的申请
+ @param groupId         要加入的群组ID
+ @param groupname   申请人的用户名
+ @param username   申请人的昵称
+ @param reason          申请理由
+ */
+- (void)didReceiveApplyToJoinGroup:(NSString *)groupId
+                         groupname:(NSString *)groupname
+                     applyUsername:(NSString *)username
+                            reason:(NSString *)reason;
+
+/*!
+ @method
+ @brief 申请加入群组，被拒绝后的回调
+ @param fromId          拒绝的人的ID
+ @param groupname       申请加入的群组名称
+ @param reason          拒绝理由
+ */
+- (void)didReceiveRejectApplyToJoinGroupFrom:(NSString *)fromId
+                                   groupname:(NSString *)groupname
+                                      reason:(NSString *)reason;
+
+/*!
+ @method
+ @brief 申请加入群组，同意后的回调
+ @param groupId         申请加入的群组的ID
+ @param groupname       申请加入的群组名称
+ */
+- (void)didReceiveAcceptApplyToJoinGroup:(NSString *)groupId
+                               groupname:(NSString *)groupname;
+
+/*!
+ @method
  @brief 群组列表变化后的回调
  @param groupList 新的群组列表
  @param error     错误信息
@@ -116,5 +149,14 @@
  */
 - (void)didJoinPublicGroup:(EMGroup *)group
                      error:(EMError *)error;
+
+/*!
+ @method
+ @brief 申请加入公开群组后的回调
+ @param group 群组对象
+ @param error 错误信息
+ */
+- (void)didApplyJoinPublicGroup:(EMGroup *)group
+                          error:(EMError *)error;
 
 @end

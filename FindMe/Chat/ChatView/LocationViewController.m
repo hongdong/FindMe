@@ -1,10 +1,14 @@
-//
-//  LocationViewController.m
-//  leCar
-//
-//  Created by dujiepeng on 14-4-15.
-//  Copyright (c) 2014年 XDIOS. All rights reserved.
-//
+/************************************************************
+  *  * EaseMob CONFIDENTIAL 
+  * __________________ 
+  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
+  *  
+  * NOTICE: All information contained herein is, and remains 
+  * the property of EaseMob Technologies.
+  * Dissemination of this information or reproduction of this material 
+  * is strictly forbidden unless prior written permission is obtained
+  * from EaseMob Technologies.
+  */
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
@@ -20,13 +24,16 @@ static LocationViewController *defaultLocation = nil;
     MKPointAnnotation *_annotation;
     
     CLLocationCoordinate2D _currentLocationCoordinate;
-    NSString *_addressString;
     BOOL _isSendLocation;
 }
+
+@property (strong, nonatomic) NSString *addressString;
 
 @end
 
 @implementation LocationViewController
+
+@synthesize addressString = _addressString;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,12 +70,13 @@ static LocationViewController *defaultLocation = nil;
     
     _mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     _mapView.delegate = self;
-    _mapView.showsUserLocation = YES;//显示当前位置
     _mapView.mapType = MKMapTypeStandard;
     _mapView.zoomEnabled = YES;
     [self.view addSubview:_mapView];
     
     if (_isSendLocation) {
+        _mapView.showsUserLocation = YES;//显示当前位置
+        
         UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
         [sendButton setTitle:@"发送" forState:UIControlStateNormal];
         [sendButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
@@ -116,11 +124,12 @@ static LocationViewController *defaultLocation = nil;
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    __weak typeof(self) weakSelf = self;
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
-            _addressString = placemark.name;
+            weakSelf.addressString = placemark.name;
             
             [self removeToLocation:userLocation.coordinate];
         }

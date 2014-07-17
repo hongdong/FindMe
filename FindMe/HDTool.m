@@ -149,13 +149,24 @@
     
     if (!lastRunVersion) {
         [defaults setObject:currentVersion forKey:LAST_RUN_VERSION_KEY];
+        [defaults setBool:YES forKey:@"firstLaunch"];
         return YES;
         // App is being run for first time
-    }
-    else if (![lastRunVersion isEqualToString:currentVersion]) {
+    }else if (![lastRunVersion isEqualToString:currentVersion]) {
         [defaults setObject:currentVersion forKey:LAST_RUN_VERSION_KEY];
+        [defaults setBool:YES forKey:@"firstLaunch"];
         return YES;
         // App has been updated since last run
+    }else{
+       [defaults setBool:NO forKey:@"firstLaunch"];
+    }
+    return NO;
+}
+
++ (BOOL) isFirstLoad2{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
+    {
+        return YES;
     }
     return NO;
 }

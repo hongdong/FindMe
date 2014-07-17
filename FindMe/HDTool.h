@@ -36,6 +36,7 @@
 + (id)loadCustomViewByIndex:(NSUInteger)index;
 //判断APP是否是这个版本第一次启动
 + (BOOL) isFirstLoad;
-
+//在其他地方判断APP是否是这个版本第一次启动
++ (BOOL) isFirstLoad2;
 +(id)getControllerByStoryboardId:(NSString *)storyboardId;
 @end

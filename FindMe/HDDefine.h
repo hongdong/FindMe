@@ -12,6 +12,9 @@
 #define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
 #define EaseMobShouldLogin @"EaseMobShouldLogin"
 #define UserInfoChange @"NSUserDefaultsUserChange"
+#define FriendChange @"FriendChange"
+
+
 #define CHATVIEWBACKGROUNDCOLOR [UIColor colorWithRed:0.936 green:0.932 blue:0.907 alpha:1]
 
 #define Host @"http://114.215.115.33"

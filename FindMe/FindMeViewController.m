@@ -63,7 +63,7 @@
             _loginView.delegate = self;
         }
         
-        if ([HDTool isFirstLoad]) {
+        if ([HDTool isFirstLoad2]) {
             _focusView = [MDCFocusView new];
             _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
             _focusView.focalPointViewClass = [MDCSpotlightView class];
@@ -257,8 +257,8 @@
     _user = [User getUserFromNSUserDefaults];
 }
 -(void)loginStateChange:(NSNotification *)notification{
-//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-//    BOOL isLogin = loginInfo && [loginInfo count] > 0;
+    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+    BOOL isLogin1 = loginInfo && [loginInfo count] > 0;
 //    if (notification.object) {
 //        isLogin = [notification.object boolValue] && isLogin;
 //    }
@@ -409,6 +409,7 @@
          if (loginInfo && !error) {
             NSLog(@"IM登入成功");
             [weakSelf showResultWithType:ResultSuccess];
+             NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
              [[Config sharedConfig] changeOnlineState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }else {

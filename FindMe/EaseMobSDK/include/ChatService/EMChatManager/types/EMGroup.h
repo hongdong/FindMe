@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "EMGroupStyleSetting.h"
+
 @class EMError;
 
 /*!
@@ -78,6 +80,12 @@
  @brief 此群是否为公开群组
  */
 @property (nonatomic, readonly) BOOL isPublic;
+
+/*!
+ @property
+ @brief  群组属性配置
+ */
+@property (nonatomic, strong, readonly) EMGroupStyleSetting *groupSetting;
 
 /*!
  @method

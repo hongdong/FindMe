@@ -39,12 +39,6 @@
  */
 - (BOOL)switchAudioOutputDevice:(EMAudioOutputDevice)outputDevice;
 
-///*!
-// @property
-// @brief 当前音频的播放模式
-// */
-//@property (nonatomic, readonly) EMAudioPlaybackMode currentPlaybackMode;
-
 /*!
  @property
  @brief 当前是否正在播放音频
@@ -74,7 +68,7 @@
  @discussion
  @result
  */
-- (void)asyncBlockPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayNewMessageWithCompletion:(void (^)(SystemSoundID soundId))completion
                                   onQueue:(dispatch_queue_t)aQueue;
 
 /*!
@@ -101,7 +95,7 @@
  @discussion
  @result
  */
-- (void)asyncBlockPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
+- (void)asyncPlayVibrationWithCompletion:(void (^)(SystemSoundID soundId))completion
                                  onQueue:(dispatch_queue_t)aQueue;
 
 /*!
@@ -119,7 +113,7 @@
  @param aFilePath 需要播放的音频的完整路径
  @result
  */
-- (void)asynDelegatePlayingAudioWithPath:(NSString *)aFilePath;
+- (void)asynPlayingAudioWithPath:(NSString *)aFilePath;
 
 /*!
  @method
@@ -129,7 +123,7 @@
  @param aQueue 回调block时的线程
  @result
  */
-- (void)asynBlockPlayingAudioWithPath:(NSString *)aFilePath
+- (void)asynPlayingAudioWithPath:(NSString *)aFilePath
             completion:(void (^)(NSError *aError))completion
                onQueue:(dispatch_queue_t)aQueue;
 
@@ -145,7 +139,6 @@
  @method
  @brief 开始录制音频
  @param aFilePath 录制完成后的音频文件保存路径
- @param pError 录制过程中的错误信息
  @discussion
  @result
  */
@@ -157,7 +150,7 @@
  @discussion
  @result
  */
-- (void)asynDelegateStopRecording;
+- (void)asynStopRecording;
 
 /*!
  @method
@@ -167,7 +160,7 @@
  @discussion
  @result
  */
-- (void)asynBlockStopRecordingWithCompletion:(void (^)(NSString *aFilePath,
+- (void)asynStopRecordingWithCompletion:(void (^)(NSString *aFilePath,
                                                         NSInteger duration,
                                                         NSError *error))completion
                                       onQueue:(dispatch_queue_t)aQueue;
@@ -178,7 +171,7 @@
  @discussion
  @result
  */
-- (void)asynDelegateCancelRecording;
+- (void)asynCancelRecording;
 
 /*!
  @method
@@ -188,7 +181,7 @@
  @discussion
  @result
  */
-- (void)asynBlockCancelRecordingWithCompletion:(void (^)(NSString *filePath, NSError *error))completion
+- (void)asynCancelRecordingWithCompletion:(void (^)(NSString *filePath, NSError *error))completion
                                         onQueue:(dispatch_queue_t)aQueue;
 
 /*!

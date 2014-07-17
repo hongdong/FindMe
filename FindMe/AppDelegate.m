@@ -41,7 +41,12 @@
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
-        [[EaseMob sharedInstance].chatManager isAutoLoginEnabled];
+        
+        [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
+        
+//        EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+//        options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
+//        [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
     }
 }
 
@@ -173,6 +178,8 @@
             NSLog(@"有人like");
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
             NSLog(@"成为好朋友了");
+            [[Config sharedConfig] friendNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
         }
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");
@@ -216,6 +223,25 @@
         [user freshSession];
     }
     NSLog(@"DidBecomeActive");
+}
+
+
+#pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
+
+- (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
+{
+    if (error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号登录失败，请重新登陆"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
+        alertView.tag = 99;
+        [alertView show];
+    }else{
+        NSLog(@"后台登入IM成功");
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

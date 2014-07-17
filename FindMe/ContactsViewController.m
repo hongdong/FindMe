@@ -16,7 +16,6 @@
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
-@property (strong, nonatomic) UILabel *unapplyCountLabel;
 @property (strong, nonatomic) UITableView *tableView;
 
 
@@ -35,7 +34,6 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _applysArray = [NSMutableArray array];
         _dataSource = [NSMutableArray array];
         _contactsSource = [NSMutableArray array];
         _sectionTitles = [NSMutableArray array];
@@ -47,13 +45,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myReloadDataSource) name:FriendChange object:nil];
+    
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"好友";
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.view addSubview:self.tableView];
     [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
-    [self loadLocalFriends];//读取本地好友列表
-//    [self myReloadDataSource];    
+    
+    if ([[Config sharedConfig] friendNew:nil]) {
+        [self myReloadDataSource];
+    }
+    
+    if ([HDTool isFirstLoad2]) {
+        NSLog(@"好友列表第一次");
+        [self myReloadDataSource];
+    }else{
+        NSLog(@"好友列表不是第一次");
+        [self loadLocalFriends];//读取本地好友列表
+    }
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
+    _tableView.delegate = nil;
 }
 
 -(void)loadLocalFriends{
@@ -72,29 +88,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self reloadApplyView];
 }
 
 #pragma mark - getter
 
 
-
-- (UILabel *)unapplyCountLabel
-{
-    if (_unapplyCountLabel == nil) {
-        _unapplyCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(36, 5, 20, 20)];
-        _unapplyCountLabel.textAlignment = NSTextAlignmentCenter;
-        _unapplyCountLabel.font = [UIFont systemFontOfSize:11];
-        _unapplyCountLabel.backgroundColor = [UIColor redColor];
-        _unapplyCountLabel.textColor = [UIColor whiteColor];
-        _unapplyCountLabel.layer.cornerRadius = _unapplyCountLabel.frame.size.height / 2;
-        _unapplyCountLabel.hidden = YES;
-        _unapplyCountLabel.clipsToBounds = YES;
-    }
-    
-    return _unapplyCountLabel;
-}
 
 
 
@@ -185,7 +183,7 @@
     [contentView setBackgroundColor:[UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 22)];
     label.backgroundColor = [UIColor clearColor];
-    [label setText:[self.sectionTitles objectAtIndex:(section - 1)]];
+    [label setText:[self.sectionTitles objectAtIndex:section]];
     [contentView addSubview:label];
     return contentView;
 }
@@ -207,7 +205,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        User *user = [[self.dataSource objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 //        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
 //        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
         ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:user._id andPhoto:user.userPhoto];
@@ -299,32 +297,7 @@
     }];
     
 }
-#pragma mark - action
 
-- (void)reloadApplyView
-{
-    NSInteger count = 0;
-    for (NSDictionary *dic in self.applysArray) {
-        if (![[dic objectForKey:@"acceptState"] boolValue]) {
-            count += 1;
-        }
-    }
-    
-    if (count == 0) {
-        self.unapplyCountLabel.hidden = YES;
-    }
-    else
-    {
-        NSString *tmpStr = [NSString stringWithFormat:@"%i", count];
-        CGSize size = [tmpStr sizeWithFont:self.unapplyCountLabel.font constrainedToSize:CGSizeMake(50, 20) lineBreakMode:NSLineBreakByWordWrapping];
-        CGRect rect = self.unapplyCountLabel.frame;
-        rect.size.width = size.width > 20 ? size.width : 20;
-        self.unapplyCountLabel.text = tmpStr;
-        self.unapplyCountLabel.frame = rect;
-        self.unapplyCountLabel.hidden = NO;
-    }
-
-}
 
 #pragma mark - DZNEmptyDataSetSource Methods
 

@@ -1,20 +1,31 @@
-//
-//  IEMFileMessageBody.h
-//  EaseMobClientSDK
-//
-//  Created by Ji Fang on 5/23/14.
-//  Copyright (c) 2014 EaseMob. All rights reserved.
-//
+/*!
+ @header IEMFileMessageBody.h
+ @abstract 基于文件类的消息体接口
+ @author EaseMob Inc.
+ @version 1.00 2014/01/01 Creation (1.00)
+ */
 
 #import <Foundation/Foundation.h>
 #import "IEMMessageBody.h"
 
+/*!
+ @enum
+ @brief 附件下载的状态
+ @constant EMAttachmentDownloading       正在下载
+ @constant EMAttachmentDownloadSuccessed 下载成功
+ @constant EMAttachmentDownloadFailure   下载失败
+ */
 typedef enum : NSUInteger {
     EMAttachmentDownloading,
     EMAttachmentDownloadSuccessed,
     EMAttachmentDownloadFailure
 } EMAttachmentDownloadStatus;
 
+
+/*!
+ @protocol
+ @brief 基于文件类型的消息体接口协议
+ */
 @protocol IEMFileMessageBody <IEMMessageBody>
 
 @required

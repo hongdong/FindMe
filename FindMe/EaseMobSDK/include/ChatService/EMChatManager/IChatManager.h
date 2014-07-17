@@ -14,6 +14,7 @@
 #import "IChatManagerLogin.h"
 #import "IChatManagerBuddy.h"
 #import "IChatManagerGroup.h"
+#import "IChatManagerPushNotification.h"
 
 /*!
  @protocol
@@ -28,7 +29,8 @@
                         IChatManagerMedia,
                         IChatManagerUtil,
                         IChatManagerGroup, 
-                        IChatManagerBuddy>
+                        IChatManagerBuddy,
+                        IChatManagerPushNotification>
 @required
 
 @end

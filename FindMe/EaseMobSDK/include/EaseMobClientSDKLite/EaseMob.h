@@ -54,6 +54,11 @@
  */
 - (void)enableBackgroundReceiveMessage;
 
+//开启 exception监听，并将exception写入到日志
+//（跟友盟有冲突，如果使用了友盟，调用了该方法，有可能会导致 umeng的 crashReport不能正常工作）
+//建议只在 Debug 状态时，打开该开关
+- (void)enableUncaughtExceptionHandler;
+
 /*!
  @property
  @brief 聊天管理器, 获取该对象后, 可以做登录、聊天、加好友等操作
