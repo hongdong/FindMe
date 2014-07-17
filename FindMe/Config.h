@@ -24,4 +24,6 @@
 -(void)saveResignActiveDate;
 
 -(BOOL)needFresh;
+
+-(BOOL)friendNew:(NSString *)isnew;
 @end

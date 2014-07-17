@@ -41,7 +41,7 @@
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
-        [[EaseMob sharedInstance].chatManager isAutoLoginEnabled];
+
     }
 }
 
@@ -50,7 +50,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
-    [[Config sharedConfig] changeOnlineState:@"0"];//点击ICON打开软件的肯定要重新刷新session
+    [[Config sharedConfig] changeOnlineState:@"0"];
     
     [self initShareSDK];
 
@@ -60,6 +60,7 @@
     
 
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
+    
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
         //表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -140,12 +141,14 @@
     apnsCertName = @"findmepushpro";
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"fjhongdong#findme" apnsCertName:apnsCertName];
+    
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
 
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
 
 }
@@ -173,6 +176,8 @@
             NSLog(@"有人like");
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
             NSLog(@"成为好朋友了");
+            [[Config sharedConfig] friendNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
         }
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");
@@ -216,6 +221,27 @@
         [user freshSession];
     }
     NSLog(@"DidBecomeActive");
+}
+
+
+#pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
+
+- (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
+{
+    if (error) {
+        NSLog(@"IM后台登入失败");
+    }else{
+        NSLog(@"后台登入IM成功");
+    }
+}
+
+#pragma mark - push
+
+- (void)didBindDeviceWithError:(EMError *)error
+{
+    if (error) {
+        NSLog(@"消息推送与设备绑定失败");
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

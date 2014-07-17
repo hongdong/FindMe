@@ -13,6 +13,7 @@
 #import "EMChatManagerBuddyDelegate.h"
 #import "EMChatManagerUtilDelegate.h"
 #import "EMChatManagerGroupDelegate.h"
+#import "EMChatManagerPushNotificationDelegate.h"
 
 /*!
  @protocol
@@ -25,7 +26,8 @@
                                 EMChatManagerMediaDelegate,
                                 EMChatManagerBuddyDelegate,
                                 EMChatManagerUtilDelegate,
-                                EMChatManagerGroupDelegate>
+                                EMChatManagerGroupDelegate,
+                                EMChatManagerPushNotificationDelegate>
 
 @optional
 

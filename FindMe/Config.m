@@ -105,4 +105,18 @@
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     [setting removeObjectForKey:@"user"];
 }
+
+-(BOOL)friendNew:(NSString *)isnew{
+        NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (isnew!=nil) {
+        [setting removeObjectForKey:@"friendNew"];
+        [setting setObject:isnew forKey:@"friendNew"];
+        [setting synchronize];
+    }else{
+        if ([[setting objectForKey:@"friendNew"] isEqualToString:@"1"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 @end

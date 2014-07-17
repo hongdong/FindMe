@@ -10,6 +10,7 @@
 
 @class EMGroup;
 @class EMError;
+@class EMGroupStyleSetting;
 
 /*!
  @protocol
@@ -29,7 +30,69 @@
  */
 @property (nonatomic, strong, readonly) NSArray *groupList;
 
-#pragma mark - create private group
+#pragma mark - create group, Founded in 2.0.3 version
+
+/*!
+ @method
+ @brief  创建群组（同步方法）
+ @param aSubject        群组名称
+ @param aDescription    群组描述
+ @param aInvitees       默认群组成员（usernames）
+ @param aWelcomeMessage 群组欢迎语
+ @param aStyleSetting   群组属性配置
+ @param pError          建组的错误。成功为nil
+ @return 创建好的群组
+ @discussion
+        创建群组成功 判断条件：*pError == nil && returnGroup != nil
+ */
+- (EMGroup *)createGroupWithSubject:(NSString *)aSubject
+                        description:(NSString *)aDescription
+                           invitees:(NSArray *)aInvitees
+              initialWelcomeMessage:(NSString *)aWelcomeMessage
+                       styleSetting:(EMGroupStyleSetting *)aStyleSetting
+                              error:(EMError **)pError;
+
+/*!
+ @method
+ @brief  创建群组（异步方法）。
+ @param subject        群组名称
+ @param description    群组描述
+ @param invitees       默认群组成员（usernames）
+ @param welcomeMessage 群组欢迎语
+ @param styleSetting   群组属性配置
+ @discussion
+        函数执行完, 回调[group:didCreateWithError:]会被触发
+ */
+- (void)asyncCreateGroupWithSubject:(NSString *)subject
+                        description:(NSString *)description
+                           invitees:(NSArray *)invitees
+              initialWelcomeMessage:(NSString *)welcomeMessage
+                       styleSetting:(EMGroupStyleSetting *)styleSetting;
+
+/*!
+ @method
+ @brief  创建群组（异步方法）。
+ @param subject        群组名称
+ @param description    群组描述
+ @param invitees       默认群组成员（usernames）
+ @param welcomeMessage 群组欢迎语
+ @param styleSetting   群组属性配置
+ @param completion     创建完成后的回调
+ @param aQueue         回调block时的线程
+ @discussion
+        创建群组成功 判断条件：completion中，error == nil && group != nil
+        函数执行完, 会调用参数completion
+ */
+- (void)asyncCreateGroupWithSubject:(NSString *)subject
+                        description:(NSString *)description
+                           invitees:(NSArray *)invitees
+              initialWelcomeMessage:(NSString *)welcomeMessage
+                       styleSetting:(EMGroupStyleSetting *)styleSetting
+                         completion:(void (^)(EMGroup *group,
+                                              EMError *error))completion
+                            onQueue:(dispatch_queue_t)aQueue;
+
+#pragma mark - create private group, will be abolished
 
 /*!
  @method
@@ -45,7 +108,7 @@
                                description:(NSString *)description
                                   invitees:(NSArray *)invitees
                      initialWelcomeMessage:(NSString *)welcomeMessage
-                                     error:(EMError **)pError;
+                                     error:(EMError **)pError EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -createGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:error:");
 
 /*!
  @method
@@ -60,7 +123,7 @@
 - (void)asyncCreatePrivateGroupWithSubject:(NSString *)subject
                                description:(NSString *)description
                                   invitees:(NSArray *)invitees
-                     initialWelcomeMessage:(NSString *)welcomeMessage;
+                     initialWelcomeMessage:(NSString *)welcomeMessage EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncCreateGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:");
 
 /*!
  @method
@@ -78,9 +141,9 @@
                      initialWelcomeMessage:(NSString *)welcomeMessage
                                 completion:(void (^)(EMGroup *group,
                                                      EMError *error))completion
-                                   onQueue:(dispatch_queue_t)aQueue;
+                                   onQueue:(dispatch_queue_t)aQueue EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncCreateGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:completion:onQueue:");
 
-#pragma mark - create public group
+#pragma mark - create public group, will be abolished
 
 /*!
  @method
@@ -96,7 +159,7 @@
                               description:(NSString *)description
                                  invitees:(NSArray *)invitees
                     initialWelcomeMessage:(NSString *)welcomeMessage
-                                    error:(EMError **)pError;
+                                    error:(EMError **)pError EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -createGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:error:");
 
 /*!
  @method
@@ -111,7 +174,7 @@
 - (void)asyncCreatePublicGroupWithSubject:(NSString *)subject
                               description:(NSString *)description
                                  invitees:(NSArray *)invitees
-                    initialWelcomeMessage:(NSString *)welcomeMessage;
+                    initialWelcomeMessage:(NSString *)welcomeMessage EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncCreateGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:");
 
 /*!
  @method
@@ -129,7 +192,7 @@
                     initialWelcomeMessage:(NSString *)welcomeMessage
                                completion:(void (^)(EMGroup *group,
                                                     EMError *error))completion
-                                  onQueue:(dispatch_queue_t)aQueue;
+                                  onQueue:(dispatch_queue_t)aQueue EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncCreateGroupWithSubject:description:invitees:initialWelcomeMessage:styleSetting:completion:onQueue:");
 
 #pragma mark - leave group
 
@@ -222,7 +285,7 @@
  @param pError    错误信息
  @result 返回群组对象
  @discussion
-    此操作需要admin/owner权限
+        此操作需要admin/owner权限
  */
 - (EMGroup *)removeOccupants:(NSArray *)occupants
                    fromGroup:(NSString *)groupId
@@ -571,6 +634,64 @@
                        toInviter:(NSString *)username
                           reason:(NSString *)reason;
 
+
+#pragma mark - accept join group apply
+
+/*!
+ @method
+ @brief 同意加入群组的申请
+ @param groupId   所申请的群组ID
+ @param groupname 申请的群组名称
+ @param username  申请人的用户名
+ @param pError    错误信息
+ */
+- (void)acceptApplyJoinGroup:(NSString *)groupId
+                   groupname:(NSString *)groupname
+                   applicant:(NSString *)username
+                       error:(EMError **)pError;
+
+/*!
+ @method
+ @brief 异步方法, 同意加入群组的申请
+ @param groupId   所申请的群组ID
+ @param groupname 申请的群组名称
+ @param username  申请人的用户名
+ @discussion
+       函数执行后, didAcceptApplyJoinGroup:username:error:回调会被触发
+ */
+- (void)asyncAcceptApplyJoinGroup:(NSString *)groupId
+                        groupname:(NSString *)groupname
+                        applicant:(NSString *)username;
+
+/*!
+ @method
+ @brief 异步方法, 同意加入群组的申请
+ @param groupId    所申请的群组ID
+ @param groupname  申请的群组名称
+ @param username   申请人的用户名
+ @param completion 消息完成后的回调
+ @param aQueue     回调执行时的线程
+ */
+- (void)asyncAcceptApplyJoinGroup:(NSString *)groupId
+                        groupname:(NSString *)groupname
+                        applicant:(NSString *)username
+                       completion:(void (^)(EMError *error))completion
+                          onQueue:(dispatch_queue_t)aQueue;
+
+#pragma mark - reject join group apply
+
+/*!
+ @method
+ @brief 拒绝一个加入群组的申请
+ @param groupId  被拒绝的群组ID
+ @param username 被拒绝的人
+ @param reason   拒绝理由
+ */
+- (void)rejectApplyJoinGroup:(NSString *)groupId
+                   groupname:(NSString *)groupname
+                 toApplicant:(NSString *)username
+                      reason:(NSString *)reason;
+
 #pragma mark - fetch group info
 
 /*!
@@ -580,7 +701,8 @@
  @param pError  错误信息
  @result 所获取的群组对象
  */
-- (EMGroup *)fetchGroupInfo:(NSString *)groupId error:(EMError **)pError;
+- (EMGroup *)fetchGroupInfo:(NSString *)groupId
+                      error:(EMError **)pError;
 
 /*!
  @method
@@ -594,7 +716,7 @@
 /*!
  @method
  @brief 异步方法, 获取群组信息
- @param groupId 群组ID
+ @param groupId    群组ID
  @param completion 消息完成后的回调
  @param aQueue     回调block时的线程
  */
@@ -603,7 +725,38 @@
                                       EMError *error))completion
                     onQueue:(dispatch_queue_t)aQueue;
 
-#pragma mark - fetch all privte groups
+#pragma mark - fetch my groups, Founded in 2.0.3 version
+
+/**
+ @brief  获取与我相关的群组列表（自己创建的，加入的）(同步方法)
+ @param pError 获取错误信息
+ @return 群组列表
+ @discussion
+        获取列表成功 判断条件：*pError == nil && returnArray != nil
+ */
+- (NSArray *)fetchMyGroupsListWithError:(EMError **)pError;
+
+/*!
+ @method
+ @brief      获取与我相关的群组列表（自己创建的，加入的）(异步方法)
+ @discussion    
+        执行后, 回调[didUpdateGroupList:error]会被触发
+ */
+- (void)asyncFetchMyGroupsList;
+
+/*!
+ @method
+ @brief 获取与我相关的群组列表（自己创建的，加入的）(异步方法)
+ @param completion 消息完成后的回调
+ @param aQueue     回调block时的线程
+ @discussion
+        获取列表成功 判断条件：completion中，error == nil && groups != nil
+ */
+- (void)asyncFetchMyGroupsListWithCompletion:(void (^)(NSArray *groups,
+                                                  EMError *error))completion
+                                onQueue:(dispatch_queue_t)aQueue;
+
+#pragma mark - fetch my groups, will be abolished
 
 /*!
  @method
@@ -611,7 +764,7 @@
  @param pError 错误信息
  @return 获取的所有私有群组列表
  */
-- (NSArray *)fetchAllPrivateGroupsWithError:(EMError **)pError;
+- (NSArray *)fetchAllPrivateGroupsWithError:(EMError **)pError EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -fetchMyGroupsListWithError:");
 
 /*!
  @method
@@ -619,7 +772,7 @@
  @discussion
         执行后, 回调didUpdateGroupList:error会被触发
  */
-- (void)asyncFetchAllPrivateGroups;
+- (void)asyncFetchAllPrivateGroups EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncMyGroupsList");
 
 /*!
  @method
@@ -629,7 +782,7 @@
  */
 - (void)asyncFetchAllPrivateGroupsWithCompletion:(void (^)(NSArray *groups,
                                                            EMError *error))completion
-                                         onQueue:(dispatch_queue_t)aQueue;
+                                         onQueue:(dispatch_queue_t)aQueue EM_DEPRECATED_IOS(2_0_0, 2_0_2, "Use -asyncMyGroupsListWithCompletion:onQueue:");
 
 #pragma mark - fetch all public groups
 
@@ -691,24 +844,77 @@
                                        EMError *error))completion
                      onQueue:(dispatch_queue_t)aQueue;
 
-/**
- *  根据groundId搜索公开群(同步方法)
- *
- *  @param groundId 群组id
- *  @param error    搜索失败的错误
- *
- *  @return 搜索到的群组
- */
-- (EMGroup *)searchPublicGroupWithGroupId:(NSString *)groundId error:(EMError **)error;
+#pragma mark - Apply to join public group, Founded in 2.0.3 version
 
-/**
- *  根据groundId搜索公开群(异步方法)
- *
- *  @param groundId   群组id
- *  @param completion block
+/*!
+ @method
+ @brief 同步方法, 申请加入一个需授权的公开群组
+ @param groupId             公开群组的ID
+ @param groupName           请求加入的群组名称
+ @param message             请求加入的信息
+ @param pError              错误信息
+ @result 所加入的公开群组
  */
-- (void)asyncSearchPublicGroupWithGroupId:(NSString *)groundId
+- (EMGroup *)applyJoinPublicGroup:(NSString *)groupId
+                    withGroupname:(NSString *)groupName
+                          message:(NSString *)message
+                            error:(EMError **)pError;
+
+/*!
+ @method
+ @brief 异步方法, 申请加入一个需授权的公开群组
+ @param groupId             公开群组的ID
+ @param groupName           请求加入的群组名称
+ @param message             请求加入的信息
+ @discussion
+        执行后, 回调didApplyJoinPublicGroup:error:会被触发
+ */
+- (void)asyncApplyJoinPublicGroup:(NSString *)groupId
+                    withGroupname:(NSString *)groupName
+                          message:(NSString *)message;
+
+/*!
+ @method
+ @brief 异步方法, 申请加入一个需授权的公开群组
+ @param groupId             公开群组的ID
+ @param groupName           请求加入的群组名称
+ @param message             请求加入的信息
+ @param completion          消息完成后的回调
+ @param aQueue              回调block时的线程
+ */
+- (void)asyncApplyJoinPublicGroup:(NSString *)groupId
+                     withGroupname:(NSString *)groupName
+                          message:(NSString *)message
+                       completion:(void (^)(EMGroup *group,
+                                            EMError *error))completion
+                          onQueue:(dispatch_queue_t)aQueue;
+
+#pragma mark - search public group, Founded in 2.0.3 version
+
+/*!
+ @method
+ @brief  根据groupId搜索公开群(同步方法)
+ @param groupId  群组id
+ @param pError   搜索失败的错误
+ @return 搜索到的群组
+ @discussion
+        搜索群组成功 判断条件：*pError == nil && returnGroup != nil
+ */
+- (EMGroup *)searchPublicGroupWithGroupId:(NSString *)groupId
+                                    error:(EMError **)pError;
+
+/*!
+ @method
+ @brief  根据groupId搜索公开群(异步方法)
+ @param groupId    公开群组的ID
+ @param completion 消息完成后的回调
+ @param aQueue     回调block时的线程
+ @discussion
+        搜索群组成功 判断条件：completion中，error == nil && group != nil
+ */
+- (void)asyncSearchPublicGroupWithGroupId:(NSString *)groupId
                                completion:(void (^)(EMGroup *group,
-                                                    EMError *error))completion;
+                                                    EMError *error))completion
+                                  onQueue:(dispatch_queue_t)aQueue;
 
 @end

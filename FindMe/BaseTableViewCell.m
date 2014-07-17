@@ -34,7 +34,8 @@
     [super layoutSubviews];
     
     self.imageView.frame = CGRectMake(10, 8, 34, 34);
-    
+    self.imageView.layer.cornerRadius = 17.0f;
+    self.imageView.layer.masksToBounds = YES;
     CGRect rect = self.textLabel.frame;
     rect.origin.x = CGRectGetMaxX(self.imageView.frame) + 10;
     self.textLabel.frame = rect;

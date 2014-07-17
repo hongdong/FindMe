@@ -10,6 +10,7 @@
 // defs
 #import "EMChatServiceDefs.h"
 #import "EMDeviceManagerDefs.h"
+#import "EMErrorDefs.h"
 
 // managers & delegates
 #import "IChatManager.h"
@@ -52,5 +53,11 @@
 
 // cryptor
 #import "IEMChatCryptor.h"
+
+//error
+#import "EMError.h"
+
+//push
+#import "EMPushNotificationOptions.h"
 
 #endif
