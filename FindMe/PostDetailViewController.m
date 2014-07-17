@@ -57,6 +57,8 @@
     _flag = @"p";
     [self initilzer];
     [self getCommentByType:@"nl"];
+    
+//    [self setupForDismissKeyboard];
 }
 
 -(void)getCommentByType:(NSString *)type{
@@ -151,6 +153,8 @@
     }
 }
 - (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [HDTool noGes:self];
     
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(keyboardWillShow:)
@@ -499,6 +503,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
+    [HDTool ges:self];
     if ([_didChange isEqualToString:@"1"]&&self.delegate) {
         [self.delegate changeRowWithPost:self.post];
     }

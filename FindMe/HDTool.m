@@ -174,4 +174,19 @@
 +(id)getControllerByStoryboardId:(NSString *)storyboardId{
     return [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:storyboardId];
 }
+
++(void)noGes:(UIViewController *)controller{
+    
+    if ([controller.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+               controller.navigationController.interactivePopGestureRecognizer.enabled = NO;
+           }
+
+}
++(void)ges:(UIViewController *)controller{
+    
+    if ([controller.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+                 controller.navigationController.interactivePopGestureRecognizer.enabled = YES;
+             }
+
+}
 @end

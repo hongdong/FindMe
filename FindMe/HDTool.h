@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 @interface HDTool : NSObject
 
 + (UIImage *) scale:(UIImage *)sourceImg toSize:(CGSize)size;
@@ -39,4 +39,8 @@
 //在其他地方判断APP是否是这个版本第一次启动
 + (BOOL) isFirstLoad2;
 +(id)getControllerByStoryboardId:(NSString *)storyboardId;
+//关闭IOS7返回手势
++(void)noGes:(UIViewController *)controller;
+
++(void)ges:(UIViewController *)controller;
 @end

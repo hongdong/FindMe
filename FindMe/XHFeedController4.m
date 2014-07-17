@@ -98,6 +98,8 @@
     [self.feedTableView addFooterWithTarget:self action:@selector(footerRereshing)];
     
     [self headerRereshing];
+    
+    
 }
 
 -(void)addUnreadPostNews:(NSNotification *)note{
