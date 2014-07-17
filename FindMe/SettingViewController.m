@@ -85,14 +85,14 @@
             [[Config sharedConfig] initBadge];
             [[Config sharedConfig] cleanUser];
             //注销环信,修改islogin  清除user  初始化badge
-//            [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-//                if (error) {
-//
-//                }
-//                else{
-//                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-//                }
-//            } onQueue:nil];
+            [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+                if (error) {
+
+                }
+                else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+                }
+            } onQueue:nil];
             NSLog(@"注销成功");
         }
         

@@ -41,12 +41,7 @@
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
-        
-        [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
-        
-//        EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-//        options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
-//        [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
+
     }
 }
 
@@ -55,7 +50,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
-    [[Config sharedConfig] changeOnlineState:@"0"];//点击ICON打开软件的肯定要重新刷新session
+    [[Config sharedConfig] changeOnlineState:@"0"];
     
     [self initShareSDK];
 
@@ -65,6 +60,7 @@
     
 
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
+    
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
         //表示用户点击apn 通知导致app被启动运行
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -145,12 +141,14 @@
     apnsCertName = @"findmepushpro";
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"fjhongdong#findme" apnsCertName:apnsCertName];
+    
     [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
 
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
 
 }
@@ -231,16 +229,18 @@
 - (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
 {
     if (error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"你的账号登录失败，请重新登陆"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"确定"
-                                                  otherButtonTitles:nil,
-                                  nil];
-        alertView.tag = 99;
-        [alertView show];
+        NSLog(@"IM后台登入失败");
     }else{
         NSLog(@"后台登入IM成功");
+    }
+}
+
+#pragma mark - push
+
+- (void)didBindDeviceWithError:(EMError *)error
+{
+    if (error) {
+        NSLog(@"消息推送与设备绑定失败");
     }
 }
 

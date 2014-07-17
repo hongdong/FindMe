@@ -257,8 +257,8 @@
     _user = [User getUserFromNSUserDefaults];
 }
 -(void)loginStateChange:(NSNotification *)notification{
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    BOOL isLogin1 = loginInfo && [loginInfo count] > 0;
+//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//    BOOL isLogin1 = loginInfo && [loginInfo count] > 0;
 //    if (notification.object) {
 //        isLogin = [notification.object boolValue] && isLogin;
 //    }
@@ -368,7 +368,7 @@
             }];
             
             [[Config sharedConfig] changeLoginState:@"1"];
-            [weakSelf EaseMobLoginWithUsername:[responseObject objectForKey:@"userId"]];//IM登入
+            [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
             
         }else if ([state isEqualToString:@"10001"]){
             
@@ -408,8 +408,13 @@
 
          if (loginInfo && !error) {
             NSLog(@"IM登入成功");
+             [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
+             
+            EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+            options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
+            [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
+             
             [weakSelf showResultWithType:ResultSuccess];
-             NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
              [[Config sharedConfig] changeOnlineState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }else {
