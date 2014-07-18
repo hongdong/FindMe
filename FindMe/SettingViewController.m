@@ -10,6 +10,7 @@
 #import "JMWhenTapped.h"
 #import "AFNetworking.h"
 #import "EaseMob.h"
+#import "User.h"
 @interface SettingViewController ()
 
 @end
@@ -28,6 +29,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    
     __weak __typeof(&*self)weakSelf = self;
     [self.pjwmView whenTouchedDown:^{
         weakSelf.pjwmView.backgroundColor = [UIColor lightGrayColor];
@@ -76,21 +81,42 @@
     }];
     
 }
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
+}
+-(void)loginChange:(NSNotification *)notification{
+    BOOL isLogin = [notification.object boolValue];
+    if (isLogin) {
+
+    }
+    else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
 - (IBAction)signOutPressed:(id)sender {
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/login_out.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001"]) {
+        if ([state isEqualToString:@"20001 "]) {
             [[Config sharedConfig] initBadge];
             [[Config sharedConfig] cleanUser];
-            //注销环信,修改islogin  清除user  初始化badge
+            [[Config sharedConfig] changeLoginState:@"1"];
+            [[Config sharedConfig] changeOnlineState:@"0"];
+            
+            [User removeDbObjectsWhere:@"1=1"];
+            
+            self.tabBarController.selectedIndex = 0;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            
             [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-                if (error) {
-
+                if (!error) {
+                    NSLog(@"IM注销成功");
                 }
                 else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+                    
                 }
             } onQueue:nil];
             NSLog(@"注销成功");
@@ -98,7 +124,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-        
+        NSLog(@"注销失败了");
     }];
 }
 

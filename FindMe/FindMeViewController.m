@@ -50,7 +50,7 @@
         _coverView = [HDTool loadCustomViewByIndex:4];
         UIButton *fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [fansButton setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
+        [fansButton setImage:[UIImage imageNamed:@"fans"] forState:UIControlStateNormal];
         _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:fansButton];
         _fansItem.badgeValue = @"2";
         _fansItem.badgeOriginX = 10;
@@ -256,6 +256,7 @@
 -(void)userChange:(NSNotification *)notification{
     _user = [User getUserFromNSUserDefaults];
 }
+
 -(void)loginStateChange:(NSNotification *)notification{
 //    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
 //    BOOL isLogin1 = loginInfo && [loginInfo count] > 0;
@@ -270,7 +271,12 @@
         [self getMatch:nil];
     }
     else{
-
+        if (_loginView==nil) {
+            _loginView = [HDTool loadCustomViewByIndex:1];
+            _loginView.delegate = self;
+        }
+        _loginView.frame = CGRectMake(0, 0, 320, 455);
+        [self.view addSubview:_loginView];
     }
 }
 

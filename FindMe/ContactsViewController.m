@@ -45,8 +45,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myReloadDataSource) name:FriendChange object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myReloadDataSource) name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"好友";
@@ -67,8 +68,23 @@
     }
 }
 
+-(void)loginChange:(NSNotification *)notification{
+    
+    BOOL isLogin = [notification.object boolValue];
+    if (isLogin) {
+        [self myReloadDataSource];
+    }
+    else{
+        [self.dataSource removeAllObjects];
+        [self.contactsSource removeAllObjects];
+        [self.sectionTitles removeAllObjects];
+        [self.tableView reloadData];
+    }
+}
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
     _tableView.delegate = nil;
 }
 

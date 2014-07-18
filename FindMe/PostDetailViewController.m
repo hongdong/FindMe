@@ -58,7 +58,6 @@
     [self initilzer];
     [self getCommentByType:@"nl"];
     
-//    [self setupForDismissKeyboard];
 }
 
 -(void)getCommentByType:(NSString *)type{

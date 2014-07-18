@@ -56,8 +56,8 @@
         [self setup];
     }
     else{
-        NSLog(@"添加未登入Cover");
-    }
+        [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
+ }
 }
 
 -(void)setup{
