@@ -36,40 +36,43 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self registerNotifications];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadPostNews:) name:@"AddUnreadPostNews" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadMatch:) name:MatchTime object:nil];
 }
 - (void)dealloc
 {
     [self unregisterNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddUnreadPostNews" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
 }
 
 
 -(void)addUnreadPostNews:(NSNotification *)note{
+    
         UIViewController *vc = [self.viewControllers objectAtIndex:3];
         vc.tabBarItem.badgeValue = @"NEW";
     
+}
+
+-(void)addUnreadMatch:(NSNotification *)note{
+    [[Config sharedConfig] matchNew:@"1"];
+    UIViewController *vc = [self.viewControllers objectAtIndex:0];
+    vc.tabBarItem.badgeValue = @"HI";
 }
 
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     if(item.tag == 0){
-        NSLog(@"点击了findme");
+
     }else if(item.tag == 1){
-        NSLog(@"点击了会话");
     }else if(item.tag == 2){
-        NSLog(@"点击了好友列表");
     }else if(item.tag == 3){
         if (self.selectedIndex==3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil userInfo:@{@"isHead": @"1"}];
         }
-        NSLog(@"点击了圈子");
     }else if(item.tag == 4){
-        NSLog(@"点击了我");
     }else {
-        NSLog(@"点击了其他");
     }
-    NSLog(@"%lu",(unsigned long)self.selectedIndex);
     
 }
 

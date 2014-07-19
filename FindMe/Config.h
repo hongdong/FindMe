@@ -26,4 +26,6 @@
 -(BOOL)needFresh;
 
 -(BOOL)friendNew:(NSString *)isnew;
+
+-(BOOL)matchNew:(NSString *)isnew;
 @end

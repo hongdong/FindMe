@@ -106,9 +106,17 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)replyPressed:(id)sender {
+    if (![[Config sharedConfig] isOnline]) {
+        [self showHint:@"请先登入"];
+        return;
+    }
     [self.messageToolView.messageInputTextView becomeFirstResponder];
 }
 - (IBAction)prisePressed:(id)sender {
+    if (![[Config sharedConfig] isOnline]) {
+        [self showHint:@"请先登入"];
+        return;
+    }
     self.priseButton.enabled = NO;
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_praise.do",Host];
     
@@ -153,7 +161,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [HDTool noGes:self];
+
     
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(keyboardWillShow:)
@@ -188,6 +196,7 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
+    [HDTool noGes:self];
     keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     animationDuration= [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 }
@@ -202,10 +211,11 @@
 }
 
 -(void)hideInputBar{
+    __weak __typeof(&*self)weakSelf = self;
     [UIView animateWithDuration:animationDuration animations:^{
-        self.messageToolView.frame = CGRectMake(0.0f,self.view.frame.size.height,CGRectGetWidth(self.view.frame),CGRectGetHeight(self.messageToolView.frame));
+        weakSelf.messageToolView.frame = CGRectMake(0.0f,self.view.frame.size.height,CGRectGetWidth(self.view.frame),CGRectGetHeight(self.messageToolView.frame));
     } completion:^(BOOL finished) {
-        
+            [HDTool ges:weakSelf];
     }];
 }
 
@@ -502,7 +512,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    [HDTool ges:self];
+
     if ([_didChange isEqualToString:@"1"]&&self.delegate) {
         [self.delegate changeRowWithPost:self.post];
     }

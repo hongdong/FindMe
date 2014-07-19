@@ -105,6 +105,11 @@
                                                  name:EaseMobShouldLogin
                                                object:nil];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(matchTime:)
+                                                 name:MatchTime
+                                               object:nil];
     self.photo.layer.cornerRadius = 75.0f;
     self.photo.layer.masksToBounds = YES;
     __weak __typeof(&*self)weakSelf = self;
@@ -135,6 +140,11 @@
         }
     }
 
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
 }
 
 -(void)fansButtonPressed:(id)sender{
@@ -172,6 +182,8 @@
 
 -(void)hideCover{
     [UIView animateWithDuration:0.7 //速度0.7秒
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{//修改rView坐标
                          _coverView.frame = CGRectMake(_coverView.frame.origin.x,
                                                        -_coverView.frame.size.height-64,
@@ -181,9 +193,13 @@
                      completion:^(BOOL finished){
 //                                 [_coverView removeFromSuperview];
                      }];
+    
+
 }
 -(void)showCover{
     [UIView animateWithDuration:0.7 //速度0.7秒
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{//修改rView坐标
                          _coverView.frame = CGRectMake(_coverView.frame.origin.x,
                                                        0,
@@ -196,9 +212,7 @@
 }
 
 -(void)getMatch:(NSString *)userMatchId{
-//    //现实心灵鸡汤
-//    UIView *view = [HDTool loadCustomViewByIndex:4];
-//    [self.view addSubview:view];
+
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
@@ -212,8 +226,10 @@
         if (userMatch!=nil&&userMatch.count!=0) {
         _matchUser = [User objectWithKeyValues:userMatch];
             [weakSelf setMatchPeople];
-            
-                //隐藏心灵鸡汤
+            if ([[Config sharedConfig] matchNew:nil]) {
+                [[Config sharedConfig] matchNew:@"0"];
+                self.tabBarItem.badgeValue = nil;
+            }
             [weakSelf hideCover];
         }else{
             NSLog(@"今天没了");
@@ -280,6 +296,9 @@
     }
 }
 
+-(void)matchTime:(NSNotification *)note{
+    [self getMatch:nil];
+}
 
 
 #pragma loginViewDelegate
@@ -455,8 +474,9 @@
 -(void)dealloc{
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NSUserDefaultsUserChange" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"EaseMobShouldLogin" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UserInfoChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:EaseMobShouldLogin object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
     
 }
 

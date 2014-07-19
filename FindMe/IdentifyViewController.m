@@ -30,38 +30,14 @@
     [super viewDidLoad];
     _user = [User getUserFromNSUserDefaults];
     self.schoolLbl.text = [_user getSchoolName];
-    [self setUpForDismissKeyboard];
+    [self setupForDismissKeyboard];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
-- (void)setUpForDismissKeyboard {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    UITapGestureRecognizer *singleTapGR =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(tapAnywhereToDismissKeyboard:)];
-    singleTapGR.delegate = self;
-    NSOperationQueue *mainQuene =[NSOperationQueue mainQueue];
-    [nc addObserverForName:UIKeyboardWillShowNotification
-                    object:nil
-                     queue:mainQuene
-                usingBlock:^(NSNotification *note){
-                    [self.view addGestureRecognizer:singleTapGR];
-                }];
-    [nc addObserverForName:UIKeyboardWillHideNotification
-                    object:nil
-                     queue:mainQuene
-                usingBlock:^(NSNotification *note){
-                    [self.view removeGestureRecognizer:singleTapGR];
-                }];
-}
 
-- (void)tapAnywhereToDismissKeyboard:(UIGestureRecognizer *)gestureRecognizer {
-    //此method会将self.view里所有的subview的first responder都resign掉
-    [self.view endEditing:YES];
-}
 - (IBAction)idenButtonPressed:(id)sender {
     NSLog(@"认证中");
 }

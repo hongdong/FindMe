@@ -132,14 +132,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [HDTool noGes:self];
     [self scrollViewToBottom:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [HDTool ges:self];
     [self keyBoardHidden];
     // 设置当前conversation的所有message为已读,这是会给别人通知
     [_conversation markMessagesAsRead:YES];

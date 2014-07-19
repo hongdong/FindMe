@@ -119,4 +119,18 @@
     }
     return NO;
 }
+
+-(BOOL)matchNew:(NSString *)isnew{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (isnew!=nil) {
+        [setting removeObjectForKey:@"matchNew"];
+        [setting setObject:isnew forKey:@"matchNew"];
+        [setting synchronize];
+    }else{
+        if ([[setting objectForKey:@"matchNew"] isEqualToString:@"1"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 @end

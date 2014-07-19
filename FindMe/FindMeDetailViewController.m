@@ -39,13 +39,18 @@
 {
     [super viewDidLoad];
     __weak __typeof(&*self)weakSelf = self;
-    if (self.userId!=nil&&self.user==nil) {
+    if (self.userId!=nil) {
         self.user._id = self.userId;
         
         [self.user getUserInfo:^{
             [weakSelf setUpScroll];
+            weakSelf.qianming.text = weakSelf.user.userSignature;
             [weakSelf setPhoto];
         }];
+    }else{
+        [self setUpScroll];
+        self.qianming.text = self.user.userSignature;
+        [self setPhoto];
     }
 
 }

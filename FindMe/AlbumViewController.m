@@ -50,7 +50,9 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self showHint:@"长按可以删除照片"];
+    if ([HDTool isFirstLoad2]) {
+        [self showHint:@"长按可以删除照片"];
+    }
 }
 
 -(void)showPhoto{

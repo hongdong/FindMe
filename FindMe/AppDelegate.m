@@ -162,18 +162,26 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     [APService handleRemoteNotification:userInfo];
+
     if (application.applicationState==UIApplicationStateInactive) {
         NSLog(@"IApplicationStateInactive时收到推送");//点击提醒进来时调用
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }else if (application.applicationState==UIApplicationStateActive) {
         NSLog(@"UIApplicationStateActive时收到推送");//直接调用
         if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
             NSLog(@"强退,注销");
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
+            
             NSLog(@"水贴有更新");
+            
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
             NSLog(@"到点匹配了");
+            [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+            
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
+            
             NSLog(@"有人like");
+            
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
             NSLog(@"成为好朋友了");
             [[Config sharedConfig] friendNew:@"1"];
@@ -183,6 +191,8 @@
         NSLog(@"UIApplicationStateBackground时收到推送");
     }
 }
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
