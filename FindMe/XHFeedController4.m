@@ -65,6 +65,7 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"PostListwillRefresh" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postNew:) name:PostNew object:nil];
     _dataArr = [[NSMutableArray alloc] init];
     
     self.title = @"圈子";
@@ -125,6 +126,10 @@
         [self loadDataWithPostId:nil];
     }
     
+}
+
+-(void)postNew:(NSNotification *)note{
+    _postMessageItem.badgeValue = @"N";
 }
 -(void)newPost:(id)sender{
     if (![[Config sharedConfig] isOnline]) {

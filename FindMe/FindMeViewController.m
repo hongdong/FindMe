@@ -225,8 +225,9 @@
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
-        if (userMatch!=nil&&userMatch.count!=0) {
-        _matchUser = [User objectWithKeyValues:userMatch];
+        NSDictionary *userDic = [userMatch objectForKey:@"user"];
+        if (userDic!=nil) {
+        _matchUser = [User objectWithKeyValues:userDic];
             [weakSelf setMatchPeople];
             if ([[Config sharedConfig] matchNew:nil]) {
                 [[Config sharedConfig] matchNew:@"0"];
@@ -275,7 +276,7 @@
     _user = [User getUserFromNSUserDefaults];
 }
 
--(void)fansNes:(NSNotification *)notification{
+-(void)fansNew:(NSNotification *)notification{
     _fansItem.badgeValue = @"N";
 }
 

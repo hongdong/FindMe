@@ -52,6 +52,8 @@
     
     [[Config sharedConfig] changeOnlineState:@"0"];
     
+    [UIApplication sharedApplication].applicationIconBadgeNumber=0;
+    
     [self initShareSDK];
 
     [self initEaseMobSDK:application and:launchOptions];
@@ -61,18 +63,14 @@
 
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
     
-    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
-        //表示用户点击apn 通知导致app被启动运行
+
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
         NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
-        NSLog(@"%@",remoteNotification);
+        [self handleUserInfo:remoteNotification];
     }else{
         NSLog(@"点击ICON打开软件");
     }
     
-//    if ([[Config sharedConfig] isLogin]) {
-//        User *user = [User getUserFromNSUserDefaults];
-//        [user freshSession];
-//    }
     
     return YES;
 }
@@ -166,44 +164,48 @@
     if (application.applicationState==UIApplicationStateInactive) {
         NSLog(@"IApplicationStateInactive时收到推送");//点击提醒进来时调用
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        [self handleUserInfo:userInfo];
     }else if (application.applicationState==UIApplicationStateActive) {
         NSLog(@"UIApplicationStateActive时收到推送");//直接调用
-        if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
-            NSLog(@"强退,注销");
-        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
-            
-            NSLog(@"水贴有更新");
-            [[Config sharedConfig] postNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
-            
-        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
-            NSLog(@"到点匹配了");
-            [[Config sharedConfig] matchNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
-            
-        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
-            
-            NSLog(@"有人like");
-            User *user = [User getUserFromNSUserDefaults];
-            if ([user.userSex isEqualToString:@"男"]) {
-                [[Config sharedConfig] matchNew:@"1"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
-            }else{
-                [[Config sharedConfig] fansNew:@"1"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
-            }
-            
-        }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
-            NSLog(@"成为好朋友了");
-            [[Config sharedConfig] friendNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-        }
+        [self handleUserInfo:userInfo];
     }else if(application.applicationState==UIApplicationStateBackground){
         NSLog(@"UIApplicationStateBackground时收到推送");
+        [self handleUserInfo:userInfo];
     }
 }
 
-
+-(void)handleUserInfo:(NSDictionary *)userInfo{
+    if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
+        NSLog(@"强退,注销");
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
+        
+        NSLog(@"水贴有更新");
+        [[Config sharedConfig] postNew:@"1"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
+        
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
+        NSLog(@"到点匹配了");
+        [[Config sharedConfig] matchNew:@"1"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+        
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
+        
+        NSLog(@"有人like");
+        User *user = [User getUserFromNSUserDefaults];
+        if ([user.userSex isEqualToString:@"男"]) {
+            [[Config sharedConfig] matchNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+        }else{
+            [[Config sharedConfig] fansNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
+        }
+        
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
+        NSLog(@"成为好朋友了");
+        [[Config sharedConfig] friendNew:@"1"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+    }
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

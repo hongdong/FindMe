@@ -11,6 +11,7 @@
 #import "AFNetworking.h"
 #import "User.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "FindMeDetailViewController.h"
 @interface FansViewController ()<MCSwipeTableViewCellDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
 }
@@ -139,6 +140,7 @@
             NSLog(@"LIKE成功");
         }else if ([state isEqualToString:@"20002"]){
             NSLog(@"你们已经成为朋友了");
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
         }else{
             NSLog(@"LIKE失败");
         }
@@ -168,6 +170,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    FindMeDetailViewController *controller = [HDTool getControllerByStoryboardId:@"userDetailController"];
+    controller.user = _dataArr[indexPath.row];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 - (UIView *)viewWithImageName:(NSString *)imageName {
     UIImage *image = [UIImage imageNamed:imageName];

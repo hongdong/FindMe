@@ -134,9 +134,13 @@
         if ([state isEqualToString:@"20001"]) {
             
             _user._id = [responseObject objectForKey:@"userId"];
+            _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
             [weakSelf showResultWithType:ResultSuccess];
             [_user saveToNSUserDefaults];
+            [[Config sharedConfig] changeLoginState:@"1"];
+            [[Config sharedConfig] changeOnlineState:@"1"];
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:@YES userInfo:@{@"_id": _user._id}];
         }else if ([state isEqualToString:@"10001"]){
             [weakSelf showResultWithType:ResultError];
