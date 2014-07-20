@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BBBadgeBarButtonItem.h"
 @interface FansViewController : UITableViewController
-
+@property(nonatomic,weak) BBBadgeBarButtonItem *fansItem;
 @end

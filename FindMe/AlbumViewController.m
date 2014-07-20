@@ -260,11 +260,8 @@
         // 替换为大图
         
         NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [_user.userAlbum objectAtIndex:i]];
-        NSMutableString *temp = [[NSMutableString alloc] initWithString:getImageStrUrl];
-        [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
         MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:temp]; // 图片路径
-        
+        photo.url = [HDTool getLImage:getImageStrUrl];
         UIImageView * imageView = (UIImageView *)[self.view viewWithTag:imageTap.view.tag];
         photo.srcImageView = imageView;
         [photos addObject:photo];

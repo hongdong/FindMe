@@ -8,6 +8,7 @@
 #import "BBBadgeBarButtonItem.h"
 #import "PostDetailViewController.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "PostMessageViewController.h"
 @interface XHFeedController4 ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
     NSInteger _seletedRow;
@@ -64,7 +65,6 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"PostListwillRefresh" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadPostNews:) name:@"AddUnreadPostNews" object:nil];
     _dataArr = [[NSMutableArray alloc] init];
     
     self.title = @"圈子";
@@ -73,10 +73,12 @@
     [postMessage addTarget:self action:@selector(postMessage:) forControlEvents:UIControlEventTouchUpInside];
     [postMessage setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
     _postMessageItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:postMessage];
-    _postMessageItem.badgeValue = @"2";
+
     _postMessageItem.badgeOriginX = 13;
     _postMessageItem.badgeOriginY = -9;
-    
+    if ([[Config sharedConfig] postNew:nil]) {
+            _postMessageItem.badgeValue = @"N";
+    }
     
     UIButton *newPostButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     [newPostButton addTarget:self action:@selector(newPost:) forControlEvents:UIControlEventTouchUpInside];
@@ -102,13 +104,10 @@
     
 }
 
--(void)addUnreadPostNews:(NSNotification *)note{
-        _postMessageItem.badgeValue = [NSString stringWithFormat:@"%d", [_postMessageItem.badgeValue intValue] + 1];
-}
+
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostListwillRefresh" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddUnreadPostNews" object:nil];
     
     _feedTableView.delegate = nil;
     _feedTableView.dataSource = nil;
@@ -139,8 +138,10 @@
         [self showHint:@"你还没登入"];
         return;
     }
-   [self performSegueWithIdentifier:@"postMessage" sender:nil];
+   [self performSegueWithIdentifier:@"postMessage" sender:_postMessageItem];
 }
+
+
 
 #pragma mark 开始进入刷新状态
 - (void)headerRereshing
@@ -232,6 +233,9 @@
         PostDetailViewController *controller = (PostDetailViewController *)segue.destinationViewController;
         controller.post = sender;
         controller.delegate = self;
+    }else if ([segue.identifier isEqualToString:@"postMessage"]){
+        PostMessageViewController *controller = (PostMessageViewController *)segue.destinationViewController;
+        controller.postMessageItem = sender;
     }
 }
 

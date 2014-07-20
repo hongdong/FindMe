@@ -48,6 +48,11 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[Config sharedConfig] fansNew:nil]) {
+            [[Config sharedConfig] fansNew:@"0"];
+            weakSelf.fansItem.badgeValue = nil;
+        }
+
         NSArray *userFans = [responseObject objectForKey:@"userFans"];
         if (userFans!=nil&&[userFans count]!=0) {
             _dataArr = [[User objectArrayWithKeyValuesArray:userFans] mutableCopy];

@@ -133,4 +133,32 @@
     }
     return NO;
 }
+
+-(BOOL)fansNew:(NSString *)isnew{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (isnew!=nil) {
+        [setting removeObjectForKey:@"fansNew"];
+        [setting setObject:isnew forKey:@"fansNew"];
+        [setting synchronize];
+    }else{
+        if ([[setting objectForKey:@"fansNew"] isEqualToString:@"1"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+-(BOOL)postNew:(NSString *)isnew{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (isnew!=nil) {
+        [setting removeObjectForKey:@"postNew"];
+        [setting setObject:isnew forKey:@"postNew"];
+        [setting synchronize];
+    }else{
+        if ([[setting objectForKey:@"postNew"] isEqualToString:@"1"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 @end

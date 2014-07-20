@@ -43,4 +43,6 @@
 +(void)noGes:(UIViewController *)controller;
 
 +(void)ges:(UIViewController *)controller;
+
++(NSURL *)getLImage:(NSString *)url;
 @end

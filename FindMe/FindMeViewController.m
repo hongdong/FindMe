@@ -20,6 +20,7 @@
 #import "BBBadgeBarButtonItem.h"
 #import "MDCFocusView.h"
 #import "MDCSpotlightView.h"
+#import "FansViewController.h"
 @interface FindMeViewController (){
     User *_user;
     User *_matchUser;
@@ -52,7 +53,6 @@
         [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [fansButton setImage:[UIImage imageNamed:@"fans"] forState:UIControlStateNormal];
         _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:fansButton];
-        _fansItem.badgeValue = @"2";
         _fansItem.badgeOriginX = 10;
         _fansItem.badgeOriginY = -9;
         if ([[Config sharedConfig] isLogin]) {
@@ -110,6 +110,8 @@
                                              selector:@selector(matchTime:)
                                                  name:MatchTime
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fansNew:) name:FansNew object:nil];
+    
     self.photo.layer.cornerRadius = 75.0f;
     self.photo.layer.masksToBounds = YES;
     __weak __typeof(&*self)weakSelf = self;
@@ -155,7 +157,7 @@
         [self showHint:@"目前只有女生开通了粉丝服务"];
         return;
     }
-    [self performSegueWithIdentifier:@"fans" sender:nil];
+    [self performSegueWithIdentifier:@"fans" sender:_fansItem];
 }
 - (IBAction)likePressed:(id)sender {
     [self showCover];
@@ -271,6 +273,10 @@
 }
 -(void)userChange:(NSNotification *)notification{
     _user = [User getUserFromNSUserDefaults];
+}
+
+-(void)fansNes:(NSNotification *)notification{
+    _fansItem.badgeValue = @"N";
 }
 
 -(void)loginStateChange:(NSNotification *)notification{
@@ -420,6 +426,9 @@
     }else if ([segue.identifier isEqualToString:@"findmeDetail"]) {
         FindMeDetailViewController *controller = segue.destinationViewController;
         controller.user = sender;
+    }else if ([segue.identifier isEqualToString:@"fans"]){
+        FansViewController *controller = segue.destinationViewController;
+        controller.fansItem = sender;
     }
 }
 
@@ -477,6 +486,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UserInfoChange object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:EaseMobShouldLogin object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FansNew object:nil];
     
 }
 

@@ -28,4 +28,8 @@
 -(BOOL)friendNew:(NSString *)isnew;
 
 -(BOOL)matchNew:(NSString *)isnew;
+
+-(BOOL)fansNew:(NSString *)isnew;
+
+-(BOOL)postNew:(NSString *)isnew;
 @end

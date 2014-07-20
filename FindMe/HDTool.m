@@ -189,4 +189,10 @@
              }
 
 }
+
++(NSURL *)getLImage:(NSString *)url{
+    NSMutableString *temp = [[NSMutableString alloc] initWithString:url];
+    [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
+    return [NSURL URLWithString:temp];
+}
 @end

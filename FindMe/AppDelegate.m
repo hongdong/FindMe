@@ -173,14 +173,25 @@
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
             
             NSLog(@"水贴有更新");
+            [[Config sharedConfig] postNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
             
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
             NSLog(@"到点匹配了");
+            [[Config sharedConfig] matchNew:@"1"];
             [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
             
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
             
             NSLog(@"有人like");
+            User *user = [User getUserFromNSUserDefaults];
+            if ([user.userSex isEqualToString:@"男"]) {
+                [[Config sharedConfig] matchNew:@"1"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+            }else{
+                [[Config sharedConfig] fansNew:@"1"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
+            }
             
         }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
             NSLog(@"成为好朋友了");

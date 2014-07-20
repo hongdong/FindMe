@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BBBadgeBarButtonItem.h"
 @interface PostMessageViewController : UITableViewController
-
+@property(nonatomic,weak)BBBadgeBarButtonItem *postMessageItem;
 @end

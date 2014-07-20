@@ -291,6 +291,10 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[Config sharedConfig] friendNew:nil]) {
+            [[Config sharedConfig] friendNew:@"0"];
+            weakSelf.tabBarItem.badgeValue = nil;
+        }
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
             weakSelf.contactsSource = [[NSMutableArray alloc] initWithArray:[User objectArrayWithKeyValuesArray:friendList]];

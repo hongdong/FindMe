@@ -35,30 +35,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self didUnreadMessagesCountChanged];
     [self registerNotifications];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadPostNews:) name:@"AddUnreadPostNews" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadMatch:) name:MatchTime object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadFriend:) name:FriendChange object:nil];
 }
 - (void)dealloc
 {
     [self unregisterNotifications];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddUnreadPostNews" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
-}
-
-
--(void)addUnreadPostNews:(NSNotification *)note{
-    
-        UIViewController *vc = [self.viewControllers objectAtIndex:3];
-        vc.tabBarItem.badgeValue = @"NEW";
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
 }
 
 -(void)addUnreadMatch:(NSNotification *)note{
-    [[Config sharedConfig] matchNew:@"1"];
+
     UIViewController *vc = [self.viewControllers objectAtIndex:0];
     vc.tabBarItem.badgeValue = @"HI";
 }
 
+-(void)addUnreadFriend:(NSNotification *)note{
+    UIViewController *vc = [self.viewControllers objectAtIndex:0];
+    vc.tabBarItem.badgeValue = @"HI";
+}
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {

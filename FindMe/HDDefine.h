@@ -14,6 +14,8 @@
 #define UserInfoChange @"NSUserDefaultsUserChange"
 #define FriendChange @"FriendChange"
 #define MatchTime @"MatchTime"
+#define FansNew @"FansNew"
+#define PostNew @"PostNew"
 
 #define CHATVIEWBACKGROUNDCOLOR [UIColor colorWithRed:0.936 green:0.932 blue:0.907 alpha:1]
 
