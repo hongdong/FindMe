@@ -132,9 +132,9 @@
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            
-            _user._id = [responseObject objectForKey:@"userId"];
-            _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
+            NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
+            _user._id = [userInfo objectForKey:@"userId"];
+            _user.userPhoto = [userInfo objectForKey:@"userPhoto"];
             [weakSelf showResultWithType:ResultSuccess];
             [_user saveToNSUserDefaults];
             [[Config sharedConfig] changeLoginState:@"1"];

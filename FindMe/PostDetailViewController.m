@@ -14,14 +14,16 @@
 #import "AFNetworking.h"
 #import "Comment.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "MJRefresh.h"
 @interface PostDetailViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     
-    NSArray *_dataArr;
+    NSMutableArray *_dataArr;
     double animationDuration;
     CGRect keyboardRect;
     NSString *_flag;
     id _head;
     NSString *_didChange;
+    NSDictionary *_index;
 }
 
 @end
@@ -40,6 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _dataArr = [[NSMutableArray alloc] init];
+    
     if (self.post.postPhoto==nil) {
         _head = [HDTool loadCustomViewByIndex:5];
         [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
@@ -56,20 +61,34 @@
     _didChange = @"0";
     _flag = @"p";
     [self initilzer];
+    [self.tableView addFooterWithTarget:self action:@selector(footerRereshing)];
+    
     [self getCommentByType:@"nl"];
     
 }
 
+- (void)footerRereshing
+{
+    [self getCommentByType:@"ol"];
+}
+
+
 -(void)getCommentByType:(NSString *)type{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_msg_list.do",Host];
-    
+    NSString *index;
+    if ([type isEqualToString:@"ol"]) {
+        index = [_index objectForKey:@"endIndex"];
+    }else{
+        index = @"0";
+    }
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"type":type,
-                                 @"index":@"0",
+                                 @"index":index,
                                  @"isNews":@"0"};
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [weakSelf.tableView footerEndRefreshing];
         NSDictionary *postMsg = [responseObject objectForKey:@"postMsg"];
         if (postMsg!=nil) {
             if ([[postMsg objectForKey:@"isPraise"] boolValue]) {
@@ -78,12 +97,15 @@
                 _flag = @"c";
             }
             weakSelf.priseButton.enabled = YES;
+            _index = [postMsg objectForKey:@"index"];
             NSArray *arr = [postMsg objectForKey:@"postMsgList"];
             if (arr!=nil) {
-                _dataArr = [Comment objectArrayWithKeyValuesArray:arr];
+                if ([type isEqualToString:@"nl"]) {
+                    [_dataArr removeAllObjects];
+                }
+                [_dataArr addObjectsFromArray:[Comment objectArrayWithKeyValuesArray:arr]];
                 [weakSelf.tableView reloadData];
             }else{
-                NSLog(@"暂时没有回复");
             }
             
         }else{
@@ -92,7 +114,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-
+        [weakSelf.tableView footerEndRefreshing];
         
     }];
 }
@@ -316,7 +338,9 @@
             _didChange = @"1";
             [weakSelf showResultWithType:ResultSuccess];
             [weakSelf resetHead];
+            
             [weakSelf getCommentByType:@"nl"];
+            
             weakSelf.messageToolView.messageInputTextView.text = @"";
             weakSelf.messageToolView.sendButton.enabled = NO;
 
@@ -498,7 +522,10 @@
     if (cell == nil) {
         cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    
+    NSString *commentUserId = [((Comment *)_dataArr[indexPath.row]).postMsgUser objectForKey:@"_id"];
+    if ([commentUserId isEqualToString:[self.post.postUser objectForKey:@"_id"]]) {
+        cell.hostLbl.hidden = NO;
+    }
     cell.comment = _dataArr[indexPath.row];
     cell.row = indexPath.row;
 

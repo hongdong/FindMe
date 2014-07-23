@@ -11,12 +11,11 @@
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
 
-//#define kPadding 10
-#define kPadding 0
+#define kPadding 10
 #define kPhotoViewTagOffset 1000
 #define kPhotoViewIndex(photoView) ([photoView tag] - kPhotoViewTagOffset)
 
-@interface MJPhotoBrowser () <MJPhotoViewDelegate, MJPhotoToolbarDelegate>
+@interface MJPhotoBrowser () <MJPhotoViewDelegate>
 {
     // 滚动的view
 	UIScrollView *_photoScrollView;
@@ -24,7 +23,7 @@
 	NSMutableSet *_visiblePhotoViews;
     NSMutableSet *_reusablePhotoViews;
     // 工具条
-    MJPhotoToolbar * _toolbar;
+    MJPhotoToolbar *_toolbar;
     
     // 一开始的状态栏
     BOOL _statusBarHiddenInited;
@@ -38,11 +37,10 @@
 {
     _statusBarHiddenInited = [UIApplication sharedApplication].isStatusBarHidden;
     // 隐藏状态栏
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     self.view = [[UIView alloc] init];
     self.view.frame = [UIScreen mainScreen].bounds;
 	self.view.backgroundColor = [UIColor blackColor];
-    
 }
 
 - (void)viewDidLoad
@@ -72,38 +70,14 @@
 - (void)createToolbar
 {
     CGFloat barHeight = 44;
-    
-//    CGFloat barHeight = 0;
     CGFloat barY = self.view.frame.size.height - barHeight;
     _toolbar = [[MJPhotoToolbar alloc] init];
-    _toolbar.Delegate = self;
     _toolbar.frame = CGRectMake(0, barY, self.view.frame.size.width, barHeight);
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     _toolbar.photos = _photos;
     [self.view addSubview:_toolbar];
     
     [self updateTollbarState];
-}
-
--(void)DeleteThisImage:(NSInteger)ThisImageIndex
-{
-    
-    
-    NSLog(@"ThisImageIndex---%d", ThisImageIndex );
-    NSLog(@"_currentPhotoIndex---%d", _currentPhotoIndex );
-    
-    if ( ThisImageIndex == 0 ) {
-        _currentPhotoIndex = 1;
-    }else if ( ThisImageIndex == _currentPhotoIndex ) {
-        _currentPhotoIndex = _currentPhotoIndex - 1;
-    }else{
-        _currentPhotoIndex = _currentPhotoIndex - 1;
-    }
-    
-    [_photos removeObjectAtIndex: ThisImageIndex];
-    
-    [self setCurrentPhotoIndex: _currentPhotoIndex ];
-    
 }
 
 #pragma mark 创建UIScrollView
@@ -124,7 +98,7 @@
     _photoScrollView.contentOffset = CGPointMake(_currentPhotoIndex * frame.size.width, 0);
 }
 
-- (void)setPhotos:(NSMutableArray *)photos
+- (void)setPhotos:(NSArray *)photos
 {
     _photos = photos;
     
@@ -166,10 +140,6 @@
     
     // 移除工具条
     [_toolbar removeFromSuperview];
-    
-    if ( [_delegate respondsToSelector:@selector(CellPhotoImageReload)] ) {
-        [_delegate CellPhotoImageReload];
-    }
 }
 
 - (void)photoViewDidEndZoom:(MJPhotoView *)photoView

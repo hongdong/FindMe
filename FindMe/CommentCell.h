@@ -15,7 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *floorLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *hostLbl;
-@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet UIView *floorView;
+
 
 @property(nonatomic,strong) HBCoreLabel *content;
 

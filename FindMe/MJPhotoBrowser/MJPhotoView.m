@@ -27,7 +27,7 @@
         self.clipsToBounds = YES;
 		// 图片
 		_imageView = [[UIImageView alloc] init];
-//		_imageView.contentMode = UIViewContentModeScaleAspectFit;
+		_imageView.contentMode = UIViewContentModeScaleAspectFit;
 		[self addSubview:_imageView];
         
         // 进度条
@@ -36,7 +36,6 @@
 		// 属性
 		self.backgroundColor = [UIColor clearColor];
 		self.delegate = self;
-        
 		self.showsHorizontalScrollIndicator = NO;
 		self.showsVerticalScrollIndicator = NO;
 		self.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -51,7 +50,6 @@
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [self addGestureRecognizer:doubleTap];
-        
     }
     return self;
 }
@@ -72,8 +70,8 @@
         
         // 不是gif，就马上开始下载
         if (![_photo.url.absoluteString hasSuffix:@"gif"]) {
-            __weak MJPhotoView *photoView = self;
-            __weak MJPhoto *photo = _photo;
+            __unsafe_unretained MJPhotoView *photoView = self;
+            __unsafe_unretained MJPhoto *photo = _photo;
             [_imageView sd_setImageWithURL:_photo.url placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 photo.image = image;
                 
@@ -101,20 +99,15 @@
         [_photoLoadingView showLoading];
         [self addSubview:_photoLoadingView];
         
-        __weak MJPhotoView *photoView = self;
-        __weak MJPhotoLoadingView *loading = _photoLoadingView;
-        
-        [_imageView sd_setImageWithURL:_photo.url
-                   placeholderImage:_photo.srcImageView.image
-                            options:SDWebImageRetryFailed|SDWebImageLowPriority
-                           progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        __unsafe_unretained MJPhotoView *photoView = self;
+        __unsafe_unretained MJPhotoLoadingView *loading = _photoLoadingView;
+        [_imageView sd_setImageWithURL:_photo.url placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             if (receivedSize > kMinProgress) {
                 loading.progress = (float)receivedSize/expectedSize;
             }
         } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             [photoView photoDidFinishLoadWithImage:image];
         }];
-
     }
 }
 
@@ -152,20 +145,14 @@
     CGFloat imageHeight = imageSize.height;
 	
 	// 设置伸缩比例
-    CGFloat widthRatio = boundsWidth/imageWidth;
-    CGFloat heightRatio = boundsHeight/imageHeight;
-    CGFloat minScale = (widthRatio > heightRatio) ? heightRatio : widthRatio;
-    
-    if (minScale >= 1) {
-		minScale = 0.8;
+    CGFloat minScale = boundsWidth / imageWidth;
+	if (minScale > 1) {
+		minScale = 1.0;
 	}
-    
-	CGFloat maxScale = 4.0;
-    
-//	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-//		maxScale = maxScale / [[UIScreen mainScreen] scale];
-//	}
-    
+	CGFloat maxScale = 2.0; 
+	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
+		maxScale = maxScale / [[UIScreen mainScreen] scale];
+	}
 	self.maximumZoomScale = maxScale;
 	self.minimumZoomScale = minScale;
 	self.zoomScale = minScale;
@@ -174,35 +161,18 @@
     // 内容尺寸
     self.contentSize = CGSizeMake(0, imageFrame.size.height);
     
-    // 宽大
-    if ( imageWidth <= imageHeight &&  imageHeight <  boundsHeight ) {
-        imageFrame.origin.x = floorf( (boundsWidth - imageFrame.size.width ) / 2.0) * minScale;
-        imageFrame.origin.y = floorf( (boundsHeight - imageFrame.size.height ) / 2.0) * minScale;
-    }else{
-        imageFrame.origin.x = floorf( (boundsWidth - imageFrame.size.width ) / 2.0);
-        imageFrame.origin.y = floorf( (boundsHeight - imageFrame.size.height ) / 2.0);
-    }
-    
-
-    
-//    // y值
-//    if (imageFrame.size.height < boundsHeight) {
-//        
-//        imageFrame.origin.y = floorf( (boundsHeight - imageFrame.size.height ) / 2.0) * minScale;
-//        
-////        imageFrame.origin.y = floorf( (boundsHeight - imageFrame.size.height ) / 2.0) * minScale;
-//        
-//	} else {
-//        imageFrame.origin.y = 0;
-//	}
+    // y值
+    if (imageFrame.size.height < boundsHeight) {
+        imageFrame.origin.y = floorf((boundsHeight - imageFrame.size.height) / 2.0);
+	} else {
+        imageFrame.origin.y = 0;
+	}
     
     if (_photo.firstShow) { // 第一次显示的图片
         _photo.firstShow = NO; // 已经显示过了
-        
         _imageView.frame = [_photo.srcImageView convertRect:_photo.srcImageView.bounds toView:nil];
-
-        [UIView animateWithDuration:  0.3  animations:^{
-            
+        
+        [UIView animateWithDuration:0.3 animations:^{
             _imageView.frame = imageFrame;
         } completion:^(BOOL finished) {
             // 设置底部的小图片
@@ -216,25 +186,8 @@
 
 #pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    
 	return _imageView;
 }
-
-// 让UIImageView在UIScrollView缩放后居中显示
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
-    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
-    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
-    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
-    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
-    _imageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
-                            scrollView.contentSize.height * 0.5 + offsetY);
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 
 #pragma mark - 手势处理
 - (void)handleSingleTap:(UITapGestureRecognizer *)tap {
@@ -295,7 +248,6 @@
 	} else {
 		[self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
 	}
-    
 }
 
 - (void)dealloc

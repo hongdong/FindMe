@@ -38,7 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.title = @"消息";
+    self.title = @"消息";
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"messageTitleView"]];
     [self.view addSubview:self.tableView];
     
     [self.tableView addHeaderWithTarget:self action:@selector(refreshDataSource)];

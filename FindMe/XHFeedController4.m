@@ -68,8 +68,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postNew:) name:PostNew object:nil];
     _dataArr = [[NSMutableArray alloc] init];
     
-    self.title = @"圈子";
-    
+    self.title = @"秘圈";
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"postTitleView"]];
     UIButton *postMessage = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     [postMessage addTarget:self action:@selector(postMessage:) forControlEvents:UIControlEventTouchUpInside];
     [postMessage setImage:[UIImage imageNamed:@"postMessage"] forState:UIControlStateNormal];
@@ -118,7 +118,7 @@
 }
 -(void)refreshData:(NSNotification *)note{
     if ([[note.userInfo objectForKey:@"isHead"] isEqualToString:@"1"]) {
-//         [self.feedTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
         if (!_freshing) {
             [self.feedTableView headerBeginRefreshing];
         }

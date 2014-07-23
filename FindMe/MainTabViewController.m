@@ -37,6 +37,14 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadMatch:) name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadFriend:) name:FriendChange object:nil];
+    
+    if ([[Config sharedConfig] matchNew:nil]) {
+        [self addUnreadMatch:nil];
+    }
+    
+    if ([[Config sharedConfig] friendNew:nil]) {
+        [self addUnreadFriend:nil];
+    }
 }
 - (void)dealloc
 {
@@ -59,7 +67,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     if(item.tag == 0){
-
+        
     }else if(item.tag == 1){
     }else if(item.tag == 2){
     }else if(item.tag == 3){

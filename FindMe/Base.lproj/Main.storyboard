@@ -884,26 +884,29 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="girl" id="hMh-YD-Fkq">
-                                                    <rect key="frame" x="20" y="8" width="16" height="16"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1楼" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lpp-Gr-dwd">
-                                                    <rect key="frame" x="58" y="7" width="26" height="20"/>
+                                                <view autoresizesSubviews="NO" contentMode="scaleToFill" id="mOY-ZL-zfi">
+                                                    <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <subviews>
+                                                        <label autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lpp-Gr-dwd">
+                                                            <rect key="frame" x="3" y="9" width="24" height="12"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14:02" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oJb-hP-ckm">
-                                                    <rect key="frame" x="93" y="7" width="43" height="21"/>
+                                                    <rect key="frame" x="93" y="7" width="126" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="楼主" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3qN-Mi-nNx">
-                                                    <rect key="frame" x="144" y="7" width="34" height="21"/>
+                                                <label hidden="YES" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="楼主" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3qN-Mi-nNx">
+                                                    <rect key="frame" x="227" y="30" width="20" height="10"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -914,9 +917,8 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <connections>
                                             <outlet property="floorLbl" destination="Lpp-Gr-dwd" id="yhi-83-cF4"/>
+                                            <outlet property="floorView" destination="mOY-ZL-zfi" id="eXt-4p-BJg"/>
                                             <outlet property="hostLbl" destination="3qN-Mi-nNx" id="Wpp-Al-vjk"/>
-                                            <outlet property="image" destination="hMh-YD-Fkq" id="Tbv-Vj-qI3"/>
-                                            <outlet property="imageView" destination="hMh-YD-Fkq" id="7mj-7C-RVF"/>
                                             <outlet property="timeLbl" destination="oJb-hP-ckm" id="gsU-LU-d1X"/>
                                         </connections>
                                     </tableViewCell>
@@ -2049,11 +2051,11 @@
         <image name="isupdate" width="30" height="34"/>
         <image name="jt_red" width="191" height="329"/>
         <image name="like" width="174" height="36"/>
-        <image name="mark" width="25" height="26"/>
+        <image name="mark" width="27" height="27"/>
         <image name="meinv" width="159" height="160"/>
         <image name="pass" width="116" height="36"/>
         <image name="photos" width="30" height="30"/>
-        <image name="reply" width="24" height="26"/>
+        <image name="reply" width="27" height="27"/>
         <image name="setting" width="30" height="30"/>
         <image name="share" width="30" height="30"/>
         <image name="signOut" width="300" height="30"/>

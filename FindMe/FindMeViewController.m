@@ -164,7 +164,10 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"type":@"1",@"likeUserId": _matchUser._id};
+    __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[Config sharedConfig] matchNew:@"0"];
+        weakSelf.navigationController.tabBarItem.badgeValue = nil;
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             NSLog(@"LIKE成功");
@@ -229,13 +232,13 @@
         if (userDic!=nil) {
         _matchUser = [User objectWithKeyValues:userDic];
             [weakSelf setMatchPeople];
-            if ([[Config sharedConfig] matchNew:nil]) {
-                [[Config sharedConfig] matchNew:@"0"];
-                self.tabBarItem.badgeValue = nil;
-            }
             [weakSelf hideCover];
         }else{
             NSLog(@"今天没了");
+            if ([[Config sharedConfig] matchNew:nil]) {
+                [[Config sharedConfig] matchNew:@"0"];
+                weakSelf.navigationController.tabBarItem.badgeValue = nil;
+            }
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

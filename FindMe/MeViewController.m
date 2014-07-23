@@ -40,6 +40,8 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdate:) name:UserInfoChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    self.title = @"我的";
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"meTitleView"]];
     if (![[Config sharedConfig] isLogin]) {
         [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
         return;

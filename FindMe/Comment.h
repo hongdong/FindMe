@@ -15,7 +15,7 @@
 @property (strong,nonatomic) NSString *postMsgTime;
 @property (strong,nonatomic) NSString *postMsgContent;
 @property (strong,nonatomic) NSString *_id;
-@property (strong,nonatomic) NSString *postMsgUser;
+@property (strong,nonatomic) NSDictionary *postMsgUser;
 
 
 @property(nonatomic,weak,getter =getMatch) MatchParser * match;

@@ -8,6 +8,8 @@
 
 #import "PostDetailHeadView.h"
 #import "UIImageView+WebCache.h"
+#import "NSDate+Category.h"
+#import "NSDateFormatter+Category.h"
 @implementation PostDetailHeadView
 
 - (id)initWithFrame:(CGRect)frame
@@ -44,7 +46,8 @@
     [self.image sd_setImageWithURL:[HDTool getLImage:post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     
     self.contentLbl.text = post.postContent;
-    
+    NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:post.postReleaseTime];
+    self.timeLbl.text = [date formattedDateDescription];
     self.replyLbl.text = [post.postMsgNumber stringValue];
     self.markLal.text = [post.postPraise stringValue];
 }

@@ -50,7 +50,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"好友";
+    self.title = @"好友";
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.view addSubview:self.tableView];
     [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
