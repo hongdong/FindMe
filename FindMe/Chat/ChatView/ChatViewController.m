@@ -155,10 +155,6 @@
     [self stopAudioPlaying];
 }
 
-//发给别人的消息已读回调
-- (void)didReceiveHasReadResponse:(EMReceiptResp *)resp{
-    NSLog(@"已读");
-}
 
 - (void)dealloc
 {
@@ -634,7 +630,7 @@
     [self keyBoardHidden];
     
 #if TARGET_IPHONE_SIMULATOR
-    [self showHint:@"模拟器不支持拍照"];
+    [self showHint:@"模拟器不支持录像"];
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];

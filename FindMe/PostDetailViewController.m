@@ -550,6 +550,9 @@
 
 #pragma mark - DZNEmptyDataSetSource Methods
 
+- (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView{
+    return YES;
+}
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {
     NSString *text = nil;

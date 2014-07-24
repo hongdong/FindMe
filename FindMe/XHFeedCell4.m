@@ -150,7 +150,7 @@
             self.nameLabel.text = @"官方发布";
     }
     if (self.post.postPhoto!=nil) {
-        [self.picImageView sd_setImageWithURL:[HDTool getLImage:self.post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+        [self.picImageView sd_setImageWithURL:[HDTool getLImage:self.post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"loadingImage"]];
     }
 
 }

@@ -155,12 +155,13 @@
     
    
     [APService registerDeviceToken:deviceToken];
+    [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     [APService handleRemoteNotification:userInfo];
-
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
         NSLog(@"IApplicationStateInactive时收到推送");//点击提醒进来时调用
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
