@@ -59,7 +59,7 @@
  @discussion
  @result
  */
-- (void)didReconnect;
+- (void)didReconnect __attribute__((deprecated("需要使用 willAutoReconnect 与 didAutoReconnectFinishedWithError: 方法判断是否正在重连")));
 
 /*!
  @method
@@ -68,5 +68,21 @@
  @result
  */
 - (void)didRegisterNewAccount:(NSString *)username password:(NSString *)password error:(EMError *)error;
+
+/*!
+ @method
+ @brief 将要发起自动重连操作
+ @discussion
+ @result
+ */
+- (void)willAutoReconnect;
+
+/*!
+ @method
+ @brief 自动重连操作完成后的回调（成功的话，error为nil，失败的话，查看error的错误信息）
+ @discussion
+ @result
+ */
+- (void)didAutoReconnectFinishedWithError:(NSError *)error;
 
 @end

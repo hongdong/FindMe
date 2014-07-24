@@ -38,6 +38,8 @@
     NSString *_photoUrl;
     
     User *_user;
+    
+    BOOL _isScrollToBottom;
 }
 @property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
 @property (nonatomic) BOOL isChatGroup;
@@ -50,6 +52,8 @@
 @property (strong, nonatomic) MessageReadManager *messageReadManager;//message阅读的管理者
 @property (strong, nonatomic) EMConversation *conversation;//会话管理者
 @property (strong, nonatomic) NSDate *chatTagDate;
+
+@property (nonatomic) BOOL isScrollToBottom;
 
 @end
 
@@ -89,6 +93,7 @@
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
     _messageQueue = dispatch_queue_create("easemob.com", NULL);
+    _isScrollToBottom = YES;
     //通过会话管理者获取已收发消息
     NSArray *chats = [_conversation loadNumbersOfMessages:10 before:[_conversation latestMessage].timestamp + 1];
     [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
@@ -132,7 +137,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self scrollViewToBottom:YES];
+       if (_isScrollToBottom) {
+                [self scrollViewToBottom:YES];
+            }
+        else{
+                _isScrollToBottom = YES;
+            }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -419,11 +429,12 @@
             __weak ChatViewController *weakSelf = self;
             [[[EaseMob sharedInstance] deviceManager] enableProximitySensor];
             [[EaseMob sharedInstance].chatManager asyncPlayAudio:model.chatVoice completion:^(EMError *error) {
-                [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
+
                 [weakSelf.messageReadManager stopMessageAudioModel];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
+                    [[[EaseMob sharedInstance] deviceManager] disableProximitySensor];
                 });
                 
             } onQueue:nil];
@@ -435,6 +446,7 @@
 // 位置的bubble被点击
 -(void)chatLocationCellBubblePressed:(MessageModel *)model
 {
+    _isScrollToBottom = NO;
     LocationViewController *locationController = [[LocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(model.latitude, model.longitude)];
     [self.navigationController pushViewController:locationController animated:YES];
 }
@@ -456,6 +468,7 @@
 }
 
 - (void)playVideoWithVideoPath:(NSString *)videoPath{
+    _isScrollToBottom = NO;
     NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
     MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
     [moviePlayerController.moviePlayer prepareToPlay];
@@ -477,6 +490,7 @@
                     NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
                     if (localPath && localPath.length > 0) {
                         NSURL *url = [NSURL fileURLWithPath:localPath];
+                        weakSelf.isScrollToBottom = NO;
                         [weakSelf.messageReadManager showBrowserWithImages:@[url]];
                         return ;
                     }
@@ -808,18 +822,30 @@
 }
 - (void)loadMoreMessages
 {
-    NSInteger currentCount = [self.dataSource count];
-    NSArray *chats = [_conversation loadNumbersOfMessages:(currentCount + 10) before:[_conversation latestMessage].timestamp + 1];
-    
-    if ([chats count] > currentCount) {
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:[self sortChatSource:chats]];
-        [_tableView reloadData];
-        [_tableView headerEndRefreshing];
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.dataSource count] - currentCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }else{
-        [_tableView headerEndRefreshing];
-    }
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_messageQueue, ^{
+        NSInteger currentCount = [weakSelf.dataSource count];
+        EMMessage *latestMessage = [weakSelf.conversation latestMessage];
+        NSTimeInterval beforeTime = 0;
+        if (latestMessage) {
+            beforeTime = latestMessage.timestamp + 1;
+        }else{
+            beforeTime = [[NSDate date] timeIntervalSince1970] * 1000 + 1;
+        }
+        
+        NSArray *chats = [weakSelf.conversation loadNumbersOfMessages:(currentCount + KPageCount) before:beforeTime];
+        [weakSelf.tableView headerEndRefreshing];
+        if ([chats count] > currentCount) {
+            [weakSelf.dataSource removeAllObjects];
+            [weakSelf.dataSource addObjectsFromArray:[weakSelf sortChatSource:chats]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+                
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - currentCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            });
+        }
+    });
 }
 
 - (NSArray *)sortChatSource:(NSArray *)array

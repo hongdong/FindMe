@@ -78,6 +78,7 @@ typedef enum {
 #define kPushNotificationMaskNoDisturbing      0x01<<2
 #define kPushNotificationMaskNoDisturbingStart 0x01<<3
 #define kPushNotificationMaskNoDisturbingEnd   0x01<<4
+#define kPushNotificationMaskAll               0x01<<7
 
 /*!
  @enum

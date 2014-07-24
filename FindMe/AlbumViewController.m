@@ -251,9 +251,7 @@
 }
 
 -(void)photoClick:(UITapGestureRecognizer *)imageTap
-{
-    NSLog(@"imageTag==%d", imageTap.view.tag);
-    
+{    
     // 1.封装图片数据
     NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [_user.userAlbum count]];
     for (int i = 0; i < [_user.userAlbum count]; i++) {
@@ -262,7 +260,7 @@
         NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [_user.userAlbum objectAtIndex:i]];
         MJPhoto *photo = [[MJPhoto alloc] init];
         photo.url = [HDTool getLImage:getImageStrUrl];
-        UIImageView * imageView = (UIImageView *)[self.view viewWithTag:imageTap.view.tag];
+        UIImageView * imageView = (UIImageView *)[self.view viewWithTag:(10000+i)];
         photo.srcImageView = imageView;
         [photos addObject:photo];
     }

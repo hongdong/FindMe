@@ -35,21 +35,21 @@
 /*!
  @method
  @brief  创建群组（同步方法）
- @param aSubject        群组名称
- @param aDescription    群组描述
- @param aInvitees       默认群组成员（usernames）
- @param aWelcomeMessage 群组欢迎语
- @param aStyleSetting   群组属性配置
+ @param subject        群组名称
+ @param description    群组描述
+ @param invitees       默认群组成员（usernames）
+ @param welcomeMessage 群组欢迎语
+ @param styleSetting   群组属性配置
  @param pError          建组的错误。成功为nil
  @return 创建好的群组
  @discussion
         创建群组成功 判断条件：*pError == nil && returnGroup != nil
  */
-- (EMGroup *)createGroupWithSubject:(NSString *)aSubject
-                        description:(NSString *)aDescription
-                           invitees:(NSArray *)aInvitees
-              initialWelcomeMessage:(NSString *)aWelcomeMessage
-                       styleSetting:(EMGroupStyleSetting *)aStyleSetting
+- (EMGroup *)createGroupWithSubject:(NSString *)subject
+                        description:(NSString *)description
+                           invitees:(NSArray *)invitees
+              initialWelcomeMessage:(NSString *)welcomeMessage
+                       styleSetting:(EMGroupStyleSetting *)styleSetting
                               error:(EMError **)pError;
 
 /*!
@@ -894,7 +894,7 @@
 /*!
  @method
  @brief  根据groupId搜索公开群(同步方法)
- @param groupId  群组id
+ @param groupId  群组id(完整id)
  @param pError   搜索失败的错误
  @return 搜索到的群组
  @discussion
@@ -906,7 +906,7 @@
 /*!
  @method
  @brief  根据groupId搜索公开群(异步方法)
- @param groupId    公开群组的ID
+ @param groupId    公开群组的ID(完整id)
  @param completion 消息完成后的回调
  @param aQueue     回调block时的线程
  @discussion

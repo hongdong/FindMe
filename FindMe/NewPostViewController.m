@@ -192,6 +192,12 @@
 #pragma textView Delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        [self sendPressed:nil];
+        return NO;
+    }
     int  remainTextNum = 140;
     //计算剩下多少文字可以输入
     if(range.location>=140)

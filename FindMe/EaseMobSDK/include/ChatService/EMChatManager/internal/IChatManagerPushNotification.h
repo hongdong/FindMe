@@ -40,12 +40,10 @@
  @method
  @brief 更新消息推送相关属性配置（异步方法）
  @param options    属性
- @param pError     更新错误信息
  @discussion
     方法执行完之后，调用[didUpdatePushOptions:error:];
  */
-- (void)asyncUpdatePushOptions:(EMPushNotificationOptions *)options
-                         error:(EMError **)pError;
+- (void)asyncUpdatePushOptions:(EMPushNotificationOptions *)options;
 
 /*!
  @method

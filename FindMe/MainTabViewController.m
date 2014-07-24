@@ -9,6 +9,7 @@
 #import "MainTabViewController.h"
 #import "EaseMob.h"
 #import "ChatListViewController.h"
+#import "User.h"
 //两次提示的默认间隔
 const CGFloat kDefaultPlaySoundInterval = 3.0;
 @interface MainTabViewController ()<IChatManagerDelegate>{
@@ -101,11 +102,12 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     for (EMConversation *conversation in conversations) {
         unreadCount += conversation.unreadMessagesCount;
     }
-    UIViewController *vc = [self.viewControllers objectAtIndex:1];
-    if (unreadCount > 0) {
-        vc.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
-    }else{
-        vc.tabBarItem.badgeValue = nil;
+    if (_chatListVC) {
+        if (unreadCount > 0) {
+            _chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",unreadCount];
+        }else{
+            _chatListVC.tabBarItem.badgeValue = nil;
+        }
     }
 }
 
@@ -191,18 +193,9 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = [NSDate date]; //触发通知的时间
-    
-    NSString *title = message.from;
-    if (message.isGroup) {
-        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
-        for (EMGroup *group in groupArray) {
-            if ([group.groupId isEqualToString:message.conversation.chatter]) {
-                title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, group.groupSubject];
-                break;
-            }
-        }
-    }
-    
+    NSString *sql = [NSString stringWithFormat:@"_id='%@'",message.from];
+    User *user = [User dbObjectsWhere:sql orderby:nil][0];
+    NSString *title = user.userNickName;
     notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
     notification.alertAction = @"打开";
     notification.timeZone = [NSTimeZone defaultTimeZone];
@@ -217,11 +210,48 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginFromOtherDevice
 {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已在其他地方登录"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
         alertView.tag = 100;
         [alertView show];
-
     } onQueue:nil];
+}
+
+- (void)didRemovedFromServer {
+    [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"你的账号已被从服务器端移除"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,
+                                  nil];
+        alertView.tag = 101;
+        [alertView show];
+    } onQueue:nil];
+}
+
+- (void)didConnectionStateChanged:(EMConnectionState)connectionState
+{
+    [_chatListVC networkChanged:connectionState];
+}
+
+#pragma mark -
+
+- (void)willAutoReconnect{
+    [self showHudInView:self.view hint:@"正在重连中..."];
+}
+
+- (void)didAutoReconnectFinishedWithError:(NSError *)error{
+    [self hideHud];
+    if (error) {
+        [self showHint:@"重连失败，稍候将继续重连"];
+    }else{
+        [self showHint:@"重连成功！"];
+    }
 }
 
 

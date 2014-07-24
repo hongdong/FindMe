@@ -12,7 +12,7 @@
 // 代理
 @property (nonatomic, weak) id<MJPhotoBrowserDelegate> delegate;
 // 所有的图片对象
-@property (nonatomic, strong) NSArray *photos;
+@property (nonatomic, strong) NSMutableArray * photos;
 // 当前展示的图片索引
 @property (nonatomic, assign) NSUInteger currentPhotoIndex;
 
@@ -21,6 +21,11 @@
 @end
 
 @protocol MJPhotoBrowserDelegate <NSObject>
+
+-(void)CellPhotoImageReload;
+
+-(void)NewPostImageReload:(NSInteger)ImageIndex;
+
 @optional
 // 切换到某一页图片
 - (void)photoBrowser:(MJPhotoBrowser *)photoBrowser didChangedToPageAtIndex:(NSUInteger)index;

@@ -140,7 +140,7 @@
 #endif
     [[EaseMob sharedInstance] registerSDKWithAppKey:@"fjhongdong#findme" apnsCertName:apnsCertName];
     
-    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
+//    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
@@ -243,6 +243,8 @@
         User *user = [User getUserFromNSUserDefaults];
         [user freshSession];
     }
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     NSLog(@"DidBecomeActive");
 }
 

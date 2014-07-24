@@ -24,6 +24,7 @@
     id _head;
     NSString *_didChange;
     NSDictionary *_index;
+    ZBMessageViewState _nowState;
 }
 
 @end
@@ -204,7 +205,7 @@
 - (void)dealloc{
     self.messageToolView = nil;
     self.faceView = nil;
-    
+    self.delegate = nil;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardDidChangeFrameNotification object:nil];
@@ -224,7 +225,7 @@
 }
 
 - (void)keyboardChange:(NSNotification *)notification{
-    if ([[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y<CGRectGetHeight(self.view.frame)) {
+    if ([[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y<CGRectGetHeight(self.view.frame)) {//如果键盘不是收起来
         [self messageViewAnimationWithMessageRect:[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue]
                          withMessageInputViewRect:self.messageToolView.frame
                                       andDuration:0.25
@@ -336,7 +337,7 @@
         if ([state isEqualToString:@"20001"]) {
             weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
             _didChange = @"1";
-            [weakSelf showResultWithType:ResultSuccess];
+//            [weakSelf showResultWithType:ResultSuccess];
             [weakSelf resetHead];
             
             [weakSelf getCommentByType:@"nl"];

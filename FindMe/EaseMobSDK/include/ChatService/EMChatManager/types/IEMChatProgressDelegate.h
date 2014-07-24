@@ -21,8 +21,18 @@
  @brief 设置进度
  @discussion 用户需实现此接口用以支持进度显示
  @param progress 值域为0到1.0的浮点数
+ @param message  某一条消息的progress
  @result
  */
-- (void)setProgress:(float)progress;
+- (void)setProgress:(float)progress forMessage:(EMMessage *)message;
+
+/*!
+ @method
+ @brief 设置进度
+ @discussion 用户需实现此接口用以支持进度显示
+ @param progress 值域为0到1.0的浮点数
+ @result
+ */
+- (void)setProgress:(float)progress __attribute__((deprecated("")));
 
 @end

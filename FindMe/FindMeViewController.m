@@ -450,8 +450,10 @@
              
             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
             options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
-            [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options error:nil];
-             
+             options.nickname = _user.userNickName;
+             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options completion:^(EMPushNotificationOptions *options, EMError *error) {
+                 NSLog(@"%@",options);
+             } onQueue:nil];
             [weakSelf showResultWithType:ResultSuccess];
              [[Config sharedConfig] changeOnlineState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];

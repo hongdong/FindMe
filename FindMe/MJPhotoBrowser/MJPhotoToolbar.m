@@ -9,9 +9,11 @@
 #import "MJPhotoToolbar.h"
 #import "MJPhoto.h"
 #import "MBProgressHUD+Add.h"
+#import "AppDelegate.h"
 
 @interface MJPhotoToolbar()
 {
+    AppDelegate * app;
     // 显示页码
     UILabel *_indexLabel;
     UIButton *_saveImageBtn;
@@ -20,11 +22,15 @@
 
 @implementation MJPhotoToolbar
 
+@synthesize Delegate;
+@synthesize DeleteImage;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -44,15 +50,25 @@
         [self addSubview:_indexLabel];
     }
     
-    // 保存图片按钮
-    CGFloat btnWidth = self.bounds.size.height;
-    _saveImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _saveImageBtn.frame = CGRectMake(20, 0, btnWidth, btnWidth);
-    _saveImageBtn.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [_saveImageBtn setImage:[UIImage imageNamed:@"MJPhotoBrowser.bundle/save_icon.png"] forState:UIControlStateNormal];
-    [_saveImageBtn setImage:[UIImage imageNamed:@"MJPhotoBrowser.bundle/save_icon_highlighted.png"] forState:UIControlStateHighlighted];
-    [_saveImageBtn addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_saveImageBtn];
+//    // 保存图片按钮
+//    CGFloat btnWidth = self.bounds.size.height;
+//    _saveImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    _saveImageBtn.frame = CGRectMake(20, 0, btnWidth, btnWidth);
+//    _saveImageBtn.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+//    [_saveImageBtn setImage:[UIImage imageNamed:@"MJPhotoBrowser.bundle/save_icon.png"] forState:UIControlStateNormal];
+//    
+////    [_saveImageBtn setImage:[UIImage imageNamed:@"MJPhotoBrowser.bundle/save_icon_highlighted.png"] forState:UIControlStateHighlighted];
+//    
+//    [_saveImageBtn setImage:[UIImage imageNamed:@"photo-gallery-trashcan.png"] forState:UIControlStateHighlighted];
+//    [_saveImageBtn addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:_saveImageBtn];
+    
+}
+-(void)deleteThisImage
+{
+    if ( [Delegate respondsToSelector:@selector(DeleteThisImage:)] ) {
+        [Delegate DeleteThisImage:_currentPhotoIndex];
+    }
 }
 
 - (void)saveImage

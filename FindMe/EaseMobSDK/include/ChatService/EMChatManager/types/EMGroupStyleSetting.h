@@ -14,7 +14,7 @@
  @constant eGroupStyle_PrivateMemberCanInvite 私有群组，owner和member权限的人可以邀请人加入
  @constant eGroupStyle_PublicJoinNeedApproval 公开群组，允许非群组成员申请加入，需要管理员同意才能真正加入该群组
  @constant eGroupStyle_PublicOpenJoin         公开群组，允许非群组成员加入，不需要管理员同意
- @constant eGroupStyle_Default 语音类型
+ @constant eGroupStyle_Default                默认群组类型
  @discussion
         eGroupStyle_Private：私有群组，只允许群组成员邀请人进入
         eGroupStyle_Public： 公有群组，允许非群组成员加入

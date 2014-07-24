@@ -14,8 +14,6 @@
 #import <MapKit/MapKit.h>
 #import "LocationViewController.h"
 
-#import "UIViewController+HUD.h"
-
 static LocationViewController *defaultLocation = nil;
 
 @interface LocationViewController () <MKMapViewDelegate>
@@ -40,6 +38,7 @@ static LocationViewController *defaultLocation = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isSendLocation = YES;
+
     }
     
     return self;
@@ -61,12 +60,12 @@ static LocationViewController *defaultLocation = nil;
     [super viewDidLoad];
     
     self.title = @"位置信息";
-    
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    [self.navigationItem setLeftBarButtonItem:backItem];
+    if (iOS7)
+    {
+        self.edgesForExtendedLayout = UIRectEdgeBottom;               //视图控制器，四条边不指定
+        self.extendedLayoutIncludesOpaqueBars = NO;                 //不透明的操作栏
+        self.modalPresentationCapturesStatusBarAppearance = NO;
+    }
     
     _mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     _mapView.delegate = self;
@@ -77,10 +76,8 @@ static LocationViewController *defaultLocation = nil;
     if (_isSendLocation) {
         _mapView.showsUserLocation = YES;//显示当前位置
         
-        UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+        UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
         [sendButton setTitle:@"发送" forState:UIControlStateNormal];
-        [sendButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-        [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [sendButton addTarget:self action:@selector(sendLocation) forControlEvents:UIControlEventTouchUpInside];
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:sendButton]];
         self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -138,6 +135,7 @@ static LocationViewController *defaultLocation = nil;
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
+    [self hideHud];
     [self showHint:@"定位失败"];
 }
 

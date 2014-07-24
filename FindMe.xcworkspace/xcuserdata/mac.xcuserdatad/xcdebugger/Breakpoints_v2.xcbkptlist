@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FindMe/AlbumViewController.m"
-            timestampString = "427542275.453704"
+            filePath = "FindMe/Chat/ChatView/ChatViewController.m"
+            timestampString = "427885062.629341"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "-updatePhoto"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FindMe/AlbumViewController.m"
-            timestampString = "427542318.743845"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "-initWithCoder:"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "-didReceiveHasReadResponse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

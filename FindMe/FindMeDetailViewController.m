@@ -89,8 +89,6 @@
 
 -(void)photoClick:(UITapGestureRecognizer *)imageTap
 {
-    NSLog(@"imageTag==%d", imageTap.view.tag );
-    
     // 1.封装图片数据
     NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [myImageUrlArr count] ];
     for (int i = 0; i < [myImageUrlArr count]; i++) {
@@ -100,7 +98,7 @@
         MJPhoto *photo = [[MJPhoto alloc] init];
         photo.url = [NSURL URLWithString: getImageStrUrl ]; // 图片路径
         
-        UIImageView * imageView = (UIImageView *)[self.view viewWithTag: imageTap.view.tag ];
+        UIImageView * imageView = (UIImageView *)[self.view viewWithTag:10000+i];
         photo.srcImageView = imageView;
         [photos addObject:photo];
     }

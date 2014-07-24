@@ -153,7 +153,7 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    NSDictionary *parameters = @{@"type":@"2 ",@"userMatchId": _id};;
+    NSDictionary *parameters = @{@"type":@"2",@"userMatchId": _id};;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
         NSLog(@"pass");
