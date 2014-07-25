@@ -81,7 +81,6 @@
 		0476D535196D1A5C0077B376 /* PostDetailHeadView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 0476D534196D1A5C0077B376 /* PostDetailHeadView1.m */; };
 		04A19A8B1980B3EF005B8A0D /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04A19A891980B3EF005B8A0D /* EaseMob.bundle */; };
 		04A19A8D1980EEA8005B8A0D /* libEaseMobClientSDKLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A19A8C1980EEA8005B8A0D /* libEaseMobClientSDKLite.a */; };
-		04A19A91198150D5005B8A0D /* KWPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A19A90198150D5005B8A0D /* KWPopoverView.m */; };
 		04A4E2221967D57400E9BC63 /* FindMeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */; };
 		04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2241967DC2500E9BC63 /* FirstPageView.m */; };
 		04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2271967DC3900E9BC63 /* SecondPageView.m */; };
@@ -209,6 +208,8 @@
 		04B2D9DE1963CEAA00EF0C74 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B2D9DD1963CEAA00EF0C74 /* PostDetailViewController.m */; };
 		04B2D9E11963CFB200EF0C74 /* PostDetailHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B2D9E01963CFB200EF0C74 /* PostDetailHeadView.m */; };
 		04B2D9E41963D1F000EF0C74 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B2D9E31963D1F000EF0C74 /* CommentCell.m */; };
+		04B313251981CFF6005569D2 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B313231981CFF6005569D2 /* PopoverView.m */; };
+		04B3133619826D48005569D2 /* HDCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3133519826D48005569D2 /* HDCodeView.m */; };
 		04B315A81956BD5500F93C73 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315A71956BD5500F93C73 /* ContactsViewController.m */; };
 		04B315AB1956BF0600F93C73 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315AA1956BF0600F93C73 /* BaseTableViewCell.m */; };
 		04B315AE1956BFDC00F93C73 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B315AD1956BFDC00F93C73 /* RealtimeSearchUtil.m */; };
@@ -463,8 +464,6 @@
 		04A19A851980B3EF005B8A0D /* EMErrorDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMErrorDefs.h; sourceTree = "<group>"; };
 		04A19A891980B3EF005B8A0D /* EaseMob.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseMob.bundle; sourceTree = "<group>"; };
 		04A19A8C1980EEA8005B8A0D /* libEaseMobClientSDKLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseMobClientSDKLite.a; sourceTree = "<group>"; };
-		04A19A8F198150D5005B8A0D /* KWPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KWPopoverView.h; sourceTree = "<group>"; };
-		04A19A90198150D5005B8A0D /* KWPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KWPopoverView.m; sourceTree = "<group>"; };
 		04A4E2201967D57400E9BC63 /* FindMeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindMeDetailViewController.h; sourceTree = "<group>"; };
 		04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindMeDetailViewController.m; sourceTree = "<group>"; };
 		04A4E2231967DC2500E9BC63 /* FirstPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPageView.h; sourceTree = "<group>"; };
@@ -678,6 +677,12 @@
 		04B2D9E01963CFB200EF0C74 /* PostDetailHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailHeadView.m; sourceTree = "<group>"; };
 		04B2D9E21963D1F000EF0C74 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
 		04B2D9E31963D1F000EF0C74 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
+		04B313211981CFF6005569D2 /* PopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
+		04B313221981CFF6005569D2 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
+		04B313231981CFF6005569D2 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
+		04B313241981CFF6005569D2 /* PopoverViewCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverViewCompatibility.h; sourceTree = "<group>"; };
+		04B3133419826D48005569D2 /* HDCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDCodeView.h; sourceTree = "<group>"; };
+		04B3133519826D48005569D2 /* HDCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDCodeView.m; sourceTree = "<group>"; };
 		04B315A61956BD5500F93C73 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		04B315A71956BD5500F93C73 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		04B315A91956BF0600F93C73 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
@@ -1167,8 +1172,10 @@
 		04A19A8E198150D5005B8A0D /* POPView */ = {
 			isa = PBXGroup;
 			children = (
-				04A19A8F198150D5005B8A0D /* KWPopoverView.h */,
-				04A19A90198150D5005B8A0D /* KWPopoverView.m */,
+				04B313211981CFF6005569D2 /* PopoverView_Configuration.h */,
+				04B313221981CFF6005569D2 /* PopoverView.h */,
+				04B313231981CFF6005569D2 /* PopoverView.m */,
+				04B313241981CFF6005569D2 /* PopoverViewCompatibility.h */,
 			);
 			path = POPView;
 			sourceTree = "<group>";
@@ -1953,6 +1960,8 @@
 				04DA3AEA19667B4B00E0AE3C /* XYInputView.m */,
 				04DA3AEB19667B4B00E0AE3C /* XYLoadingView.h */,
 				04DA3AEC19667B4B00E0AE3C /* XYLoadingView.m */,
+				04B3133419826D48005569D2 /* HDCodeView.h */,
+				04B3133519826D48005569D2 /* HDCodeView.m */,
 			);
 			path = XYAlertView;
 			sourceTree = "<group>";
@@ -2275,6 +2284,7 @@
 				04DA3AF619667B4B00E0AE3C /* XYAlertViewManager.m in Sources */,
 				04ACA250196EA3A7003F14B1 /* HBCoreLabel.m in Sources */,
 				04B2D95C1963828D00EF0C74 /* EMChatViewCell.m in Sources */,
+				04B313251981CFF6005569D2 /* PopoverView.m in Sources */,
 				04169ADB1964FCCF00A64585 /* ZBMessageInputView.m in Sources */,
 				04AA9B8E195C24E7001C83C2 /* ChooseGradeViewController.m in Sources */,
 				04DA3AFB1966AA3C00E0AE3C /* LoginView.m in Sources */,
@@ -2301,6 +2311,7 @@
 				04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */,
 				04AA9B87195BC9EF001C83C2 /* ChooseSchoolViewController.m in Sources */,
 				04A81956196CEAF5001FF6E3 /* XHFeedCell1.m in Sources */,
+				04B3133619826D48005569D2 /* HDCodeView.m in Sources */,
 				04B2D9C91963840500EF0C74 /* MessageModel.m in Sources */,
 				04DA3AF819667B4B00E0AE3C /* XYLoadingView.m in Sources */,
 				04A9614B1955851F002E30AF /* User.m in Sources */,
@@ -2351,7 +2362,6 @@
 				04B316B41956FC7600F93C73 /* ChatViewController.m in Sources */,
 				04B315D11956C84100F93C73 /* MJRefreshConst.m in Sources */,
 				04AD984E196B84850080F009 /* AlbumViewController.m in Sources */,
-				04A19A91198150D5005B8A0D /* KWPopoverView.m in Sources */,
 				04A9616319559D1D002E30AF /* MJMethod.m in Sources */,
 				04A9F27A196AAA19000A347E /* SettingViewController.m in Sources */,
 				04A9616819559D1D002E30AF /* NSObject+MJMember.m in Sources */,

@@ -15,7 +15,6 @@
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NSUserDefaultsUserChange" object:nil];
-    NSLog(@"保存到本地完成");
 }
 -(void)getUserInfo{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
@@ -44,7 +43,6 @@
             if (weakSelf.userAlbum==nil) {
                 weakSelf.userAlbum = [[NSMutableArray alloc] init];
             }
-            NSLog(@"获取用户资料完成");
             
             if ([self.class getUserFromNSUserDefaults]==nil) {
                     [weakSelf saveToNSUserDefaults];

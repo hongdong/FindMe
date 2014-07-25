@@ -38,6 +38,8 @@
                                      UITextAttributeTextColor : [UIColor whiteColor]
                                      }];
     
+    [[UITabBar appearance] setSelectedImageTintColor:HDRED];
+    
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
@@ -75,12 +77,27 @@
     return YES;
 }
 
+#pragma Jpush delegate
 - (void)kAPNetworkDidRegister:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     NSString *registrationID = [userInfo valueForKey:@"RegistrationID"];
     [[Config sharedConfig] saveRegistrationID:registrationID];
     NSLog(@"registrationID:%@",registrationID);
 }
+
+- (void)networkDidReceiveMessage:(NSNotification *)notification {
+    NSDictionary * userInfo = [notification userInfo];
+    NSString *type = [userInfo valueForKey:@"content"];
+    NSDictionary *extras = [userInfo valueForKey:@"extras"];
+    if ([type isEqualToString:@"changepic"]) {
+        [[Config sharedConfig] coverPicUrl:[extras objectForKey:@"coverpic"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CoverChange object:nil];
+    }
+    
+}
+
+
+
 
 -(void)initShareSDK{
     [ShareSDK registerApp:@"1a81fc29a7db"];
@@ -102,6 +119,7 @@
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(kAPNetworkDidRegister:) name:kAPNetworkDidRegisterNotification object:nil];
+    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kAPNetworkDidReceiveMessageNotification object:nil];
     // Required
     [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                                    UIRemoteNotificationTypeSound |

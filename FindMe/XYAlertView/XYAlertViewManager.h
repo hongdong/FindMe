@@ -31,7 +31,7 @@ CGRect XYScreenBounds();
     UIView *_blackBG;
     UILabel *_loadingLabel;
     GCPlaceholderTextView *_textView;
-
+    UITextField *_codeTextView;
     NSTimer *_loadingTimer;
     
     Boolean _isDismissing;

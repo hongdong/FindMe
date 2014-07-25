@@ -259,6 +259,9 @@
                     <state key="normal" image="help">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="helpPressed:" destination="81o-sr-9Fk" eventType="touchUpInside" id="zrt-6T-BJS"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJ9-aA-7TM">
                     <rect key="frame" x="15" y="407" width="33" height="33"/>
@@ -266,10 +269,18 @@
                     <state key="normal" image="fresh">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="freshPressed:" destination="81o-sr-9Fk" eventType="touchUpInside" id="E7h-n4-01K"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="coverImg" destination="BVe-FX-YzX" id="88L-hm-fB8"/>
+                <outlet property="freshBt" destination="IJ9-aA-7TM" id="O0H-Bq-Nkv"/>
+                <outlet property="helpBt" destination="Uoh-hl-nsA" id="sWg-JU-8uq"/>
+            </connections>
         </view>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="Smi-I7-WdH" customClass="PostDetailHeadView1">
             <rect key="frame" x="0.0" y="0.0" width="320" height="299"/>

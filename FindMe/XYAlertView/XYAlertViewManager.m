@@ -10,8 +10,9 @@
 #import "XYLoadingView.h"
 #import "XYAlertView.h"
 #import "XYInputView.h"
+#import "HDCodeView.h"
 #import "GCPlaceholderTextView.h"
-
+#import <AFNetworking.h>
 #define AlertViewWidth 280.0f
 #define AlertViewHeight 175.0f
 
@@ -292,6 +293,84 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     }
 }
 
+-(void)prepareCodeViewToDisplay:(HDCodeView*)entity
+{
+    CGRect screenBounds = XYScreenBounds();
+    if(!_blackBG)
+    {
+        _blackBG = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height)];
+        _blackBG.backgroundColor = [UIColor blackColor];
+        _blackBG.opaque = YES;
+        _blackBG.alpha = 0.5f;
+        _blackBG.userInteractionEnabled = YES;
+    }
+    
+    _blackBG.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+    
+    _alertView = nil;
+    _alertView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"codeAlertBg"] stretchableImageWithLeftCapWidth:34 topCapHeight:44]];
+    _alertView.userInteractionEnabled = YES;
+    _alertView.frame = CGRectMake(0, 0, AlertViewWidth, AlertViewHeight + 20);
+    _alertView.center = CGPointMake(screenBounds.size.width / 2, screenBounds.size.height / 2);
+
+        UILabel *_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 240, 30)];
+        _titleLabel.textAlignment = NSTextAlignmentLeft;
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.textColor = HDRED;
+        _titleLabel.font = [UIFont boldSystemFontOfSize:20];
+        _titleLabel.text = @"请输入验证码";
+        [_alertView addSubview:_titleLabel];
+        
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 68, 90, 34)];
+        imageView.image = [UIImage imageNamed:@"loadingCode"];
+        [_alertView addSubview:imageView];
+    
+        [self getCodeUrl:imageView and:entity];
+        
+        UIButton *fresh = [[UIButton alloc] initWithFrame:CGRectMake(100, 68, 34, 34)];
+        [fresh setImage:[UIImage imageNamed:@"codefresh"] forState:UIControlStateNormal];
+        [_alertView addSubview:fresh];
+        
+        _codeTextView = [[UITextField alloc] initWithFrame:CGRectMake(142, 68, 128, 34)];
+        _codeTextView.backgroundColor = [UIColor clearColor];
+        _codeTextView.clearButtonMode = UITextFieldViewModeWhileEditing;
+        
+        UIImageView *_inputBGView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"code_input_bg.png"] stretchableImageWithLeftCapWidth:50 topCapHeight:17]];
+        _inputBGView.frame = CGRectMake(140, 68, 130, 34);
+        [_alertView addSubview:_inputBGView];
+    
+    
+    _codeTextView.returnKeyType = UIReturnKeyDone;
+    _codeTextView.placeholder = @"验证码";
+    _codeTextView.font = [UIFont systemFontOfSize:14];
+    
+    [_alertView addSubview:_codeTextView];
+    
+    
+    
+    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 126, 140, 60)];
+    [button1 setImage:[UIImage imageNamed:@"x"] forState:UIControlStateNormal];
+    button1.tag = 0;
+    [button1 addTarget:self action:@selector(onButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(140, 126, 140, 60)];
+    [button2 setImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
+    button2.tag = 1;
+    [button2 addTarget:self action:@selector(onButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [_alertView addSubview:button1];
+    [_alertView addSubview:button2];
+}
+
+-(void)getCodeUrl:(UIImageView *)codeImageView and:(HDCodeView*)entity{
+    
+    NSMutableURLRequest *myRequest = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:entity.codeUrl]];
+    [NSURLConnection sendAsynchronousRequest:myRequest queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            [codeImageView setImage:[UIImage imageWithData:data]];
+    }];
+
+}
+
+
 -(void)updateLoadingAnimation
 {
     CGAffineTransform transform = _alertView.transform;
@@ -325,6 +404,10 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         {
             [self prepareInputToDisplay:entity];
             [self showInputViewWithAnimation:entity];
+        }else if([entity isKindOfClass:[HDCodeView class]])
+        {
+            [self prepareCodeViewToDisplay:entity];
+            [self showCodeViewWithAnimation:entity];
         }
     }
 }
@@ -496,10 +579,39 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
                          }];
     }
 }
-
+-(void)showCodeViewWithAnimation:(id)entity
+{
+    if([entity isKindOfClass:[HDCodeView class]])
+    {
+        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+        if(!keyWindow)
+        {
+            NSArray *windows = [UIApplication sharedApplication].windows;
+            if(windows.count > 0)
+                //            keyWindow = [windows lastObject];
+                keyWindow = [windows objectAtIndex:0];
+        }
+        UIView *containerView = [[keyWindow subviews] objectAtIndex:0];
+        
+        _blackBG.alpha = 0.0f;
+        CGRect frame = _alertView.frame;
+        frame.origin.y = -AlertViewHeight;
+        _alertView.frame = frame;
+        [containerView addSubview:_blackBG];
+        [containerView addSubview:_alertView];
+        
+        [UIView animateWithDuration:0.2f animations:^{
+            _blackBG.alpha = 0.5f;
+            _alertView.center = CGPointMake(XYScreenBounds().size.width / 2, XYScreenBounds().size.height / 2);
+        }
+                         completion:^(BOOL finished) {
+                             
+                         }];
+    }
+}
 -(void)dismissInputViewWithAnimation:(id)entity button:(int)buttonIndex
 {
-    if([entity isKindOfClass:[XYInputView class]])
+    if([entity isKindOfClass:[XYInputView class]]||[entity isKindOfClass:[HDCodeView class]])
     {
         [UIView animateWithDuration:0.2f
                          animations:
@@ -516,9 +628,14 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
              
              [_alertViewQueue removeLastObject];
              _isDismissing = NO;
-             
-             if(((XYInputView*)entity).blockAfterDismiss)
-                 ((XYInputView*)entity).blockAfterDismiss(buttonIndex, _textView.text);
+             if ([entity isKindOfClass:[XYInputView class]]) {
+                 if(((XYInputView*)entity).blockAfterDismiss)
+                     ((XYInputView*)entity).blockAfterDismiss(buttonIndex, _textView.text);
+             }else if ([entity isKindOfClass:[HDCodeView class]]){
+                 if(((HDCodeView*)entity).blockAfterDismiss)
+                     ((HDCodeView*)entity).blockAfterDismiss(buttonIndex, _codeTextView.text);
+             }
+
              
              [self checkoutInStackAlertView];
          }];
@@ -638,7 +755,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
 {
     if([entity isKindOfClass:[XYAlertView class]] ||
        [entity isKindOfClass:[XYLoadingView class]] ||
-       [entity isKindOfClass:[XYInputView class]])
+       [entity isKindOfClass:[XYInputView class]]||
+       [entity isKindOfClass:[HDCodeView class]])
     {
         if(_isDismissing == YES && _alertViewQueue.count > 0)
         {
@@ -668,6 +786,9 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
             {
                 [self prepareInputToDisplay:entity];
                 [self showInputViewWithAnimation:entity];
+            }else if ([entity isKindOfClass:[HDCodeView class]]){
+                [self prepareCodeViewToDisplay:entity];
+                [self showCodeViewWithAnimation:entity];
             }
         }
     }
@@ -685,11 +806,15 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
 
     if([entity isKindOfClass:[XYAlertView class]] ||
        [entity isKindOfClass:[XYLoadingView class]] ||
-       [entity isKindOfClass:[XYInputView class]])
+       [entity isKindOfClass:[XYInputView class]]||
+       [entity isKindOfClass:[HDCodeView class]])
     {
         _isDismissing = YES;
-        
-        [_textView resignFirstResponder];
+        if ([entity isKindOfClass:[HDCodeView class]]) {
+            [_codeTextView resignFirstResponder];
+        }else{
+            [_textView resignFirstResponder];
+        }
 
         if([entity isEqual:[_alertViewQueue lastObject]])
         {
@@ -698,6 +823,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
             else if([entity isKindOfClass:[XYLoadingView class]])
                 [self dismissLoadingViewWithAnimation:entity];
             else if([entity isKindOfClass:[XYInputView class]])
+                [self dismissInputViewWithAnimation:entity button:buttonIndex];
+            else if ([entity isKindOfClass:[HDCodeView class]])
                 [self dismissInputViewWithAnimation:entity button:buttonIndex];
         }
         else

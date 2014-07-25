@@ -161,4 +161,15 @@
     }
     return NO;
 }
+-(NSString *)coverPicUrl:(NSString *)url{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (url!=nil) {
+        [setting removeObjectForKey:@"coverPicUrl"];
+        [setting setObject:url forKey:@"coverPicUrl"];
+        [setting synchronize];
+    }else{
+        return [setting objectForKey:@"coverPicUrl"];
+    }
+    return nil;
+}
 @end

@@ -32,4 +32,6 @@
 -(BOOL)fansNew:(NSString *)isnew;
 
 -(BOOL)postNew:(NSString *)isnew;
+
+-(NSString *)coverPicUrl:(NSString *)url;
 @end

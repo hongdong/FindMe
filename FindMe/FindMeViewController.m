@@ -21,7 +21,7 @@
 #import "MDCFocusView.h"
 #import "MDCSpotlightView.h"
 #import "FansViewController.h"
-@interface FindMeViewController (){
+@interface FindMeViewController ()<CoverViewDelegate>{
     User *_user;
     User *_matchUser;
     LoginView *_loginView;
@@ -49,6 +49,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _coverView = [HDTool loadCustomViewByIndex:4];
+        _coverView.delegate = self;
         UIButton *fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [fansButton setImage:[UIImage imageNamed:@"fans"] forState:UIControlStateNormal];
@@ -234,7 +235,7 @@
             [weakSelf setMatchPeople];
             [weakSelf hideCover];
         }else{
-            NSLog(@"今天没了");
+            [self showHint:@"今天没了"];
             if ([[Config sharedConfig] matchNew:nil]) {
                 [[Config sharedConfig] matchNew:@"0"];
                 weakSelf.navigationController.tabBarItem.badgeValue = nil;
@@ -479,6 +480,10 @@
      } onQueue:nil];
 }
 
+#pragma delegate
+-(void)coverViewRefreshPressed{
+    [self getMatch:nil];
+}
 
 - (void)didReceiveMemoryWarning
 {

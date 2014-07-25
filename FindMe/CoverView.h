@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CoverViewDelegate <NSObject>
+
+@required
+-(void)coverViewRefreshPressed;
+
+@end
+
 @interface CoverView : UIView
+
+@property(weak,nonatomic) id<CoverViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImg;
+
+@property (weak, nonatomic) IBOutlet UIButton *helpBt;
+@property (weak, nonatomic) IBOutlet UIButton *freshBt;
 
 @end
