@@ -14,7 +14,7 @@
     [setting removeObjectForKey:@"user"];
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NSUserDefaultsUserChange" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UserInfoChange object:nil];
 }
 -(void)getUserInfo{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];

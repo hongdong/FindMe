@@ -28,6 +28,7 @@ CGRect XYScreenBounds();
     id _currentAlertView;
 
     UIImageView *_alertView;
+    UIImageView *_codeImageView;
     UIView *_blackBG;
     UILabel *_loadingLabel;
     GCPlaceholderTextView *_textView;

@@ -13,6 +13,7 @@
 #import "EaseMob.h"
 #import "APService.h"
 #import "User.h"
+#import "iVersion.h"
 @implementation AppDelegate
 
 
@@ -39,6 +40,10 @@
                                      }];
     
     [[UITabBar appearance] setSelectedImageTintColor:HDRED];
+    
+    
+    [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
+    [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
     
     if ([HDTool isFirstLoad]) {
         NSLog(@"这个版本第一次启动");
@@ -195,34 +200,27 @@
 
 -(void)handleUserInfo:(NSDictionary *)userInfo{
     if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
-        NSLog(@"强退,注销");
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
         
-        NSLog(@"水贴有更新");
         [[Config sharedConfig] postNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
         
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
-        NSLog(@"到点匹配了");
         [[Config sharedConfig] matchNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
         
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
-        
-        NSLog(@"有人like");
-        User *user = [User getUserFromNSUserDefaults];
-        if ([user.userSex isEqualToString:@"男"]) {
+
             [[Config sharedConfig] matchNew:@"1"];
             [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
-        }else{
-            [[Config sharedConfig] fansNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
-        }
+
         
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
-        NSLog(@"成为好朋友了");
         [[Config sharedConfig] friendNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+    }else if ([[userInfo objectForKey:@"type"] isEqualToString:@"10006"]){
+        [[Config sharedConfig] fansNew:@"1"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
     }
 }
 
@@ -232,7 +230,6 @@
 	[[EaseMob sharedInstance] applicationWillResignActive:application];
 //    [[Config sharedConfig] changeOnlineState:@"0"];
     [[Config sharedConfig] saveResignActiveDate];
-    NSLog(@"ResignActive");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

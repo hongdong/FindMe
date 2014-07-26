@@ -13,6 +13,7 @@
 #import "User.h"
 #import "UIImageView+MJWebCache.h"
 #import "AFNetworking.h"
+#import "UIView+Common.h"
 @interface DetailViewController (){
     User *_user;
     LXActionSheet *_actionSheet;
@@ -69,11 +70,21 @@
         XYInputView *inputView = [XYInputView inputViewWithTitle:@"修改小名"
                                                          message:@"显示给别人看的昵称"
                                                      placeholder:@"说些什么吧"
-                                                     initialText:nil
+                                                     initialText:_user.userNickName
                                                          buttons:[NSArray arrayWithObjects:@"放弃", @"确定", nil]
                                                     afterDismiss:^(int buttonIndex, NSString *text) {
-                                                        if(buttonIndex == 1)
-                                                        [weakSelf updateInfo:@{@"userNickName": text}];
+                                                        
+                                                        if(buttonIndex == 1){
+                                                            if (![weakSelf isOK:text]) {
+                                                                [weakSelf showHint:@"不能为空"];
+                                                                return;
+                                                            }
+                                                            if ([text isEqualToString:_user.userNickName]) {
+                                                                return;
+                                                            }
+                                                        
+                                                            [weakSelf updateInfo:@{@"userNickName": text}];
+                                                        }
                                                     }];
         [inputView setButtonStyle:XYButtonStyleGreen atIndex:1];
         [inputView show];
@@ -87,18 +98,32 @@
         XYInputView *inputView = [XYInputView inputViewWithTitle:@"修改签名"
                                                          message:@"展示个性签名"
                                                      placeholder:@"说些什么吧"
-                                                     initialText:nil
+                                                     initialText:_user.userSignature
                                                          buttons:[NSArray arrayWithObjects:@"放弃", @"确定", nil]
                                                     afterDismiss:^(int buttonIndex, NSString *text) {
-                                                        if(buttonIndex == 1)
+                                                        if(buttonIndex == 1){
+                                                            if (![weakSelf isOK:text]) {
+                                                                [weakSelf showHint:@"不能为空"];
+                                                                return;
+                                                            }
+                                                            if ([text isEqualToString:_user.userSignature]) {
+                                                                return;
+                                                            }
                                                             [weakSelf updateInfo:@{@"userSignature": text}];
+                                                        }
+                                                        
                                                     }];
         [inputView setButtonStyle:XYButtonStyleGreen atIndex:1];
         [inputView show];
     }];
     
     [self.photo setImageURLStr:_user.userPhoto placeholder:[UIImage imageNamed:@"defaultImage"]];
+    CGSize size = CGSizeMake(320,2000);
+    CGSize realsize = [_user.userRealName sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    self.realName.bounds = CGRectMake(0, 0, realsize.width, realsize.height);
+    self.realName.center = CGPointMake(self.photo.left+self.photo.width*0.5, self.photo.bottom+18);
     self.realName.text = _user.userRealName;
+    self.sex.frame = CGRectMake(self.realName.right+5, self.sex.top, self.sex.width, self.sex.height);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
     }else{
@@ -116,6 +141,17 @@
     
     self.grade.text = _user.userGrade;
     
+}
+
+-(BOOL)isOK:(NSString *)text{
+    NSString *temp = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if(temp.length==0)
+    {
+        return NO;
+    }
+
+    return YES;
 }
 
 -(void)updateInfo:(NSDictionary *)parameters{

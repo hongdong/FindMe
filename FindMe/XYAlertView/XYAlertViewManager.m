@@ -322,15 +322,19 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
         [_alertView addSubview:_titleLabel];
         
         
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 68, 90, 34)];
-        imageView.image = [UIImage imageNamed:@"loadingCode"];
-        [_alertView addSubview:imageView];
+        _codeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 68, 90, 34)];
+        _codeImageView.image = [UIImage imageNamed:@"loadingCode"];
+        [_alertView addSubview:_codeImageView];
     
-        [self getCodeUrl:imageView and:entity];
+
         
         UIButton *fresh = [[UIButton alloc] initWithFrame:CGRectMake(100, 68, 34, 34)];
         [fresh setImage:[UIImage imageNamed:@"codefresh"] forState:UIControlStateNormal];
+        fresh.enabled = NO;
+        [fresh addTarget:self action:@selector(fresh:) forControlEvents:UIControlEventTouchUpInside];
         [_alertView addSubview:fresh];
+    
+        [self getCodeUrl:entity.codeUrl and:fresh];
         
         _codeTextView = [[UITextField alloc] initWithFrame:CGRectMake(142, 68, 128, 34)];
         _codeTextView.backgroundColor = [UIColor clearColor];
@@ -361,11 +365,34 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     [_alertView addSubview:button2];
 }
 
--(void)getCodeUrl:(UIImageView *)codeImageView and:(HDCodeView*)entity{
+-(void)fresh:(UIButton *)sender{
+    sender.enabled = NO;
+    _codeImageView.image = [UIImage imageNamed:@"loadingCode"];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __weak __typeof(&*self)weakSelf = self;
+    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
+        if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
+            NSString *codeName = [codeInfo objectForKey:@"codeName"];
+            if (codeName!=nil) {
+                NSString *codeUrl = [NSString stringWithFormat:@"%@/upload/code/%@",Host,codeName];
+                [weakSelf getCodeUrl:codeUrl and:sender];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+
+-(void)getCodeUrl:(NSString *)codeUrl and:(UIButton *)freshButton{
     
-    NSMutableURLRequest *myRequest = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:entity.codeUrl]];
-    [NSURLConnection sendAsynchronousRequest:myRequest queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            [codeImageView setImage:[UIImage imageWithData:data]];
+    NSMutableURLRequest *myRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:codeUrl] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
+    [NSURLConnection sendAsynchronousRequest:myRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        [_codeImageView setImage:[UIImage imageWithData:data]];
+        if (freshButton!=nil) {
+            freshButton.enabled = YES;
+        }
     }];
 
 }

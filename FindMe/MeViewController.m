@@ -12,6 +12,7 @@
 #import "JMWhenTapped.h"
 #import <AGCommon/UINavigationBar+Common.h>
 #import <AGCommon/NSString+Common.h>
+#import "UIView+Common.h"
 @interface MeViewController (){
     User *_user;
 }
@@ -116,15 +117,23 @@
     [self.photo sd_setImageWithURL:[NSURL URLWithString:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     self.nickname.text = _user.userNickName;
     CGSize size = CGSizeMake(320,2000);
-    CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
     self.nickname.frame = CGRectMake(self.nickname.frame.origin.x, self.nickname.frame.origin.y, realsize.width, realsize.height);
     
-    self.sex.frame = CGRectMake(self.nickname.frame.origin.x+realsize.width + 5, self.sex.frame.origin.y, self.sex.frame.size.width, self.sex.frame.size.height);
+    self.sex.frame = CGRectMake(self.nickname.right + 5, self.sex.top, self.sex.width, self.sex.height);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
     }
     
+    self.vUserImg.frame = CGRectMake(self.sex.right+5, self.vUserImg.top, self.vUserImg.width, self.vUserImg.height);
+    
     self.qianming.text = _user.userSignature;
+    
+    if ([_user.userAuth intValue]==1) {
+        self.addVView.userInteractionEnabled = NO;
+        self.isAuthBt.hidden = NO;
+        self.vUserImg.hidden = NO;
+    }
 }
 -(void)userInfoUpdate:(NSNotification *)note{
     _user = [User getUserFromNSUserDefaults];

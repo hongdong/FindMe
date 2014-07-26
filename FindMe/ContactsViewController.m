@@ -363,5 +363,12 @@
 {
     return [UIImage imageNamed:@"graylogo"];
 }
+- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:nil];
+}
+- (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
+{
+    [self myReloadDataSource];
+}
 
 @end

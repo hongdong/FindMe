@@ -41,5 +41,11 @@
 		[child removeFromSuperview];
 	}
 }
+- (CGFloat)x{
+    return self.frame.origin.x;
+}
+- (CGFloat)y{
+    return self.frame.origin.y;
+}
 
 @end

@@ -50,5 +50,7 @@
  */
 - (void)removeAllSubviews;
 
+- (CGFloat)x;
+- (CGFloat)y;
 
 @end

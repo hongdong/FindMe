@@ -21,6 +21,7 @@
 #import "MDCFocusView.h"
 #import "MDCSpotlightView.h"
 #import "FansViewController.h"
+#import "UIView+Common.h"
 @interface FindMeViewController ()<CoverViewDelegate>{
     User *_user;
     User *_matchUser;
@@ -250,6 +251,9 @@
 -(void)setMatchPeople{
     if (_matchUser!=nil) {
         [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+        CGSize size = CGSizeMake(320,2000);
+        CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+        self.nickname.frame = CGRectMake(self.nickname.x, self.nickname.y, realsize.width, realsize.height);
         self.nickname.text = _matchUser.userNickName;
         self.grade.text = _matchUser.userGrade;
         if ([_matchUser.userSex isEqualToString:@"男"]) {
@@ -257,6 +261,7 @@
         }else{
             self.sex.image = [UIImage imageNamed:@"girl"];
         }
+        self.xzLbl.frame = CGRectMake(self.nickname.right+2, self.xzLbl.y, self.xzLbl.width, self.xzLbl.height);
         self.xzLbl.text = _matchUser.userConstellation;
         self.schoolLbl.text = [_matchUser getSchoolName];
         self.departmentLbl.text = [_matchUser getDepartmentName];
@@ -264,6 +269,7 @@
         if ([_matchUser.userAuth intValue]==1) {
             self.xzimg.hidden = NO;
         }
+        
     }
 
     

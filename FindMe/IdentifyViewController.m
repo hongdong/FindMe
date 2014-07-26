@@ -41,37 +41,50 @@
 }
 
 - (IBAction)idenButtonPressed:(id)sender {
+    [self.view endEditing:YES];
+    if (![self isOK]) {
+        return;
+    }
     [self showHudInView:self.view.window hint:@"请稍后..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
     NSString *urlStr1 = [NSString stringWithFormat:@"%@/data/user/user_auth.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *hasCode = [responseObject objectForKey:@"hasCode"];
-        if ([hasCode isEqualToString:@"1"]) {
+        NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
+        if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
             [weakSelf hideHud];
-            NSString *codeName = [responseObject objectForKey:@"codeName"];
+            NSString *codeName = [codeInfo objectForKey:@"codeName"];
             if (codeName!=nil) {
                 NSString *codeUrl = [NSString stringWithFormat:@"%@/upload/code/%@",Host,codeName];
                 HDCodeView *codeView = [HDCodeView HDCodeViewWithAfterDismiss:^(int buttonIndex, NSString *text) {
                     if (buttonIndex==1) {
+                        [weakSelf showHudInView:weakSelf.view.window hint:@"认证中..."];
                         NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                                      @"pwd":weakSelf.schoolPwd.text,
                                                      @"code":text};
                         [manager GET:urlStr1 parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                             NSString *state = [[responseObject objectForKey:@"authInfo"] objectForKey:@"state"];
                             if ([state isEqualToString:@"20001"]) {
-                                NSLog(@"授权成功");
-                                //发送加V通知
+                                [_user getUserInfo:^{
+                                    [_user saveToNSUserDefaults];
+                                    [weakSelf showResultWithType:ResultSuccess];
+                                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                                }];
+
+                            }else{
+                                NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
+                                [weakSelf hideHud];
+                                [weakSelf showHint:msg];
                             }
                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            
+                            [weakSelf showResultWithType:ResultError];
                         }];
                     }
                 } andUrl:codeUrl];
                 [codeView show];
             }else{
-                NSLog(@"请求验证码失败");
+                [weakSelf showResultWithType:ResultError];
             }
             
         }else{
@@ -79,13 +92,30 @@
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [weakSelf showResultWithType:ResultError];
     }];
+}
+
+-(BOOL)isOK{
+    NSString *temp = [self.schoolId.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if(temp.length==0)
+    {
+        [self showHint:@"学号不能为空"];
+        return NO;
+    }
+    
+    temp = [self.schoolPwd.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if(temp.length==0)
+    {
+        [self showHint:@"密码不能为空"];
+        return NO;
+    }
+    return YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.schoolId becomeFirstResponder];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];

@@ -19,5 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIView *addVView;
 @property (weak, nonatomic) IBOutlet UIView *shareView;
 @property (weak, nonatomic) IBOutlet UIView *settingView;
+@property (weak, nonatomic) IBOutlet UIImageView *isAuthBt;
+@property (weak, nonatomic) IBOutlet UIImageView *vUserImg;
 
 @end

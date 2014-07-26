@@ -10,6 +10,7 @@
 #import "PopoverView.h"
 #import "UIView+Common.h"
 #import "UIImageView+MJWebCache.h"
+#import "AFNetworking.h"
 @interface CoverView(){
     PopoverView *_pv;
 }
@@ -28,7 +29,25 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
-    [self changeCover:nil];
+    if ([[Config sharedConfig] coverPicUrl:nil]==nil) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@/backstage/getPictureUrl.do",Host];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *coverpic = [responseObject objectForKey:@"coverpic"];
+            if (coverpic!=nil) {
+                [[Config sharedConfig] coverPicUrl:coverpic];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CoverChange object:nil];
+            }else{
+                
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"请求失败");
+        }];
+    }else{
+       [self changeCover:nil]; 
+    }
+    
 }
 
 -(void)changeCover:(NSNotification *)note{
