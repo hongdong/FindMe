@@ -11,7 +11,8 @@
 #import "AFNetworking.h"
 #import "EaseMob.h"
 #import "User.h"
-@interface SettingViewController ()
+#import "iVersion.h"
+@interface SettingViewController ()<iVersionDelegate>
 
 @end
 
@@ -22,6 +23,14 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+    }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+       [[iVersion sharedInstance] setDelegate:self];
     }
     return self;
 }
@@ -39,6 +48,7 @@
     }];
     [self.pjwmView whenTouchedUp:^{
         weakSelf.pjwmView.backgroundColor = [UIColor whiteColor];
+        [[iVersion sharedInstance] openAppPageInAppStore];
     }];
     
     [self.qchcView whenTouchedDown:^{
@@ -54,6 +64,7 @@
     }];
     [self.jcgxView whenTouchedUp:^{
         weakSelf.jcgxView.backgroundColor = [UIColor whiteColor];
+        [[iVersion sharedInstance] checkForNewVersion];
     }];
     
     [self.syxyView whenTouchedDown:^{
@@ -80,6 +91,10 @@
         [weakSelf performSegueWithIdentifier:@"yhfk" sender:nil];
     }];
     
+}
+#pragma delegate
+- (void)iVersionDidNotDetectNewVersion{
+    [self showHint:@"已经是最新版本了"];
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];

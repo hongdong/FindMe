@@ -70,7 +70,14 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     if(item.tag == 0){
         
     }else if(item.tag == 1){
-    }else if(item.tag == 2){
+    }else if(item.tag == 2){//点击好友的时候 如果有更新  把HI给去掉
+        if (self.selectedIndex!=2) {
+            if ([[Config sharedConfig] friendNew:nil]) {
+                [[Config sharedConfig] friendNew:@"0"];
+                UIViewController *vc = [self.viewControllers objectAtIndex:2];
+                vc.tabBarItem.badgeValue = nil;
+            }
+        }
     }else if(item.tag == 3){
         if (self.selectedIndex==3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil userInfo:@{@"isHead": @"1"}];

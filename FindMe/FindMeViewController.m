@@ -172,14 +172,28 @@
         weakSelf.navigationController.tabBarItem.badgeValue = nil;
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"LIKE成功");
+            if ([_user.userSex isEqualToString:@"男"]) {
+                [weakSelf getMatch:nil];
+            }else if ([_user.userSex isEqualToString:@"女"]){
+                [weakSelf showHint:@"番迷君知道该怎么做了"];
+            }else{
+                
+            }
         }else if ([state isEqualToString:@"20002"]){
-            NSLog(@"你们已经成为朋友了");
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+            if ([_user.userSex isEqualToString:@"男"]) {
+                [weakSelf showHint:@"番迷君得知她喜欢你已久"];
+                [weakSelf getMatch:nil];
+            }else if ([_user.userSex isEqualToString:@"女"]){
+                [weakSelf showHint:@"番迷君得知他喜欢你已久"];
+            }else{
+                
+            }
         }else{
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"请求失败");
+        [weakSelf showHint:@"错误"];
     }];
 }
 - (IBAction)passPressed:(id)sender {
@@ -252,10 +266,16 @@
     if (_matchUser!=nil) {
         [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
         CGSize size = CGSizeMake(320,2000);
-        CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-        self.nickname.frame = CGRectMake(self.nickname.x, self.nickname.y, realsize.width, realsize.height);
+        CGSize realsize = [_matchUser.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+        self.nickname.bounds = (CGRect){{0,0},realsize};
+        self.nickname.center = CGPointMake(0.5*self.view.width, self.nickname.center.y);
+        
+        
         self.nickname.text = _matchUser.userNickName;
         self.grade.text = _matchUser.userGrade;
+        
+        self.sex.center = CGPointMake(self.nickname.left-20, self.sex.center.y);
+        
         if ([_matchUser.userSex isEqualToString:@"男"]) {
             self.sex.image = [UIImage imageNamed:@"boy"];
         }else{
@@ -458,9 +478,7 @@
             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
             options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
              options.nickname = _user.userNickName;
-             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options completion:^(EMPushNotificationOptions *options, EMError *error) {
-                 NSLog(@"%@",options);
-             } onQueue:nil];
+             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
             [weakSelf showResultWithType:ResultSuccess];
              [[Config sharedConfig] changeOnlineState:@"1"];
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];

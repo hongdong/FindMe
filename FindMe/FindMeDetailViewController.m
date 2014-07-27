@@ -96,8 +96,7 @@
         
         NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [myImageUrlArr objectAtIndex:i] ];
         MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString: getImageStrUrl ]; // 图片路径
-        
+        photo.url = [HDTool getLImage:getImageStrUrl];        
         UIImageView * imageView = (UIImageView *)[self.view viewWithTag:10000+i];
         photo.srcImageView = imageView;
         [photos addObject:photo];

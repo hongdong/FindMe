@@ -28,6 +28,7 @@
         [self.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tb3s"]
                       withFinishedUnselectedImage:[UIImage imageNamed:@"tb3"]];
         self.tabBarItem.tag = 3;
+        self.navigationBar.translucent = NO;
     }
     return self;
 }

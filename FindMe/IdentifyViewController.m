@@ -47,7 +47,6 @@
     }
     [self showHudInView:self.view.window hint:@"请稍后..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
-    NSString *urlStr1 = [NSString stringWithFormat:@"%@/data/user/user_auth.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -63,23 +62,7 @@
                         NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                                      @"pwd":weakSelf.schoolPwd.text,
                                                      @"code":text};
-                        [manager GET:urlStr1 parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            NSString *state = [[responseObject objectForKey:@"authInfo"] objectForKey:@"state"];
-                            if ([state isEqualToString:@"20001"]) {
-                                [_user getUserInfo:^{
-                                    [_user saveToNSUserDefaults];
-                                    [weakSelf showResultWithType:ResultSuccess];
-                                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                                }];
-
-                            }else{
-                                NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
-                                [weakSelf hideHud];
-                                [weakSelf showHint:msg];
-                            }
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            [weakSelf showResultWithType:ResultError];
-                        }];
+                        [weakSelf user_auth:manager parameters:parameters];
                     }
                 } andUrl:codeUrl];
                 [codeView show];
@@ -88,12 +71,37 @@
             }
             
         }else{
-            NSLog(@"没有验证码直接登入");
+            NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
+                                         @"pwd":weakSelf.schoolPwd.text};
+            [weakSelf user_auth:manager parameters:parameters];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [weakSelf showResultWithType:ResultError];
     }];
+}
+
+-(void)user_auth:(AFHTTPRequestOperationManager *)manager parameters:(id)parameters{
+        NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_auth.do",Host];
+    __weak __typeof(&*self)weakSelf = self;
+    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [[responseObject objectForKey:@"authInfo"] objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+            [_user getUserInfo:^{
+                [_user saveToNSUserDefaults];
+                [weakSelf showResultWithType:ResultSuccess];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }];
+            
+        }else{
+            NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
+            [weakSelf hideHud];
+            [weakSelf showHint:msg];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [weakSelf showResultWithType:ResultError];
+    }];
+    
 }
 
 -(BOOL)isOK{

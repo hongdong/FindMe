@@ -393,15 +393,7 @@
 
 - (void)inputTextViewDidChange:(ZBMessageTextView *)messageInputTextView
 {
-    
-    NSString *text = [messageInputTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    if(text.length==0)
-    {
-        self.messageToolView.sendButton.enabled = NO;
-    }else{
-        self.messageToolView.sendButton.enabled = YES;
-    }
+
     CGFloat maxHeight = [ZBMessageInputView maxHeight];
     CGSize size = [messageInputTextView sizeThatFits:CGSizeMake(CGRectGetWidth(messageInputTextView.frame), maxHeight)];
     CGFloat textViewContentHeight = size.height;

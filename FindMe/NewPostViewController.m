@@ -8,6 +8,7 @@
 
 #import "NewPostViewController.h"
 #import <AFNetworking.h>
+#import "NSString+HD.h"
 @interface NewPostViewController (){
         LXActionSheet *_actionSheet;
         UIImagePickerController *_imagePicker;
@@ -81,6 +82,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.sendBt.enabled = NO;
     _existImage = NO;
     [self.content setPlaceHolderTextColor:[UIColor grayColor]];
     [self.content setPlaceHolder:@"说点什么吧...."];
@@ -213,6 +215,14 @@
         remainTextNum = 140-existTextNum;
         self.remainTextNum.text = [NSString stringWithFormat:@"%d",remainTextNum];
         return YES;
+    }
+}
+
+-(void)textViewDidChange:(UITextView *)textView{
+    if ([textView.text isOK]) {
+        self.sendBt.enabled = YES;
+    }else{
+        self.sendBt.enabled = NO;
     }
 }
 

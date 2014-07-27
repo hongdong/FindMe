@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet XHMessageTextView *content;
 @property (weak, nonatomic) IBOutlet UIButton *addimage;
 @property (weak, nonatomic) IBOutlet UILabel *remainTextNum;
+@property (weak, nonatomic) IBOutlet UIButton *sendBt;
 
 @end

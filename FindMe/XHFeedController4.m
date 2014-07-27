@@ -9,6 +9,7 @@
 #import "PostDetailViewController.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "PostMessageViewController.h"
+#import "UIViewController+ScrollingNavbar.h"
 @interface XHFeedController4 ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
     NSInteger _seletedRow;
@@ -40,7 +41,7 @@
 - (UITableView *)feedTableView {
     if (!_feedTableView) {
         CGFloat padding = 0;
-        if ([UIDevice currentDevice].systemVersion.integerValue >= 7.0) {
+        if (iOS7) {
             padding = 64;
         } else {
             padding = 44;
@@ -53,7 +54,7 @@
         _feedTableView.emptyDataSetDelegate = self;
         
         _feedTableView.backgroundColor = [UIColor whiteColor];
-        _feedTableView.separatorColor = [UIColor clearColor];
+        _feedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         
         [self.view addSubview:_feedTableView];
@@ -67,6 +68,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"PostListwillRefresh" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postNew:) name:PostNew object:nil];
     _dataArr = [[NSMutableArray alloc] init];
+    
+    [self followScrollView:self.feedTableView];
     
     self.title = @"秘圈";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"postTitleView"]];
@@ -104,9 +107,18 @@
     
     
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self showNavBarAnimated:NO];
+}
 
-
-
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+	// This enables the user to scroll down the navbar by tapping the status bar.
+	[self performSelector:@selector(showNavbar) withObject:nil afterDelay:0.1];
+	
+	return YES;
+}
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostListwillRefresh" object:nil];
     
@@ -120,6 +132,7 @@
     if ([[note.userInfo objectForKey:@"isHead"] isEqualToString:@"1"]) {
 
         if (!_freshing) {
+            [self showNavBarAnimated:NO];
             [self.feedTableView headerBeginRefreshing];
         }
     }else{

@@ -19,6 +19,5 @@
     #import "Config.h"
     #import "HDTool.h"
     #import "UIViewController+DismissKeyboard.h"
-#define isIpad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #endif
-#define AppVersion @"1.0.0"
+#define AppVersion @"1.0"

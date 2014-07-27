@@ -29,6 +29,8 @@
                       withFinishedUnselectedImage:[UIImage imageNamed:@"tb4"]];
         
         self.tabBarItem.tag = 4;
+        
+        self.navigationBar.translucent = NO;
     }
     return self;
 }
