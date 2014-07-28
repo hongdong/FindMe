@@ -12,6 +12,7 @@
 #import "UIImageView+MJWebCache.h"
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
+#import "UIView+Common.h"
 @interface FindMeDetailViewController (){
         NSMutableArray *myImageUrlArr;
 }
@@ -121,16 +122,7 @@
     FirstPageView *firstView = [HDTool loadCustomViewByIndex:2];
     firstView.contentMode = UIViewContentModeScaleAspectFill;
     firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    
-    [firstView.photo sd_setImageWithURL:[NSURL URLWithString:self.user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
-    firstView.realNameLbl.text = self.user.userRealName;
-    if ([self.user.userSex isEqualToString:@"男"]) {
-        firstView.sex.image = [UIImage imageNamed:@"boy"];
-    }else{
-        firstView.sex.image = [UIImage imageNamed:@"girl"];
-    }
-    
-    
+    firstView.user = self.user;
     [_scrollView addSubview:firstView];
 
     SecondPageView *secondPageView = [HDTool loadCustomViewByIndex:3];

@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *school;
 @property (weak, nonatomic) IBOutlet UILabel *department;
 @property (weak, nonatomic) IBOutlet UILabel *grade;
+@property (weak, nonatomic) IBOutlet UIImageView *vUserImg;
 
 
 @property (weak, nonatomic) IBOutlet UIView *nicknameView;

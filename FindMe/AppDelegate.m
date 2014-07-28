@@ -42,8 +42,8 @@
     UITabBar *tabBar = [UITabBar appearance];
     
     [tabBar setSelectedImageTintColor:HDRED];
-//    [tabBar setShadowImage:[[UIImage alloc] init]];
-//    [tabBar setBackgroundImage:[[UIImage alloc] init]];
+    [tabBar setShadowImage:[UIImage imageNamed:@"shadowImage"]];
+    [tabBar setBackgroundImage:[[UIImage alloc] init]];
     
     [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
@@ -109,6 +109,8 @@
 
 -(void)initShareSDK{
     [ShareSDK registerApp:@"1a81fc29a7db"];
+    
+    [ShareSDK connectQQWithQZoneAppKey:@"101073798" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
     
     [ShareSDK connectQZoneWithAppKey:@"101073798"
                            appSecret:@"fc7c38c8f9f087c1a3c4b4cce0eef8d8"

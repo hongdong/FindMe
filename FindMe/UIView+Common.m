@@ -47,5 +47,11 @@
 - (CGFloat)y{
     return self.frame.origin.y;
 }
+- (CGFloat)centerX{
+    return self.frame.origin.x+0.5*self.width;
+}
+- (CGFloat)centerY{
+    return self.frame.origin.y+0.5*self.height;
+}
 
 @end

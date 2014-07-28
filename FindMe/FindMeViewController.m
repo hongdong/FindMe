@@ -28,6 +28,7 @@
     LoginView *_loginView;
     CoverView *_coverView;
     BBBadgeBarButtonItem *_fansItem;
+    UIButton *_fansButton;
     MDCFocusView *_focusView;
 }
 
@@ -51,10 +52,10 @@
     if (self) {
         _coverView = [HDTool loadCustomViewByIndex:4];
         _coverView.delegate = self;
-        UIButton *fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        [fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [fansButton setImage:[UIImage imageNamed:@"fans"] forState:UIControlStateNormal];
-        _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:fansButton];
+        _fansButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [_fansButton addTarget:self action:@selector(fansButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_fansButton setImage:[UIImage imageNamed:@"fans"] forState:UIControlStateNormal];
+        _fansItem = [[BBBadgeBarButtonItem alloc] initWithCustomUIButton:_fansButton];
         _fansItem.badgeOriginX = 10;
         _fansItem.badgeOriginY = -9;
         if ([[Config sharedConfig] isLogin]) {
@@ -65,18 +66,15 @@
             _loginView.delegate = self;
         }
         
-        if ([HDTool isFirstLoad2]) {
-            _focusView = [MDCFocusView new];
-            _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-            _focusView.focalPointViewClass = [MDCSpotlightView class];
-            [_focusView addSubview:[self buildLabelWithText:@"番迷君每天至多给你推荐三个有缘人，当你点击了pass后就能看到下一个人，切记不能回头。"]];
-        }
+
+        
     }
     return self;
 }
 
 - (UILabel *)buildLabelWithText:(NSString *)text {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 200, 300)];
+    label.tag = 1000;
     label.numberOfLines = 10;
     label.font = [UIFont boldSystemFontOfSize:16.0f];
     label.shadowColor = [UIColor grayColor];
@@ -149,10 +147,22 @@
     [super viewWillAppear:animated];
     
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (_focusView.isFocused) {
+        [_focusView dismiss:nil];
+    }
+}
 
 -(void)fansButtonPressed:(id)sender{
     if (![[Config sharedConfig] isOnline]) {
         [self showHint:@"你还没登入"];
+        return;
+    }else if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused){
+        [_focusView dismiss:^{
+//            [[Config sharedConfig] launchGuide:@"0"];
+        }];
         return;
     }else if (![_user.userSex isEqualToString:@"女"]){
         [self showHint:@"目前只有女生开通了粉丝服务"];
@@ -160,12 +170,25 @@
     }
     [self performSegueWithIdentifier:@"fans" sender:_fansItem];
 }
+
+-(void)launchGuide:(UIView *)view andText:(NSString *)text{
+    ((UILabel *)[_focusView viewWithTag:1000]).text = text;
+    [_focusView focus:view,nil];
+}
+
 - (IBAction)likePressed:(id)sender {
+    __weak __typeof(&*self)weakSelf = self;
+    if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
+        [_focusView dismiss:^{
+            [weakSelf launchGuide:weakSelf.passBt andText:@"你点击了pass后你将会看到番迷君给你推荐的下一个人。"];
+        }];
+        return;
+    }
     [self showCover];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"type":@"1",@"likeUserId": _matchUser._id};
-    __weak __typeof(&*self)weakSelf = self;
+
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [[Config sharedConfig] matchNew:@"0"];
         weakSelf.navigationController.tabBarItem.badgeValue = nil;
@@ -196,11 +219,19 @@
     }];
 }
 - (IBAction)passPressed:(id)sender {
+        __weak __typeof(&*self)weakSelf = self;
+    if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
+        [_focusView dismiss:^{
+            [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。"];
+        }];
+        return;
+    }
     [self showCover];
     [self getMatch:_matchUser._id];
 }
 
 -(void)hideCover{
+        __weak __typeof(&*self)weakSelf = self;
     [UIView animateWithDuration:0.7 //速度0.7秒
                           delay:0
                         options:UIViewAnimationOptionBeginFromCurrentState
@@ -212,11 +243,19 @@
                      }
                      completion:^(BOOL finished){
 //                                 [_coverView removeFromSuperview];
+                         if (finished==YES&&[[Config sharedConfig] launchGuide:nil]) {
+                             _focusView = [MDCFocusView new];
+                             _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+                             _focusView.focalPointViewClass = [MDCSpotlightView class];
+                             [_focusView addSubview:[self buildLabelWithText:@"番迷君每天至多给你推荐三个有缘人，当你点击了like后就看不到下一个人了。"]];
+                             [_focusView focus:weakSelf.likeBt,nil];
+                         }
                      }];
     
 
 }
 -(void)showCover{
+
     [UIView animateWithDuration:0.7 //速度0.7秒
                           delay:0
                         options:UIViewAnimationOptionBeginFromCurrentState
@@ -227,7 +266,7 @@
                                                        _coverView.frame.size.height);
                      }
                      completion:^(BOOL finished){
-//                                 [_coverView removeFromSuperview];
+
                      }];
 }
 
@@ -249,7 +288,7 @@
             [weakSelf setMatchPeople];
             [weakSelf hideCover];
         }else{
-            [self showHint:@"今天没了"];
+//            [self showHint:@"今天没了"];
             if ([[Config sharedConfig] matchNew:nil]) {
                 [[Config sharedConfig] matchNew:@"0"];
                 weakSelf.navigationController.tabBarItem.badgeValue = nil;
@@ -339,7 +378,7 @@
 
 #pragma loginViewDelegate
 - (void)login:(UIButton *)sender{
-    [self showHudInView:self.view.window hint:@"登入中..."];
+    [self showHudInView:self.view.window hint:@"请稍后..."];
     ShareType type = ShareTypeSinaWeibo;
     NSString * sendType;
     if (sender.tag==101) {
@@ -351,7 +390,7 @@
     }
         __weak __typeof(&*self)weakSelf = self;
     id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
-                                                         allowCallback:YES
+                                                         allowCallback:NO
                                                                 scopes:nil
                                                          powerByHidden:YES
                                                         followAccounts:[NSDictionary dictionaryWithObjectsAndKeys:

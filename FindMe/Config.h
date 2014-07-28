@@ -34,4 +34,6 @@
 -(BOOL)postNew:(NSString *)isnew;
 
 -(NSString *)coverPicUrl:(NSString *)url;
+
+-(BOOL)launchGuide:(NSString *)guide;
 @end

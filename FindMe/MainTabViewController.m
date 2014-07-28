@@ -249,15 +249,15 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 #pragma mark -
 
 - (void)willAutoReconnect{
-    [self showHudInView:self.view hint:@"正在重连中..."];
+//    [self showHudInView:self.view hint:@"正在重连中..."];
 }
 
 - (void)didAutoReconnectFinishedWithError:(NSError *)error{
-    [self hideHud];
+//    [self hideHud];
     if (error) {
-        [self showHint:@"重连失败，稍候将继续重连"];
+//        [self showHint:@"重连失败，稍候将继续重连"];
     }else{
-        [self showHint:@"重连成功！"];
+//        [self showHint:@"重连成功！"];
     }
 }
 

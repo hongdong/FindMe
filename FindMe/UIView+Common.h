@@ -52,5 +52,6 @@
 
 - (CGFloat)x;
 - (CGFloat)y;
-
+- (CGFloat)centerX;
+- (CGFloat)centerY;
 @end

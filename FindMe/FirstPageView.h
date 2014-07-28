@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "User.h"
 @interface FirstPageView : UIView
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
-@property (weak, nonatomic) IBOutlet UILabel *realNameLbl;
-@property (weak, nonatomic) IBOutlet UIImageView *sex;
+@property (strong, nonatomic) UILabel *realNameLbl;
+@property (strong, nonatomic) UIImageView *sex;
+@property (strong, nonatomic) UIImageView *vUserImg;
+
+@property (strong,nonatomic) User *user;
 
 @end

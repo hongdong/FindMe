@@ -20,5 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *departmentLbl;
 @property (weak, nonatomic) IBOutlet UILabel *qianmingLbl;
 
+@property (weak, nonatomic) IBOutlet UIButton *likeBt;
+@property (weak, nonatomic) IBOutlet UIButton *passBt;
 
 @end

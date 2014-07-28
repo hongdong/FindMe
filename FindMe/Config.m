@@ -172,4 +172,17 @@
     }
     return nil;
 }
+-(BOOL)launchGuide:(NSString *)guide{
+    NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
+    if (guide!=nil) {
+        [setting removeObjectForKey:@"launchGuide"];
+        [setting setObject:guide forKey:@"launchGuide"];
+        [setting synchronize];
+    }else{
+        if (![[setting objectForKey:@"launchGuide"] isEqualToString:@"0"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 @end

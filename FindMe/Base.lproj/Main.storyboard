@@ -117,7 +117,7 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="girl" id="wKa-QP-Eqj">
-                                        <rect key="frame" x="150" y="23" width="20" height="20"/>
+                                        <rect key="frame" x="150" y="25" width="16" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="东方" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Aba-Uw-wUV">
@@ -132,7 +132,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
                                     <imageView hidden="YES" autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VUser" id="LtL-pA-w9l">
-                                        <rect key="frame" x="172" y="23" width="20" height="20"/>
+                                        <rect key="frame" x="172" y="25" width="16" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -287,7 +287,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="girl" id="Agg-Vt-2bE">
-                                <rect key="frame" x="194" y="91" width="20" height="20"/>
+                                <rect key="frame" x="194" y="92" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VUser" id="jHJ-JH-8Ja">
+                                <rect key="frame" x="216" y="92" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="基本资料" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AeX-Mq-x6P">
@@ -450,6 +454,7 @@
                         <outlet property="realName" destination="ese-3l-zto" id="Aty-t6-Wa2"/>
                         <outlet property="school" destination="3WU-7U-l6l" id="eCv-rH-ztc"/>
                         <outlet property="sex" destination="Agg-Vt-2bE" id="rqu-uw-buG"/>
+                        <outlet property="vUserImg" destination="jHJ-JH-8Ja" id="2ZR-m7-jg6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2j8-vV-eYB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -575,7 +580,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BYU-z7-YDm">
                                 <rect key="frame" x="10" y="165" width="300" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="buttonBg">
+                                <state key="normal" image="submitBt">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -1377,7 +1382,9 @@
                     <connections>
                         <outlet property="departmentLbl" destination="Bgb-wd-N5d" id="uqa-C1-6Vh"/>
                         <outlet property="grade" destination="Ktf-be-zBK" id="4Bx-Si-ady"/>
+                        <outlet property="likeBt" destination="jXY-6d-YGA" id="TAi-NU-yys"/>
                         <outlet property="nickname" destination="dI2-dl-u2R" id="z5P-Eh-uSk"/>
+                        <outlet property="passBt" destination="d2m-4b-6ti" id="rqj-4V-yqL"/>
                         <outlet property="photo" destination="KB8-hn-eVT" id="BTP-Ie-VfW"/>
                         <outlet property="qianmingLbl" destination="6WJ-6L-SgY" id="ygs-Xu-Jqt"/>
                         <outlet property="schoolLbl" destination="vE3-vp-zvd" id="lXC-jH-eeA"/>
@@ -2160,6 +2167,7 @@
         <image name="share" width="30" height="30"/>
         <image name="signOut" width="300" height="30"/>
         <image name="sina_login" width="58" height="58"/>
+        <image name="submitBt" width="300" height="31"/>
         <image name="v" width="30" height="30"/>
         <image name="xzd0" width="30" height="30"/>
         <image name="xzd1" width="30" height="30"/>

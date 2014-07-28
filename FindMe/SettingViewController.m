@@ -12,6 +12,7 @@
 #import "EaseMob.h"
 #import "User.h"
 #import "iVersion.h"
+#import <ShareSDK/ShareSDK.h>
 @interface SettingViewController ()<iVersionDelegate>
 
 @end
@@ -119,14 +120,23 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001 "]) {
+        if ([state isEqualToString:@"20001"]) {
             [[Config sharedConfig] initBadge];
-            [[Config sharedConfig] cleanUser];
-            [[Config sharedConfig] changeLoginState:@"1"];
+            [[Config sharedConfig] changeLoginState:@"0"];
             [[Config sharedConfig] changeOnlineState:@"0"];
-            
+            [[Config sharedConfig] friendNew:@"0"];
+            [[Config sharedConfig] matchNew:@"0"];
+            [[Config sharedConfig] fansNew:@"0"];
+            [[Config sharedConfig] postNew:@"0"];
             [User removeDbObjectsWhere:@"1=1"];
-            
+            User *user = [User getUserFromNSUserDefaults];
+            ShareType type = ShareTypeSinaWeibo;
+            if ([user.userAuthType isEqualToString:@"QZone"]) {
+                type = ShareTypeQQSpace;
+            }
+            [ShareSDK cancelAuthWithType:type];
+            [[Config sharedConfig] cleanUser];
+
             self.tabBarController.selectedIndex = 0;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];

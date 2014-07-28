@@ -120,14 +120,18 @@
     [self.photo setImageURLStr:_user.userPhoto placeholder:[UIImage imageNamed:@"defaultImage"]];
     CGSize size = CGSizeMake(320,2000);
     CGSize realsize = [_user.userRealName sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-    self.realName.bounds = CGRectMake(0, 0, realsize.width, realsize.height);
+    self.realName.bounds = (CGRect){{0,0},realsize};
     self.realName.center = CGPointMake(self.photo.left+self.photo.width*0.5, self.photo.bottom+18);
     self.realName.text = _user.userRealName;
-    self.sex.frame = CGRectMake(self.realName.right+5, self.sex.top, self.sex.width, self.sex.height);
+    self.sex.center = CGPointMake(self.realName.right+10, self.photo.bottom+18);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
     }else{
         self.sex.image = [UIImage imageNamed:@"girl"];
+    }
+    if ([_user.userAuth integerValue]==1) {
+        self.vUserImg.center = CGPointMake(self.sex.right+10, self.photo.bottom+18);
+        self.vUserImg.hidden = NO;
     }
     self.nickname.text = _user.userNickName;
     
