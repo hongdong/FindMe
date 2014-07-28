@@ -67,7 +67,7 @@
     self.userInteractionEnabled=YES;
     NSArray * gestures=self.gestureRecognizers;
     for(UIGestureRecognizer * gesture in gestures){
-        if([gestures isKindOfClass:[UILongPressGestureRecognizer class]]){
+        if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]){
             UILongPressGestureRecognizer * longPress=(UILongPressGestureRecognizer*)gestures;
             [longPress addTarget:self action:@selector(longPressAction:)];
             return;
