@@ -64,6 +64,7 @@
     }];
     [self.jcgxView whenTouchedUp:^{
         weakSelf.jcgxView.backgroundColor = [UIColor whiteColor];
+        [weakSelf showHudInView:weakSelf.view.window hint:@"检测中..."];
         [[iVersion sharedInstance] checkForNewVersion];
     }];
     
@@ -94,7 +95,11 @@
 }
 #pragma delegate
 - (void)iVersionDidNotDetectNewVersion{
+    [self hideHud];
     [self showHint:@"已经是最新版本了"];
+}
+- (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
+    [self hideHud];
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];

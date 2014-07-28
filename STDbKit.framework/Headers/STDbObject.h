@@ -26,8 +26,10 @@
 
 #import <Foundation/Foundation.h>
 
-#define kDbId @"id__"
+#define kDbId           @"__id__"
+#define kDbKeySuffix    @"__key__"
 
+#define key( __p__ ) [NSString stringWithFormat:@"%@%@", __p__, kDbKeySuffix]
 
 @protocol STDbObject
 
@@ -36,28 +38,33 @@
 /**
  *	@brief	对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger id__;
+@property (assign, nonatomic, readonly) NSInteger __id__;
 
 /**
  *	@brief	父对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger pid__;
+@property (assign, nonatomic, readonly) NSInteger __pid__;
 
 /**
  *	@brief	子对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger cid__;
+@property (assign, nonatomic, readonly) NSInteger __cid__;
 
 /**
  *	@brief	失效日期
  */
-@property (assign, nonatomic) NSDate *expireDate;
+@property (strong, nonatomic) NSDate *expireDate;
 
 /**
  *	@brief	插入到数据库中
  */
 - (BOOL)insertToDb;
 
+/**
+ *	@brief	保证数据唯一
+ */
+- (BOOL)replaceToDb;
+    
 /**
  *	@brief	更新某些数据
  *
@@ -135,22 +142,32 @@
 /**
  *	@brief	对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger id__;
+@property (assign, nonatomic, readonly) NSInteger __id__;
 
 /**
  *	@brief	父对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger pid__;
+@property (assign, nonatomic, readonly) NSInteger __pid__;
 
 /**
  *	@brief	子对象id，唯一标志
  */
-@property (assign, nonatomic, readonly) NSInteger cid__;
+@property (assign, nonatomic, readonly) NSInteger __cid__;
 
 /**
  *	@brief	失效日期
  */
-@property (assign, nonatomic) NSDate *expireDate;
+@property (strong, nonatomic) NSDate *expireDate;
+
+/**
+ *	@brief	objc to dictionary
+ */
+- (NSDictionary *)objcDictionary;
+
+/**
+ *	@brief	objc from dictionary
+ */
+- (STDbObject *)objcFromDictionary:(NSDictionary *)dict;
 
 @end
 

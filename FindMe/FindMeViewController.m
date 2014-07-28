@@ -91,7 +91,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     self.title = @"番迷";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"findme"]];
     [[NSNotificationCenter defaultCenter] addObserver:self

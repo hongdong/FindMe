@@ -38,5 +38,4 @@
 
 
 + (UIColor *) randomColor;
-+ (UIColor *) randomColor2;
 @end

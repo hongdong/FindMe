@@ -7,7 +7,7 @@
 //
 
 #import "MeNavViewController.h"
-
+#import "UINavigationBar+HD.h"
 @interface MeNavViewController ()
 
 @end
@@ -31,6 +31,7 @@
         self.tabBarItem.tag = 4;
         
         self.navigationBar.translucent = NO;
+//        [self.navigationBar hideDividingLine];
     }
     return self;
 }

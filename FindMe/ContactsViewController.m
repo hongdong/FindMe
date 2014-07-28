@@ -49,7 +49,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myReloadDataSource) name:FriendChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
-    self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"好友";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -197,9 +196,10 @@
     }
     
     UIView *contentView = [[UIView alloc] init];
-    [contentView setBackgroundColor:[UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0]];
+    [contentView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 22)];
     label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor lightGrayColor];
     [label setText:[self.sectionTitles objectAtIndex:section]];
     [contentView addSubview:label];
     return contentView;
@@ -364,7 +364,9 @@
     return [UIImage imageNamed:@"graylogo"];
 }
 - (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
-    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:nil];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    [attributes setObject:[UIColor lightGrayColor] forKey:NSForegroundColorAttributeName];
+    return [[NSAttributedString alloc] initWithString:@"重新加载" attributes:attributes];
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {

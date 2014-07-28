@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "EaseMob.h"
+#import "UINavigationBar+HD.h"
 @interface ViewController ()
 
 @end
@@ -31,9 +32,11 @@
         self.tabBarItem.tag = 0;
         
         self.navigationBar.translucent = NO;
+//        [self.navigationBar hideDividingLine];
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

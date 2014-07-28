@@ -21,13 +21,20 @@
     support array contain objects of STDbObject class
     support dictionary contain an STDbObject object
     remove the sub STDbObject after remove the parent object
+2.0.2 更新内容（2014-02-18更新）
+    1. add objc to dictionary method 
+    2. add dictionary to objc method
 
 </code></pre>
 
 <h2 id="2_"><strong>2. 使用方法</strong></h2>
 
-<pre><code>1) 引入STDbKit.framework
-   支持模拟器和真机STDbKit.framework制作方法:
+<pre><code>
+    方法一：导入源码
+    方法二：制作STDbKit.framework并引入，可从附件中下载
+</code></pre>
+
+<pre><code>  支持模拟器和真机STDbKit.framework制作方法:
    1. 分别在device和模拟器下运行
    2. 右击 STDbKit.framework, 选择Show In Finder, 找到上级目录,本项目是release版本,
       这里显示Release-iphoneos,Release-iphonesimulator
@@ -38,8 +45,8 @@
    5. 在桌面文件夹Release-iphoneos上, 拷贝 STDbKit.framework到桌面，把桌面上 STDbKit 
       文件覆盖到STDbKit.framework, 制作完成
    6. 在项目中引用STDbKit.framework框架，支持模拟器和真机了
-2) 引入依赖库sqlite3.dylib
-3) 创建需要保存的数据类，该类需继承类STDbObject
+ * 引入依赖库sqlite3.dylib
+ * 创建需要保存的数据类，该类需继承类STDbObject
 </code></pre>
 
 <h2 id="3_"><strong>3. 示例</strong></h2>

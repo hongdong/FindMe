@@ -1208,10 +1208,10 @@
         <scene sceneID="5lC-Hq-Ay7">
             <objects>
                 <viewController id="NOW-ix-zv8" customClass="ContactsViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="RUP-Sp-K8X">
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="RUP-Sp-K8X">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="Yb6-pT-CaZ"/>

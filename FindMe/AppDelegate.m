@@ -37,9 +37,13 @@
     [navBar setTitleTextAttributes:@{
                                      UITextAttributeTextColor : [UIColor whiteColor]
                                      }];
+    [navBar setShadowImage:[[UIImage alloc] init]];
     
-    [[UITabBar appearance] setSelectedImageTintColor:HDRED];
+    UITabBar *tabBar = [UITabBar appearance];
     
+    [tabBar setSelectedImageTintColor:HDRED];
+//    [tabBar setShadowImage:[[UIImage alloc] init]];
+//    [tabBar setBackgroundImage:[[UIImage alloc] init]];
     
     [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";

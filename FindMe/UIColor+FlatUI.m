@@ -254,18 +254,6 @@
     return asbestos;
 }
 
-+ (UIColor *) randomColor2 {
-    int i = arc4random()%25;
-    NSArray *randomColorArr = @[@"ED5565",@"DA4453",@"FC6E51",@"E9573F",@"F05B72",@"FFCE54",@"F6BB42",@"A0D468",@"8CC152",@"CDE6C7",@"48CFAD",@"37BC9B",@"AFC1E9",@"3BAFDA",@"90D7EC",@"SD9CEC",@"4A89DC",@"AC92EC",@"967ADC",@"AFB4DB",@"EC87C0",@"D770AD",@"FDB933",@"FCF16E",@"EA66A6"];
-    static UIColor *randomColor = nil;
-    static dispatch_once_t randomToken;
-    
-    dispatch_once(&randomToken, ^{
-        randomColor = [UIColor colorFromHexCode:@"AC92EC"];
-    });
-    
-    return randomColor;
-}
 
 + (UIColor *) blendedColorWithForegroundColor:(UIColor *)foregroundColor
                               backgroundColor:(UIColor *)backgroundColor

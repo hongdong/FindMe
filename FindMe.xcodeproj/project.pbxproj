@@ -135,7 +135,6 @@
 		04A961CE1955B1D3002E30AF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */; };
 		04A9F273196A9D18000A347E /* MessageNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9F272196A9D18000A347E /* MessageNavViewController.m */; };
 		04A9F27A196AAA19000A347E /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9F279196AAA19000A347E /* SettingViewController.m */; };
-		04A9FDD8197101C1007B271F /* STDbKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F26F196A2830000A347E /* STDbKit.framework */; };
 		04AA9B81195BBF8B001C83C2 /* GCDiscreetNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AA9B80195BBF8B001C83C2 /* GCDiscreetNotificationView.m */; };
 		04AA9B83195BC8C4001C83C2 /* school.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04AA9B82195BC8C4001C83C2 /* school.plist */; };
 		04AA9B87195BC9EF001C83C2 /* ChooseSchoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AA9B86195BC9EF001C83C2 /* ChooseSchoolViewController.m */; };
@@ -157,6 +156,7 @@
 		04ADC8611960E99B009106A7 /* ChatSendHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC8601960E99B009106A7 /* ChatSendHelper.m */; };
 		04ADC96D1960EEFE009106A7 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC96C1960EEFE009106A7 /* XHMessageTextView.m */; };
 		04ADC9701960F097009106A7 /* DXMessageToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC96F1960F097009106A7 /* DXMessageToolBar.m */; };
+		04AE9A741985E39F00535E22 /* STDbKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04AE9A731985E39F00535E22 /* STDbKit.framework */; };
 		04AF10021951515500A3E74B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04AF10011951515500A3E74B /* Foundation.framework */; };
 		04AF10041951515500A3E74B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04AF10031951515500A3E74B /* CoreGraphics.framework */; };
 		04AF100C1951515500A3E74B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04AF100A1951515500A3E74B /* InfoPlist.strings */; };
@@ -279,6 +279,7 @@
 		04B877B21984830C00727555 /* NSString+HD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877B11984830C00727555 /* NSString+HD.m */; };
 		04B877B51984B1B300727555 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877B41984B1B300727555 /* LoginViewController.m */; };
 		04B877B91984D0D200727555 /* UIViewController+ScrollingNavbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877B81984D0D200727555 /* UIViewController+ScrollingNavbar.m */; };
+		04B877BC1985273C00727555 /* UINavigationBar+HD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877BB1985273C00727555 /* UINavigationBar+HD.m */; };
 		04BAEBF2198352D1001B6830 /* AgreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BAEBF1198352D1001B6830 /* AgreeController.m */; };
 		04BAEBF71983CFE8001B6830 /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04BAEBF41983CFE8001B6830 /* iVersion.bundle */; };
 		04BAEBF81983CFE8001B6830 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BAEBF61983CFE8001B6830 /* iVersion.m */; };
@@ -548,7 +549,6 @@
 		04A961C91955B194002E30AF /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		04A961CB1955B1B7002E30AF /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		04A9F26F196A2830000A347E /* STDbKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = STDbKit.framework; sourceTree = "<group>"; };
 		04A9F271196A9D18000A347E /* MessageNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageNavViewController.h; sourceTree = "<group>"; };
 		04A9F272196A9D18000A347E /* MessageNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageNavViewController.m; sourceTree = "<group>"; };
 		04A9F278196AAA19000A347E /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -593,6 +593,7 @@
 		04ADC96C1960EEFE009106A7 /* XHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMessageTextView.m; sourceTree = "<group>"; };
 		04ADC96E1960F097009106A7 /* DXMessageToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXMessageToolBar.h; sourceTree = "<group>"; };
 		04ADC96F1960F097009106A7 /* DXMessageToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXMessageToolBar.m; sourceTree = "<group>"; };
+		04AE9A731985E39F00535E22 /* STDbKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = STDbKit.framework; sourceTree = "<group>"; };
 		04AF0FFE1951515500A3E74B /* FindMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04AF10011951515500A3E74B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04AF10031951515500A3E74B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -783,6 +784,8 @@
 		04B877B41984B1B300727555 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		04B877B71984D0D200727555 /* UIViewController+ScrollingNavbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ScrollingNavbar.h"; sourceTree = "<group>"; };
 		04B877B81984D0D200727555 /* UIViewController+ScrollingNavbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ScrollingNavbar.m"; sourceTree = "<group>"; };
+		04B877BA1985273C00727555 /* UINavigationBar+HD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+HD.h"; sourceTree = "<group>"; };
+		04B877BB1985273C00727555 /* UINavigationBar+HD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+HD.m"; sourceTree = "<group>"; };
 		04BAEBF0198352D1001B6830 /* AgreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgreeController.h; sourceTree = "<group>"; };
 		04BAEBF1198352D1001B6830 /* AgreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgreeController.m; sourceTree = "<group>"; };
 		04BAEBF41983CFE8001B6830 /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
@@ -840,7 +843,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A9FDD8197101C1007B271F /* STDbKit.framework in Frameworks */,
 				04A9309E197BB35100B93C47 /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 				04ACA24A196E0B54003F14B1 /* CoreText.framework in Frameworks */,
 				04A9614319551F7D002E30AF /* Security.framework in Frameworks */,
@@ -868,6 +870,7 @@
 				04A9613D19551F58002E30AF /* CoreTelephony.framework in Frameworks */,
 				04A9613B19551F4A002E30AF /* QuartzCore.framework in Frameworks */,
 				04A9613919551F35002E30AF /* SystemConfiguration.framework in Frameworks */,
+				04AE9A741985E39F00535E22 /* STDbKit.framework in Frameworks */,
 				04A93093197BB35100B93C47 /* AGCommon.framework in Frameworks */,
 				04A9309C197BB35100B93C47 /* ShareSDK.framework in Frameworks */,
 				04A93097197BB35100B93C47 /* TencentOpenAPI.framework in Frameworks */,
@@ -1293,6 +1296,8 @@
 				04AC8D291977651600030504 /* UIViewController+DismissKeyboard.m */,
 				04B877B01984830C00727555 /* NSString+HD.h */,
 				04B877B11984830C00727555 /* NSString+HD.m */,
+				04B877BA1985273C00727555 /* UINavigationBar+HD.h */,
+				04B877BB1985273C00727555 /* UINavigationBar+HD.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -1497,8 +1502,8 @@
 		04AF10001951515500A3E74B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04AE9A731985E39F00535E22 /* STDbKit.framework */,
 				04ACA249196E0B54003F14B1 /* CoreText.framework */,
-				04A9F26F196A2830000A347E /* STDbKit.framework */,
 				04B27604195AF99E007AE0CE /* CoreFoundation.framework */,
 				04A961CD1955B1D3002E30AF /* MobileCoreServices.framework */,
 				04A961CB1955B1B7002E30AF /* libresolv.dylib */,
@@ -2376,6 +2381,7 @@
 				04B3175C1957013300F93C73 /* UIResponder+Router.m in Sources */,
 				04A4E2431967F00000E9BC63 /* MBProgressHUD+Add.m in Sources */,
 				04B316BE1956FC7600F93C73 /* DXRecordView.m in Sources */,
+				04B877BC1985273C00727555 /* UINavigationBar+HD.m in Sources */,
 				04B317551956FDE600F93C73 /* NSDate+Category.m in Sources */,
 				04AAE2AE196F985700D1CCA1 /* CoverView.m in Sources */,
 				04AB62ED195F9915007D31A6 /* MainTabViewController.m in Sources */,
