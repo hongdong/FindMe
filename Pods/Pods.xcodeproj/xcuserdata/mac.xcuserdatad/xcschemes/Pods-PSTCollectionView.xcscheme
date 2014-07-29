@@ -3,21 +3,21 @@
    version = "1.3"
    LastUpgradeVersion = "0510">
    <BuildAction
-      buildImplicitDependencies = "YES"
-      parallelizeBuildables = "YES">
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForProfiling = "YES"
+            buildForTesting = "YES"
+            buildForArchiving = "YES"
             buildForRunning = "YES"
             buildForAnalyzing = "YES"
-            buildForArchiving = "YES"
-            buildForTesting = "YES">
+            buildForProfiling = "YES">
             <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintName = "Pods-PSTCollectionView"
-               ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libPods-PSTCollectionView.a"
-               BlueprintIdentifier = "8C9D59D7577F40EE8247BA52">
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BlueprintName = "Pods-PSTCollectionView"
+               BlueprintIdentifier = "8AAFF39D672E4383B054CB2A"
+               BuildableIdentifier = "primary">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,29 +31,29 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      debugDocumentVersioning = "YES"
-      buildConfiguration = "Debug"
       useCustomWorkingDirectory = "NO"
       allowLocationSimulation = "YES"
-      launchStyle = "0"
+      debugDocumentVersioning = "YES"
       ignoresPersistentStateOnLaunch = "NO"
+      buildConfiguration = "Debug"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB">
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      debugDocumentVersioning = "YES"
-      savedToolIdentifier = ""
-      buildConfiguration = "Release"
       useCustomWorkingDirectory = "NO"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      debugDocumentVersioning = "YES"
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = "">
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "YES"
+      buildConfiguration = "Release">
    </ArchiveAction>
 </Scheme>

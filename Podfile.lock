@@ -23,6 +23,21 @@ PODS:
   - AMSmoothAlert (1.1):
     - GPUImage
   - BBBadgeBarButtonItem (1.0)
+  - BlocksKit (2.2.3):
+    - BlocksKit/All
+  - BlocksKit/All (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.3)
+  - BlocksKit/DynamicDelegate (2.2.3)
+  - BlocksKit/MessageUI (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
   - DACircularProgress (2.2.0)
   - DZNEmptyDataSet (1.3.3)
   - GPUImage (0.1.4)
@@ -44,6 +59,7 @@ DEPENDENCIES:
   - AFNetworking
   - AMSmoothAlert
   - BBBadgeBarButtonItem
+  - BlocksKit
   - DZNEmptyDataSet
   - MBProgressHUD
   - MCSwipeTableViewCell
@@ -56,6 +72,7 @@ SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   AMSmoothAlert: 1b4bf6688b698a606a963c336b5060490f4d3db2
   BBBadgeBarButtonItem: 9fd6089e0694ee1e9dfb96fb66fbcb4bfa22f3ee
+  BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   DZNEmptyDataSet: aa20600aff620af3d78edbff4bc47282972e815f
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9

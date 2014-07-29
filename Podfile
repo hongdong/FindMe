@@ -9,6 +9,7 @@ pod 'BBBadgeBarButtonItem'
 pod 'MCSwipeTableViewCell'
 pod 'DZNEmptyDataSet'
 pod 'MDCFocusView'
+pod 'BlocksKit'
 post_install do |installer|
     installer.project.targets.each do |target|
         target.build_configurations.each do |configuration|

@@ -54,4 +54,10 @@
     return self.frame.origin.y+0.5*self.height;
 }
 
+- (void)cleanSubViews{
+    for (UIView * view in self.subviews) {
+        [view removeFromSuperview];
+    }
+}
+
 @end

@@ -37,7 +37,7 @@
 {
     [super viewDidLoad];
     
-    [self setUpForDismissKeyboard];
+    [self setupForDismissKeyboard];
     
     self.phtot.layer.cornerRadius = 25.0f;
     self.phtot.layer.masksToBounds = YES;
@@ -136,7 +136,9 @@
             _user._id = [userInfo objectForKey:@"userId"];
             _user.userPhoto = [userInfo objectForKey:@"userPhoto"];
             [weakSelf showResultWithType:ResultSuccess];
-            [_user saveToNSUserDefaults];
+            [_user getUserInfo:^{
+                [_user saveToNSUserDefaults];
+            }];
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
@@ -229,31 +231,7 @@
     self.constellationImageView.image = [UIImage imageNamed:imageStr];
     self.constellationLbl.text = _constellationStr;
 }
-- (void)setUpForDismissKeyboard {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    UITapGestureRecognizer *singleTapGR =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(tapAnywhereToDismissKeyboard:)];
-    singleTapGR.delegate = self;
-    NSOperationQueue *mainQuene =[NSOperationQueue mainQueue];
-    [nc addObserverForName:UIKeyboardWillShowNotification
-                    object:nil
-                     queue:mainQuene
-                usingBlock:^(NSNotification *note){
-                    [self.view addGestureRecognizer:singleTapGR];
-                }];
-    [nc addObserverForName:UIKeyboardWillHideNotification
-                    object:nil
-                     queue:mainQuene
-                usingBlock:^(NSNotification *note){
-                    [self.view removeGestureRecognizer:singleTapGR];
-                }];
-}
 
-- (void)tapAnywhereToDismissKeyboard:(UIGestureRecognizer *)gestureRecognizer {
-    //此method会将self.view里所有的subview的first responder都resign掉
-    [self.view endEditing:YES];
-}
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if ((touch.view ==self.constellationView)||(touch.view ==self.photoView)) {
@@ -319,7 +297,9 @@
     
     
 }
-
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName{
     self.phtot.image = tempImage;
     _existPhoto = YES;

@@ -161,7 +161,7 @@
         return;
     }else if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused){
         [_focusView dismiss:^{
-//            [[Config sharedConfig] launchGuide:@"0"];
+            [[Config sharedConfig] launchGuide:@"0"];
         }];
         return;
     }else if (![_user.userSex isEqualToString:@"女"]){
@@ -288,7 +288,7 @@
             [weakSelf setMatchPeople];
             [weakSelf hideCover];
         }else{
-//            [self showHint:@"今天没了"];
+            [self showHint:@"番迷君休息下了"];
             if ([[Config sharedConfig] matchNew:nil]) {
                 [[Config sharedConfig] matchNew:@"0"];
                 weakSelf.navigationController.tabBarItem.badgeValue = nil;
@@ -421,7 +421,7 @@
 
 
 
-#pragma ShareSDKDelete
+#pragma ShareSDKDelegate
 - (void)viewOnWillDisplay:(UIViewController *)viewController shareType:(ShareType)shareType{
     [self hideHud];
 }
@@ -460,7 +460,6 @@
 
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"登入成功");
             _user._id = [responseObject objectForKey:@"userId"];
             
             [_user getUserInfo:^{
@@ -510,7 +509,6 @@
      ^(NSDictionary *loginInfo, EMError *error) {
 
          if (loginInfo && !error) {
-            NSLog(@"IM登入成功");
              [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
              
             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
@@ -522,22 +520,7 @@
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }else {
              [weakSelf hideHud];
-            NSLog(@"%u",error.errorCode);
-             NSLog(@"%@",error.description);
-             switch (error.errorCode) {
-                 case EMErrorServerNotReachable:
-                     [HDTool ToastNotification:@"连接服务器失败!" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 case EMErrorServerAuthenticationFailure:
-                     [HDTool ToastNotification:@"用户名或密码错误" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 case EMErrorServerTimeout:
-                     [HDTool ToastNotification:@"连接服务器超时!" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-                 default:
-                     [HDTool ToastNotification:@"登录失败" andView:self.view andLoading:NO andIsBottom:NO];
-                     break;
-             }
+             
          }
      } onQueue:nil];
 }

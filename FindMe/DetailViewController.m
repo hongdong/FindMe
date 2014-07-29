@@ -239,7 +239,9 @@
     
     
 }
-
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 -(void)updatePhoto{
     [self showHudInView:self.view.window hint:@"上传中..."];
     NSString *url = [NSString stringWithFormat:@"%@/data/user/user_uphoto.do",Host];

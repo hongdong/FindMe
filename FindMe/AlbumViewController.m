@@ -12,11 +12,14 @@
 #import "MJPhoto.h"
 #import "User.h"
 #import "AFNetworking.h"
+#import "AMSmoothAlertView.h"
+#import "BlocksKit+UIKit.h"
+#import "UIView+Common.h"
 @interface AlbumViewController (){
     User *_user;
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
-    
+    AMSmoothAlertView *_alert;
 }
 
 @end
@@ -79,65 +82,62 @@
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deletePhoto:)];
-        longPress.minimumPressDuration = 0.8; //定义按的时间
+        longPress.minimumPressDuration = 0.6; //定义按的时间
         [imageview addGestureRecognizer:longPress];
         
         [self.view addSubview: imageview];
     }
     
     if (count<9) {
-        self.addButton.frame = CGRectMake((BtnW+BtnWS) * (count%3) + BtnX , (BtnH+BtnHS) *(count/3) + BtnY, BtnW, BtnH );
-        self.addButton.enabled = YES;
-        self.addButton.hidden = NO;
+        UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake((BtnW+BtnWS) * (count%3) + BtnX , (BtnH+BtnHS) *(count/3) + BtnY, BtnW, BtnH)];
+        [addButton setContentMode:UIViewContentModeLeft];
+        [addButton setImage:[UIImage imageNamed:@"addimage"] forState:UIControlStateNormal];
+        [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:addButton];
     }
 }
 
--(void)reshowPhoto{
-    
-    int BtnW = 100;
-    int BtnWS = 6;
-    int BtnX = 4;
-    
-    int BtnH = 100;
-    int BtnHS = 6;
-    int BtnY = 5;
-    
-    UIImageView * imageview = [[UIImageView alloc] init];
-    CGRect frame = [self.view viewWithTag:20000].frame;
-    imageview.frame = frame;
-    imageview.tag = 10000 + [_user.userAlbum count] - 1;
-    imageview.userInteractionEnabled = YES;
-    // 内容模式
-    imageview.clipsToBounds = YES;
-    imageview.contentMode = UIViewContentModeScaleAspectFill;
-    
-    [imageview sd_setImageWithURL:[NSURL URLWithString: [_user.userAlbum lastObject]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
-    [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
-    
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deletePhoto:)];
-    longPress.minimumPressDuration = 0.8; //定义按的时间
-    [imageview addGestureRecognizer:longPress];
-    
-    [self.view addSubview: imageview];
-    
-    if ([_user.userAlbum count]==9) {
-        self.addButton.enabled = NO;
-        self.addButton.hidden = YES;
-    }else{
-        self.addButton.frame = CGRectMake((BtnW+BtnWS) * ([_user.userAlbum count]%3) + BtnX , (BtnH+BtnHS) *([_user.userAlbum count]/3) + BtnY, BtnW, BtnH );
-    }
-}
 
 -(void)deletePhoto:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
-        NSLog(@"删除tag%ld的照片",(long)gestureRecognizer.view.tag);
-        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"提醒" message:@"确定删除该照片吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
-        [alert show];
+        __weak __typeof(&*self)weakSelf = self;
+
+        _alert = [[AMSmoothAlertView alloc]initDropAlertWithTitle:@"提醒" andText:@"照片是有多么惨不忍睹，你狠心删除吗？" andCancelButton:YES forAlertType:AlertInfo andColor:HDRED];
+        [_alert.defaultButton setTitle:@"确认" forState:UIControlStateNormal];
+        [_alert.defaultButton bk_addEventHandler:^(id sender) {
+            [weakSelf deleteRequest:gestureRecognizer.view.tag];
+        } forControlEvents:UIControlEventTouchUpInside];
+        [_alert.cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [_alert setTitleFont:[UIFont fontWithName:@"Verdana" size:25.0f]];
+        _alert.cornerRadius = 3.0f;
+        //        [self.view addSubview:alert];
+        [_alert show];
     }
 }
+-(void)deleteRequest:(NSInteger)tag{
+    NSString *del = _user.userAlbum[tag-10000];
+    NSString *url = [NSString stringWithFormat:@"%@/data/user/del_album_uphoto.do",Host];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __weak __typeof(&*self)weakSelf = self;
+    NSDictionary *parameters = @{@"photoUrl": del};
+    [manager GET:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+            [_user.userAlbum removeObjectAtIndex:tag-10000];
+            [_user saveToNSUserDefaults];
+            [weakSelf.view cleanSubViews];
+            [weakSelf showPhoto];
+            
+        }else{
+            [self showHint:@"删除失败"];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [weakSelf showResultWithType:ResultError];
+        NSLog(@"Error: %@", error);
+    }];
+}
 
-- (IBAction)addButtonPressed:(id)sender {
+- (void)addButtonPressed:(id)sender {
     _actionSheet = [[LXActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"拍照",@"从手机相册选择"]];
     [_actionSheet showInView:self.view];
 }
@@ -197,6 +197,9 @@
     
     
 }
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 
 -(void)updatePhoto{
     [self showHudInView:self.view.window hint:@"上传中..."];
@@ -213,7 +216,7 @@
             NSArray *userAlbum = [responseObject objectForKey:@"userAlbum"];
             [_user.userAlbum addObjectsFromArray:userAlbum];
             [_user saveToNSUserDefaults];
-            [weakSelf reshowPhoto];
+            [weakSelf showPhoto];
             
         }else if ([state isEqualToString:@"10001"]){
         }else{

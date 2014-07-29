@@ -54,4 +54,6 @@
 - (CGFloat)y;
 - (CGFloat)centerX;
 - (CGFloat)centerY;
+
+- (void)cleanSubViews;
 @end

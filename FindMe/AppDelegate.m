@@ -110,10 +110,10 @@
 -(void)initShareSDK{
     [ShareSDK registerApp:@"1a81fc29a7db"];
     
-    [ShareSDK connectQQWithQZoneAppKey:@"101073798" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+    [ShareSDK connectQQWithQZoneAppKey:@"1101776951" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
     
-    [ShareSDK connectQZoneWithAppKey:@"101073798"
-                           appSecret:@"fc7c38c8f9f087c1a3c4b4cce0eef8d8"
+    [ShareSDK connectQZoneWithAppKey:@"1101776951"
+                           appSecret:@"Z83HFVI69EpjKQBk"
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
     

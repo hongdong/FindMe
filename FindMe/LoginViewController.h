@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface LoginViewController : UIViewController
+#import <ShareSDK/ShareSDK.h>
+@interface LoginViewController : UIViewController<ISSViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *srollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 

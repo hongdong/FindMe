@@ -15,6 +15,7 @@
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserInfoChange object:nil];
+    
 }
 -(void)getUserInfo{
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
@@ -39,9 +40,10 @@
             weakSelf.userSignature = [userInfo objectForKey:@"userSignature"];
             weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
             weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
-            weakSelf.userAlbum = [userInfo objectForKey:@"userAlbum"];
             if (weakSelf.userAlbum==nil) {
                 weakSelf.userAlbum = [[NSMutableArray alloc] init];
+            }else{
+                weakSelf.userAlbum = [[userInfo objectForKey:@"userAlbum"] mutableCopy];
             }
             
             if ([self.class getUserFromNSUserDefaults]==nil) {
@@ -79,9 +81,10 @@
             weakSelf.userSignature = [userInfo objectForKey:@"userSignature"];
             weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
             weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
-            weakSelf.userAlbum = [userInfo objectForKey:@"userAlbum"];
             if (weakSelf.userAlbum==nil) {
                 weakSelf.userAlbum = [[NSMutableArray alloc] init];
+            }else{
+                weakSelf.userAlbum = [[userInfo objectForKey:@"userAlbum"] mutableCopy];
             }
             NSLog(@"获取用户资料完成");
             if (complete!=nil) {
@@ -112,6 +115,7 @@
         return nil;
     }
     User *user = [User objectWithKeyValues:userDic];
+    user.userAlbum = [user.userAlbum mutableCopy];
     return user;
 }
 

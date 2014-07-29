@@ -3,21 +3,21 @@
    version = "1.3"
    LastUpgradeVersion = "0510">
    <BuildAction
-      buildImplicitDependencies = "YES"
-      parallelizeBuildables = "YES">
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForProfiling = "YES"
+            buildForTesting = "YES"
+            buildForArchiving = "YES"
             buildForRunning = "YES"
             buildForAnalyzing = "YES"
-            buildForArchiving = "YES"
-            buildForTesting = "YES">
+            buildForProfiling = "YES">
             <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintName = "Pods-GPUImage"
-               ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libPods-GPUImage.a"
-               BlueprintIdentifier = "44FA1DBC0F3C4A7FB25A6A89">
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BlueprintName = "Pods-GPUImage"
+               BlueprintIdentifier = "EF76B9524D3D468C882C8C05"
+               BuildableIdentifier = "primary">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,29 +31,29 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      debugDocumentVersioning = "YES"
-      buildConfiguration = "Debug"
       useCustomWorkingDirectory = "NO"
       allowLocationSimulation = "YES"
-      launchStyle = "0"
+      debugDocumentVersioning = "YES"
       ignoresPersistentStateOnLaunch = "NO"
+      buildConfiguration = "Debug"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB">
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      debugDocumentVersioning = "YES"
-      savedToolIdentifier = ""
-      buildConfiguration = "Release"
       useCustomWorkingDirectory = "NO"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      debugDocumentVersioning = "YES"
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = "">
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "YES"
+      buildConfiguration = "Release">
    </ArchiveAction>
 </Scheme>

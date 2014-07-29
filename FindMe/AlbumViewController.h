@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 #import "LXActionSheet.h"
 @interface AlbumViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate>
-@property (weak, nonatomic) IBOutlet UIButton *addButton;
 
 @end

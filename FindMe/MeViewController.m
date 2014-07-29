@@ -127,6 +127,8 @@
     self.sex.frame = CGRectMake(self.nickname.right + 5, self.sex.top, self.sex.width, self.sex.height);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
+    }else{
+        self.sex.image = [UIImage imageNamed:@"girl"];
     }
     
     self.vUserImg.frame = CGRectMake(self.sex.right+5, self.vUserImg.top, self.vUserImg.width, self.vUserImg.height);
@@ -137,6 +139,10 @@
         self.addVView.userInteractionEnabled = NO;
         self.isAuthBt.hidden = NO;
         self.vUserImg.hidden = NO;
+    }else{
+        self.addVView.userInteractionEnabled = YES;
+        self.isAuthBt.hidden = YES;
+        self.vUserImg.hidden = YES;
     }
 }
 -(void)userInfoUpdate:(NSNotification *)note{

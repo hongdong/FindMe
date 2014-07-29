@@ -61,6 +61,9 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 -(void)addUnreadFriend:(NSNotification *)note{
+    if (self.selectedIndex==2) {
+        return;
+    }
     UIViewController *vc = [self.viewControllers objectAtIndex:2];
     vc.tabBarItem.badgeValue = @"HI";
 }
