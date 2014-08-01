@@ -116,7 +116,7 @@
 
 -(void)initShareSDK{
     [ShareSDK registerApp:@"1a81fc29a7db"];
-    
+//    [ShareSDK useAppTrusteeship:NO];
     [ShareSDK connectQQWithQZoneAppKey:@"1101776951" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
     
     [ShareSDK connectQZoneWithAppKey:@"1101776951"

@@ -465,7 +465,7 @@
         self.messageToolView.messageInputTextView.text = [NSString stringWithFormat:@"%@%@",chatText,faceStr];
     }
     else {
-        if (chatText.length >= 2)
+        if (chatText.length >= 4)
         {
             NSString *subStr = [chatText substringFromIndex:chatText.length-4];
             NSString *plistStr = [[NSBundle mainBundle] pathForResource:@"expression" ofType:@"plist"];
