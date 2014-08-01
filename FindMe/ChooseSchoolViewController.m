@@ -100,7 +100,7 @@
         selectedScName = [dataArray[indexPath.row] objectForKey:@"scName"];
     }
     _user.school = [[NSMutableDictionary alloc] initWithDictionary:@{@"_id": selectedScNo,@"schoolName": selectedScName}];
-    [self showHudInView:self.view hint:@"加载中..."];
+    [HDTool showHUD:@"加载中..."];
     [self departmentList:selectedScNo];
 }
 
@@ -148,12 +148,14 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject&&[responseObject objectForKey:@"department"]) {
-            [weakSelf showResultWithType:ResultSuccess];
+            [HDTool successHUD];
             _deptArr = [responseObject objectForKey:@"department"];
             [weakSelf performSegueWithIdentifier:@"chooseDepartment" sender:nil];
+        }else{
+            [HDTool errorHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        [HDTool errorHUD];
     }];
 }
 

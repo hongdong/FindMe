@@ -8,6 +8,7 @@
 #import "EMDeviceManagerProximitySensorDelegate.h"
 #import "EMDeviceManagerLocationDelegate.h"
 #import "EMDeviceManagerMediaDelegate.h"
+#import "EMDeviceManagerNetworkDelegate.h"
 
 /*!
  @protocol
@@ -16,7 +17,8 @@
  */
 @protocol EMDeviceManagerDelegate <EMDeviceManagerProximitySensorDelegate,
                                 EMDeviceManagerMediaDelegate,
-                                EMDeviceManagerLocationDelegate>
+                                EMDeviceManagerLocationDelegate,
+                                EMDeviceManagerNetworkDelegate>
 
 @optional
 

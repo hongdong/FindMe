@@ -65,7 +65,7 @@
     }];
     [self.jcgxView whenTouchedUp:^{
         weakSelf.jcgxView.backgroundColor = [UIColor whiteColor];
-        [weakSelf showHudInView:weakSelf.view.window hint:@"检测中..."];
+        [HDTool showHUD:@"检测中..."];
         [[iVersion sharedInstance] checkForNewVersion];
     }];
     
@@ -96,11 +96,11 @@
 }
 #pragma delegate
 - (void)iVersionDidNotDetectNewVersion{
-    [self hideHud];
+    [HDTool dismissHUD];
     [self showHint:@"已经是最新版本了"];
 }
 - (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
-    [self hideHud];
+    [HDTool dismissHUD];
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
@@ -116,11 +116,13 @@
 }
 
 - (IBAction)signOutPressed:(id)sender {
+    [HDTool showHUD:@"注销中..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/login_out.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
+            [HDTool successHUD];
             [[Config sharedConfig] initBadge];
             [[Config sharedConfig] changeLoginState:@"0"];
             [[Config sharedConfig] changeOnlineState:@"0"];
@@ -143,18 +145,18 @@
             
             [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
                 if (!error) {
-                    NSLog(@"IM注销成功");
                 }
                 else{
                     
                 }
             } onQueue:nil];
-            NSLog(@"注销成功");
+        }else{
+            [HDTool errorHUD];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-        NSLog(@"注销失败了");
+        [HDTool errorHUD];
     }];
 }
 

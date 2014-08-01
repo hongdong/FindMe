@@ -14,4 +14,5 @@
 
 @interface UIViewController (DismissKeyboard)
 -(void)setupForDismissKeyboard;
+-(void)setupForDismissKeyboard:(id)delegate;
 @end

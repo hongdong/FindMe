@@ -155,15 +155,10 @@
     
     NSDictionary *parameters = @{@"type":@"2",@"userMatchId": _id};;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
-        NSLog(@"pass");
-        if (userMatch!=nil&&userMatch.count!=0) {
-
-        }else{
-        }
+        NSString *fansPass = [responseObject objectForKey:@"fansPass"];
+        NSLog(@"%@",fansPass);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"请求失败");
     }];
 }
 

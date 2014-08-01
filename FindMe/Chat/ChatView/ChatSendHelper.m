@@ -24,6 +24,12 @@
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithChatObject:text];
     return [self sendMessage:username messageBody:body isChatGroup:isChatGroup requireEncryption:requireEncryption];
 }
++(EMMessage *)sendTextMessageWithString:(NSString *)str
+                                 toUser:(User *)user{
+    EMChatText *text = [[EMChatText alloc] initWithText:str];
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithChatObject:text];
+    return [self sendMessage:user._id messageBody:body isChatGroup:NO requireEncryption:NO];
+}
 
 +(EMMessage *)sendImageMessageWithImage:(UIImage *)image
                              toUsername:(NSString *)username

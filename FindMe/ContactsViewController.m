@@ -10,6 +10,8 @@
 #import "User.h"
 #import "UIImageView+WebCache.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "BlocksKit+UIKit.h"
+#import "ChatSendHelper.h"
 @interface ContactsViewController ()<UITableViewDataSource, UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (strong, nonatomic) NSMutableArray *contactsSource;
@@ -51,22 +53,33 @@
     
     self.title = @"好友";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
+    __weak __typeof(&*self)weakSelf = self;
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    UIView *headView = [HDTool loadCustomViewByIndex:7];
+    [((UIButton *)[headView viewWithTag:1000]) bk_addEventHandler:^(id sender) {
+        if (![[Config sharedConfig] isOnline]) {
+            [weakSelf showHint:@"请先登入"];
+            return;
+        }
+        NSMutableArray *allUsers = [User allDbObjects];
+        int i = arc4random()%[allUsers count];
+        [ChatSendHelper sendTextMessageWithString:@"HI" toUser:allUsers[i]];
+        [weakSelf showHint:@"已经帮你随机问候了"];
+        
+    } forControlEvents:UIControlEventTouchUpInside];
+    headView.backgroundColor = HDRED;
+    self.tableView.tableHeaderView = headView;
     [self.view addSubview:self.tableView];
     [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
     
-    if ([[Config sharedConfig] friendNew:nil]) {
-        [self myReloadDataSource];
-    }
-    
-    if ([HDTool isFirstLoad2]) {
-        NSLog(@"好友列表第一次");
+    if ([[Config sharedConfig] friendNew:nil]||[HDTool isFirstLoad2]) {
         [self myReloadDataSource];
     }else{
-        NSLog(@"好友列表不是第一次");
-        [self loadLocalFriends];//读取本地好友列表
+        [self loadLocalFriends];
     }
+
 }
+
 
 -(void)loginChange:(NSNotification *)notification{
     
@@ -294,7 +307,7 @@
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([[Config sharedConfig] friendNew:nil]) {
             [[Config sharedConfig] friendNew:@"0"];
-            weakSelf.tabBarItem.badgeValue = nil;
+            weakSelf.navigationController.tabBarItem.badgeValue = nil;
         }
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
@@ -309,8 +322,9 @@
             [weakSelf.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
             [weakSelf.tableView reloadData];
             [weakSelf.tableView headerEndRefreshing];
-        }else{
             
+        }else{
+            [weakSelf.tableView headerEndRefreshing];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -331,7 +345,6 @@
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     text = @"暂无好友";
     font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-    //    textColor = HDRED;
     if (font) [attributes setObject:font forKey:NSFontAttributeName];
     if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];
@@ -350,7 +363,6 @@
     paragraph.alignment = NSTextAlignmentCenter;
     text = @"你还没有好友，赶快更换照片了。";
     font = [UIFont systemFontOfSize:13.0];
-    //    textColor = HDRED;
     paragraph.lineSpacing = 4.0;
     if (font) [attributes setObject:font forKey:NSFontAttributeName];
     if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
@@ -370,6 +382,10 @@
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
+    if (![[Config sharedConfig] isOnline]) {
+        [self showHint:@"请先登入"];
+        return;
+    }
     [self myReloadDataSource];
 }
 

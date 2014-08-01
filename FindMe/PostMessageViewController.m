@@ -118,33 +118,14 @@
 
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = nil;
-    UIFont *font = nil;
-    UIColor *textColor = nil;
-    
-    NSMutableDictionary *attributes = [NSMutableDictionary new];
-    text = @"暂无动态";
-    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-    textColor = HDRED;
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+
+    return [[NSAttributedString alloc] initWithString:@"暂无动态" attributes:nil];
 }
 
 - (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = nil;
-    UIFont *font = nil;
-    UIColor *textColor = nil;
-    
-    NSMutableDictionary *attributes = [NSMutableDictionary new];
-    
-    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-    paragraph.alignment = NSTextAlignmentCenter;
-    text = @"赶快吐槽起来";
-    font = [UIFont systemFontOfSize:13.0];
-    textColor = HDRED;
-    paragraph.lineSpacing = 4.0;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"赶快吐槽起来" attributes:nil];
     return attributedString;
 }
 

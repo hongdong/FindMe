@@ -15,11 +15,14 @@
 #import "AMSmoothAlertView.h"
 #import "BlocksKit+UIKit.h"
 #import "UIView+Common.h"
+#import "TNSexyImageUploadProgress.h"
 @interface AlbumViewController (){
     User *_user;
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
     AMSmoothAlertView *_alert;
+    TNSexyImageUploadProgress *_progress;
+    UIImage *_image;
 }
 
 @end
@@ -115,6 +118,7 @@
     }
 }
 -(void)deleteRequest:(NSInteger)tag{
+    [HDTool showHUD:@"删除中..."];
     NSString *del = _user.userAlbum[tag-10000];
     NSString *url = [NSString stringWithFormat:@"%@/data/user/del_album_uphoto.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -123,17 +127,17 @@
     [manager GET:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
+            [HDTool dismissHUD];
             [_user.userAlbum removeObjectAtIndex:tag-10000];
             [_user saveToNSUserDefaults];
             [weakSelf.view cleanSubViews];
             [weakSelf showPhoto];
             
         }else{
-            [self showHint:@"删除失败"];
+            [HDTool errorHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
-        NSLog(@"Error: %@", error);
+        [HDTool errorHUD];
     }];
 }
 
@@ -185,14 +189,11 @@
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
         //判断是静态图像还是视频
         if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-            UIImage *image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
+            _image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
             //        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
-            [self saveImage:image WithName:@"albumPhoto.png"];
+            [self saveImage:_image WithName:@"albumPhoto.png"];
             [self updatePhoto];
         }
-        
-        
-        
     }];
     
     
@@ -202,29 +203,70 @@
 }
 
 -(void)updatePhoto{
-    [self showHudInView:self.view.window hint:@"上传中..."];
     NSString *url = [NSString stringWithFormat:@"%@/data/user/add_album_uphoto.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    __weak __typeof(&*self)weakSelf = self;
     NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/albumPhoto.png"]];
-    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    __weak __typeof(&*self)weakSelf = self;
+    
+    _progress = [[TNSexyImageUploadProgress alloc] init];
+    _progress.radius = 100;
+    _progress.progressBorderThickness = -10;
+    _progress.trackColor = [UIColor blackColor];
+    _progress.progressColor = [UIColor whiteColor];
+    _progress.imageToUpload = _image;
+
+    [_progress show];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadCompleted:) name:IMAGE_UPLOAD_COMPLETED object:_progress];
+    
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001"]) {
-            [weakSelf showResultWithType:ResultSuccess];
-            NSArray *userAlbum = [responseObject objectForKey:@"userAlbum"];
-            [_user.userAlbum addObjectsFromArray:userAlbum];
-            [_user saveToNSUserDefaults];
-            [weakSelf showPhoto];
+    } error:nil];
+    
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSProgress *progress = nil;
+    
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+        } else {
+                    NSString *state = [responseObject objectForKey:@"state"];
+                    if ([state isEqualToString:@"20001"]) {
+                        NSArray *userAlbum = [responseObject objectForKey:@"userAlbum"];
+                        [_user.userAlbum addObjectsFromArray:userAlbum];
+                        [_user saveToNSUserDefaults];
+                        
+                       [weakSelf showPhoto];
             
-        }else if ([state isEqualToString:@"10001"]){
-        }else{
+                    }else if ([state isEqualToString:@"10001"]){
+                        [weakSelf showHint:@"超时"];
+                    }else{
+                        [weakSelf showHint:@"超时"];
+                    }
+
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
-        NSLog(@"Error: %@", error);
     }];
+    [progress addObserver:self
+               forKeyPath:@"fractionCompleted"
+                  options:NSKeyValueObservingOptionNew
+                  context:NULL];
+    [uploadTask resume];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context{
+    if ([keyPath isEqualToString:@"fractionCompleted"] && [object isKindOfClass:[NSProgress class]]) {
+        NSProgress *progress = (NSProgress *)object;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _progress.progress = progress.fractionCompleted;
+        });
+        
+    }
+}
+- (void)imageUploadCompleted:(NSNotification *)notification {
+//    [_progress removeObserver:self
+//                   forKeyPath:@"fractionCompleted"
+//                      context:NULL];
+    
 }
 
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName{
@@ -280,6 +322,10 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)dealloc{
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:IMAGE_UPLOAD_COMPLETED object:_progress];
+}
 
 
 @end

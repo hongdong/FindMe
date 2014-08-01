@@ -8,6 +8,7 @@
 
 #import "HDTool.h"
 #import "GCDiscreetNotificationView.h"
+#import "User.h"
 #define LAST_RUN_VERSION_KEY        @"last_run_version_of_application"
 @implementation HDTool
 + (UIImage *)scale:(UIImage *)sourceImg toSize:(CGSize)size
@@ -41,7 +42,7 @@
 {
     GCDiscreetNotificationView *notificationView = [[GCDiscreetNotificationView alloc] initWithText:text showActivity:isLoading inPresentationMode:isBottom?GCDiscreetNotificationViewPresentationModeBottom:GCDiscreetNotificationViewPresentationModeTop inView:view];
     [notificationView show:YES];
-    [notificationView hideAnimatedAfter:2.6];
+    [notificationView hideAnimatedAfter:1.6];
 }
 
 + (NSString *)ReplaceString:(NSString *)targetString useRegExp:(NSString *) regExp byString:(NSString *) replaceString
@@ -194,5 +195,28 @@
     NSMutableString *temp = [[NSMutableString alloc] initWithString:url];
     [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
     return [NSURL URLWithString:temp];
+}
+
++(void)showHUD:(NSString *)title{
+    [[[UIApplication sharedApplication] keyWindow] showHDHUDWithTitle:title];
+}
++(void)dismissHUD{
+    [[[UIApplication sharedApplication] keyWindow] dismissHDHUD];
+    
+}
++(void)successHUD{
+    [[[UIApplication sharedApplication] keyWindow] showSuccess];
+    
+}
++(void)errorHUD{
+    [[[UIApplication sharedApplication] keyWindow] showError];
+}
++(void)autoSex:(UIImageView *)imageView{
+    User *user = [User getUserFromNSUserDefaults];
+    if ([user.userSex isEqualToString:@"男"]) {
+        imageView.image = [UIImage imageNamed:@"girl"];
+    }else if([user.userSex isEqualToString:@"女"]){
+        imageView.image = [UIImage imageNamed:@"boy"];
+    }
 }
 @end

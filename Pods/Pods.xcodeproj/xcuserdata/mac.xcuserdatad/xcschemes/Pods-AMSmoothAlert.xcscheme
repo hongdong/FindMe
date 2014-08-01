@@ -7,47 +7,47 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
             buildForArchiving = "YES"
+            buildForProfiling = "YES"
             buildForRunning = "YES"
-            buildForAnalyzing = "YES"
-            buildForProfiling = "YES">
+            buildForTesting = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
-               BuildableName = "libPods-AMSmoothAlert.a"
-               ReferencedContainer = "container:Pods.xcodeproj"
                BlueprintName = "Pods-AMSmoothAlert"
-               BlueprintIdentifier = "01941EB1A0C745BAA48F850F"
-               BuildableIdentifier = "primary">
+               BuildableIdentifier = "primary"
+               BuildableName = "libPods-AMSmoothAlert.a"
+               BlueprintIdentifier = "0487C7E228C4403587B73531"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
       shouldUseLaunchSchemeArgsEnv = "YES"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB">
       <Testables>
       </Testables>
    </TestAction>
    <LaunchAction
-      useCustomWorkingDirectory = "NO"
-      allowLocationSimulation = "YES"
-      debugDocumentVersioning = "YES"
       ignoresPersistentStateOnLaunch = "NO"
-      buildConfiguration = "Debug"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
+      debugDocumentVersioning = "YES"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      allowLocationSimulation = "YES"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB">
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES"
-      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = "">
+      debugDocumentVersioning = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Release">
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

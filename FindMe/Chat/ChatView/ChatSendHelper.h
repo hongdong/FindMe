@@ -12,6 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import "EaseMob.h"
+#import "User.h"
 @interface ChatSendHelper : NSObject
 
 /**
@@ -28,6 +29,10 @@
                              toUsername:(NSString *)username
                             isChatGroup:(BOOL)isChatGroup
                       requireEncryption:(BOOL)requireEncryption;
+
++(EMMessage *)sendTextMessageWithString:(NSString *)str
+                             toUser:(User *)user;
+
 
 /**
  *  发送图片消息

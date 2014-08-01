@@ -25,10 +25,28 @@
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
 }
+- (IBAction)submit:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    [self.view endEditing:YES];
+    [HDTool showHUD:@"逗你玩"];
+    if (sender.selected) {
+        [self performBlock:^{
+            [HDTool successHUD];
+        } afterDelay:1.0];
+    }else{
+        [self performBlock:^{
+            [HDTool errorHUD];
+        } afterDelay:1.0];
+    }
+
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
-
+- (void)performBlock:(void(^)())block afterDelay:(NSTimeInterval)delay {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), block);
+}
 
 @end

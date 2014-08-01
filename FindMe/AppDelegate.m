@@ -35,15 +35,22 @@
     
     // 3.标题
     [navBar setTitleTextAttributes:@{
-                                     UITextAttributeTextColor : [UIColor whiteColor]
+                                     NSForegroundColorAttributeName : [UIColor whiteColor]
                                      }];
     [navBar setShadowImage:[[UIImage alloc] init]];
+
+    if (iOS7) {
+        navBar.barTintColor = HDRED;
+    }else{
+        navBar.tintColor = HDRED;
+    }
     
     UITabBar *tabBar = [UITabBar appearance];
     
     [tabBar setSelectedImageTintColor:HDRED];
     [tabBar setShadowImage:[UIImage imageNamed:@"shadowImage"]];
     [tabBar setBackgroundImage:[[UIImage alloc] init]];
+
     
     [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
@@ -166,7 +173,7 @@
 #else
     apnsCertName = @"findmepushpro";
 #endif
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"fjhongdong#findme" apnsCertName:apnsCertName];
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"fjhongdong#findme" apnsCertName:@"findmepushpro"];
     
 //    [[EaseMob sharedInstance] enableBackgroundReceiveMessage];
     
@@ -255,6 +262,7 @@
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
     
     if ([[Config sharedConfig] isLogin]) {
+        NSLog(@"后台登入：%hhd",[[Config sharedConfig] needFresh]);
         if ([[Config sharedConfig] needFresh]) {
             [[Config sharedConfig] changeOnlineState:@"0"];
         }
@@ -266,7 +274,6 @@
     }
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    NSLog(@"DidBecomeActive");
 }
 
 

@@ -90,4 +90,27 @@
 - (void)didChangedOnlineStatus:(BOOL)isOnline
                       forBuddy:(NSString *)username;
 
+#pragma mark - block
+
+- (void)didUpdateBlockedList:(NSArray *)blockedList;
+
+/*!
+ @method
+ @brief 将好友加到黑名单完成后的回调
+ @discussion
+ @param buddy    加入黑名单的好友
+ @param pError   错误信息
+ */
+- (void)didBlockBuddy:(EMBuddy *)buddy error:(EMError **)pError;
+
+/*!
+ @method
+ @brief 将好友移出黑名单完成后的回调
+ @discussion
+ @param buddy    移出黑名单的好友
+ @param pError   错误信息
+ */
+- (void)didUnblockBuddy:(EMBuddy *)buddy error:(EMError **)pError;
+
+
 @end

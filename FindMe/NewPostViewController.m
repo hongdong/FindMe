@@ -29,7 +29,7 @@
 }
 - (IBAction)sendPressed:(id)sender {
     [self.view endEditing:YES];
-    [self showHudInView:self.view.window hint:@"发送中..."];
+    [HDTool showHUD:@"发送中..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/release_post.do",Host];
     NSDictionary *parameters = @{@"postContent": self.content.text,
                                  @"postOfficial": @"2"
@@ -44,31 +44,31 @@
         }success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *state = [responseObject objectForKey:@"state"];
             if ([state isEqualToString:@"20001"]) {
-                [weakSelf showResultWithType:ResultSuccess];
+                [HDTool dismissHUD];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }else{
-                [weakSelf showResultWithType:ResultError];
+                [HDTool errorHUD];
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
-            [weakSelf showResultWithType:ResultError];
+            [HDTool errorHUD];
         }];
     }else{
         [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *state = [responseObject objectForKey:@"state"];
             if ([state isEqualToString:@"20001"]) {
-                [weakSelf showResultWithType:ResultSuccess];
+                [HDTool dismissHUD];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }else{
-                [weakSelf showResultWithType:ResultError];
+                [HDTool errorHUD];
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
-            [weakSelf showResultWithType:ResultError];
+                [HDTool errorHUD];
         }];
     }
 
@@ -189,7 +189,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 #pragma textView Delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -205,10 +204,8 @@
     if(range.location>=140)
     {
         remainTextNum = 0;
-        
         return NO;
-    }
-    else
+    }else
     {
         NSString  * nsTextContent = textView.text;
         int existTextNum=[nsTextContent length];

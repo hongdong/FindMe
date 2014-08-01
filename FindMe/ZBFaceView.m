@@ -10,7 +10,7 @@
 
 #define NumPerLine 7
 #define Lines    3
-#define FaceSize  24
+#define FaceSize  30
 /*
 ** 两边边缘间隔
  */
@@ -18,7 +18,7 @@
 /*
  ** 上下边缘间隔
  */
-#define EdgeInterVal 5
+#define EdgeInterVal 3
 
 @implementation ZBFaceView
 
@@ -30,9 +30,7 @@
         CGFloat horizontalInterval = (CGRectGetWidth(self.bounds)-NumPerLine*FaceSize -2*EdgeDistance)/(NumPerLine-1);
         // 上下垂直间隔
         CGFloat verticalInterval = (CGRectGetHeight(self.bounds)-2*EdgeInterVal -Lines*FaceSize)/(Lines-1);
-        
-        NSLog(@"%f,%f",verticalInterval,CGRectGetHeight(self.bounds));
-        
+                
         for (int i = 0; i<Lines; i++)
         {
             for (int x = 0;x<NumPerLine;x++)
@@ -75,13 +73,9 @@
         NSString *expressstring = [NSString stringWithFormat:@"Expression_%d@2x.png",button.tag];
         NSString *plistStr = [[NSBundle mainBundle] pathForResource:@"expression" ofType:@"plist"];
         NSDictionary *plistDic = [[NSDictionary  alloc]initWithContentsOfFile:plistStr];
-        
-        for (int j = 0; j<[[plistDic allKeys]count]-1; j++)
-        {
-            if ([[plistDic objectForKey:[[plistDic allKeys] objectAtIndex:j]]
-                 isEqualToString:[NSString stringWithFormat:@"%@",expressstring]])
-            {
-                faceName = [[plistDic allKeys] objectAtIndex:j];
+        for (NSString *key in [plistDic allKeys]) {
+            if ([[plistDic objectForKey:key] isEqualToString:expressstring]) {
+                faceName = key;
             }
         }
         isDelete = NO;

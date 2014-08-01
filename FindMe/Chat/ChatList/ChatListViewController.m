@@ -297,7 +297,6 @@
     self.dataSource = [self loadDataSource];
     [_tableView reloadData];
     [_tableView headerEndRefreshing];
-    [self hideHud];
 }
 
 - (void)networkChanged:(EMConnectionState)connectionState

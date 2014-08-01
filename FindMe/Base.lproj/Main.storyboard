@@ -1,78 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Xf7-Hn-o9t">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller-->
-        <scene sceneID="iFc-cZ-Tus">
-            <objects>
-                <viewController storyboardIdentifier="loginViewController" id="Tqn-ay-XTP" customClass="LoginViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="PeI-nS-KZI">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="j9q-FR-lMu">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </scrollView>
-                            <pageControl autoresizesSubviews="NO" opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="BEB-3q-G00">
-                                <rect key="frame" x="0.0" y="352" width="320" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="currentPageIndicatorTintColor" red="1" green="0.44051174830000001" blue="0.47992174739999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="valueChange:" destination="Tqn-ay-XTP" eventType="valueChanged" id="Kn1-ml-9ta"/>
-                                </connections>
-                            </pageControl>
-                            <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="I1Z-RB-TWP">
-                                <rect key="frame" x="72" y="369" width="58" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="QQ_login">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginPressed:" destination="Tqn-ay-XTP" eventType="touchUpInside" id="NAn-Je-8pw"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QrU-mh-j8z">
-                                <rect key="frame" x="190" y="365" width="58" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="sina_login">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginPressed:" destination="Tqn-ay-XTP" eventType="touchUpInside" id="agi-1X-saA"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QQ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="odx-Xq-anT">
-                                <rect key="frame" x="88" y="427" width="26" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sina" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1Ff-hT-Bkv">
-                                <rect key="frame" x="200" y="425" width="39" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-                    <connections>
-                        <outlet property="pageControl" destination="BEB-3q-G00" id="wZE-EM-iGM"/>
-                        <outlet property="srollView" destination="j9q-FR-lMu" id="pNj-fJ-u4f"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gb6-pM-PMp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-113" y="-687"/>
-        </scene>
         <!--Main Tab View Controller-->
         <scene sceneID="4Rd-FC-bmz">
             <objects>
@@ -282,7 +214,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yZ3-3F-hLK">
-                                <rect key="frame" x="125" y="15" width="70" height="70"/>
+                                <rect key="frame" x="120" y="5" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="洪小东" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ese-3l-zto">
@@ -502,7 +434,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="实名认证可以给人感觉更真实，或许喜欢你的人就在认证后的下一秒出现" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d0P-mV-uGR">
+                                    <label autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="实名认证可以给人感觉更真实，或许喜欢你的人就在认证后的下一秒出现，还加V哦。" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d0P-mV-uGR">
                                         <rect key="frame" x="10" y="20" width="288" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -591,7 +523,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gN5-w3-iO4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1371" y="4391"/>
+            <point key="canvasLocation" x="1308" y="4445"/>
         </scene>
         <!--Setting View Controller - 设置-->
         <scene sceneID="wPa-eT-8Tz">
@@ -797,6 +729,9 @@
                                 <state key="normal" image="feedbackBt">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="submit:" destination="g7G-Sp-Z0S" eventType="touchUpInside" id="ARp-RU-3qJ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -1027,7 +962,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <barButtonItem style="plain" id="HWh-F2-53e">
-                                        <button key="customView" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rbB-hq-jb8">
+                                        <button key="customView" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rbB-hq-jb8" customClass="MCFireworksButton">
                                             <rect key="frame" x="16" y="-3" width="80" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="mark">
@@ -1073,7 +1008,7 @@
                     <navigationItem key="navigationItem" id="GiU-xT-sIe"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="priseButton" destination="rbB-hq-jb8" id="wqJ-uK-bXZ"/>
+                        <outlet property="likeButton" destination="rbB-hq-jb8" id="cBJ-bl-L6T"/>
                         <outlet property="tableView" destination="gmW-Ev-pxy" id="seQ-nV-ujf"/>
                     </connections>
                 </viewController>
@@ -2138,7 +2073,6 @@
     <resources>
         <image name="HUD_YES" width="24" height="24"/>
         <image name="NavBar64" width="320" height="64"/>
-        <image name="QQ_login" width="58" height="58"/>
         <image name="VUser" width="13" height="13"/>
         <image name="aboutUs" width="320" height="455"/>
         <image name="addimage" width="52" height="52"/>
@@ -2149,7 +2083,7 @@
         <image name="isupdate" width="30" height="34"/>
         <image name="jt_red" width="191" height="329"/>
         <image name="like" width="174" height="36"/>
-        <image name="mark" width="27" height="27"/>
+        <image name="mark" width="33" height="30"/>
         <image name="meinv" width="159" height="160"/>
         <image name="pass" width="116" height="36"/>
         <image name="photos" width="30" height="30"/>
@@ -2157,7 +2091,6 @@
         <image name="setting" width="30" height="30"/>
         <image name="share" width="30" height="30"/>
         <image name="signOut" width="300" height="30"/>
-        <image name="sina_login" width="58" height="58"/>
         <image name="submitBt" width="300" height="31"/>
         <image name="v" width="30" height="30"/>
         <image name="xzd0" width="30" height="30"/>

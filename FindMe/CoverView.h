@@ -11,7 +11,7 @@
 @protocol CoverViewDelegate <NSObject>
 
 @required
--(void)coverViewRefreshPressed;
+-(void)coverViewRefreshPressed:(UIButton *)sender;
 
 @end
 

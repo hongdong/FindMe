@@ -15,17 +15,19 @@
 #import "Comment.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "MJRefresh.h"
+#import "MCFireworksButton.h"
+#import "NSString+HD.h"
 @interface PostDetailViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     
     NSMutableArray *_dataArr;
     double animationDuration;
     CGRect keyboardRect;
-    NSString *_flag;
     id _head;
     NSString *_didChange;
     NSDictionary *_index;
     ZBMessageViewState _nowState;
 }
+@property (weak, nonatomic) IBOutlet MCFireworksButton *likeButton;
 
 @end
 
@@ -46,6 +48,12 @@
     
     _dataArr = [[NSMutableArray alloc] init];
     
+    
+	self.likeButton.particleImage = [UIImage imageNamed:@"Sparkle"];
+	self.likeButton.particleScale = 0.05;
+    self.likeButton.particleScaleRange = 0.02;
+    [self.likeButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateSelected];
+    
     if (self.post.postPhoto==nil) {
         _head = [HDTool loadCustomViewByIndex:5];
         [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
@@ -60,7 +68,6 @@
     
     self.navigationItem.title = @"小秘密";
     _didChange = @"0";
-    _flag = @"p";
     [self initilzer];
     [self.tableView addFooterWithTarget:self action:@selector(footerRereshing)];
     
@@ -93,11 +100,9 @@
         NSDictionary *postMsg = [responseObject objectForKey:@"postMsg"];
         if (postMsg!=nil) {
             if ([[postMsg objectForKey:@"isPraise"] boolValue]) {
-                [weakSelf.priseButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateNormal];
-
-                _flag = @"c";
+                weakSelf.likeButton.selected = YES;
             }
-            weakSelf.priseButton.enabled = YES;
+            weakSelf.likeButton.enabled = YES;
             _index = [postMsg objectForKey:@"index"];
             NSArray *arr = [postMsg objectForKey:@"postMsgList"];
             if (arr!=nil) {
@@ -140,29 +145,37 @@
         [self showHint:@"请先登入"];
         return;
     }
-    self.priseButton.enabled = NO;
+    self.likeButton.enabled = NO;
+    NSString *type;
+    if (self.likeButton.selected) {
+        type = @"c";
+        [self.likeButton popInsideWithDuration:0.4];
+    }else{
+        type = @"p";
+        [self.likeButton popOutsideWithDuration:0.5];
+        [self.likeButton animate];
+    }
+    
+
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_praise.do",Host];
     
     NSDictionary *parameters = @{@"postId": self.post._id,
-                                 @"type":_flag};
+                                 @"type":type};
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            _didChange = @"1";
-            _flag = [_flag isEqualToString:@"c"]?@"p":@"c";
-            if ([_flag isEqualToString:@"c"]) {
-                [weakSelf.priseButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateNormal];
+            
+            weakSelf.likeButton.selected = !weakSelf.likeButton.selected;
+            if (weakSelf.likeButton.selected) {
                 weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]+1];
-
             }else{
-                [weakSelf.priseButton setImage:[UIImage imageNamed:@"mark"] forState:UIControlStateNormal];
                 weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]-1];
-
             }
+
             [weakSelf resetHead];
-            weakSelf.priseButton.enabled = YES;
+            weakSelf.likeButton.enabled = YES;
         }else{
             
         }
@@ -324,7 +337,7 @@
     
     [self hideInputBar];
     [self hideFaceView];
-    [self showHudInView:self.view hint:@"发送中..."];
+    [HDTool showHUD:@"发送中..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_msg.do",Host];
 
     NSDictionary *parameters = @{@"postId": self.post._id,
@@ -332,12 +345,11 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [weakSelf hideHud];
+        [HDTool dismissHUD];
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
             _didChange = @"1";
-//            [weakSelf showResultWithType:ResultSuccess];
             [weakSelf resetHead];
             
             [weakSelf getCommentByType:@"nl"];
@@ -346,12 +358,12 @@
             weakSelf.messageToolView.sendButton.enabled = NO;
 
         }else{
-            [weakSelf showResultWithType:ResultError];
+            [HDTool errorHUD];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-            [weakSelf showResultWithType:ResultError];
+            [HDTool errorHUD];
         
     }];
 }
@@ -394,6 +406,12 @@
 - (void)inputTextViewDidChange:(ZBMessageTextView *)messageInputTextView
 {
 
+    if ([messageInputTextView.text isOK]) {
+        _messageToolView.sendButton.enabled = YES;
+    }else{
+        _messageToolView.sendButton.enabled = NO;
+    }
+    
     CGFloat maxHeight = [ZBMessageInputView maxHeight];
     CGSize size = [messageInputTextView sizeThatFits:CGSizeMake(CGRectGetWidth(messageInputTextView.frame), maxHeight)];
     CGFloat textViewContentHeight = size.height;
@@ -588,7 +606,7 @@
 }
 - (CGPoint)offsetForEmptyDataSet:(UIScrollView *)scrollView
 {
-        return CGPointMake(0, self.tableView.tableHeaderView.frame.size.height/2);
+        return CGPointMake(0, 0);
 
 }
 

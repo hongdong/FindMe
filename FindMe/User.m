@@ -81,12 +81,10 @@
             weakSelf.userSignature = [userInfo objectForKey:@"userSignature"];
             weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
             weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
+            weakSelf.userAlbum = [[userInfo objectForKey:@"userAlbum"] mutableCopy];
             if (weakSelf.userAlbum==nil) {
                 weakSelf.userAlbum = [[NSMutableArray alloc] init];
-            }else{
-                weakSelf.userAlbum = [[userInfo objectForKey:@"userAlbum"] mutableCopy];
             }
-            NSLog(@"获取用户资料完成");
             if (complete!=nil) {
                 complete();
             }
@@ -135,7 +133,6 @@
         if ([state isEqualToString:@"20001"]) {
             NSLog(@"刷新session成功");
         [[Config sharedConfig] changeOnlineState:@"1"];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:EaseMobShouldLogin object:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             
         }else if ([state isEqualToString:@"10001"]){

@@ -13,6 +13,7 @@
 #import <AGCommon/UINavigationBar+Common.h>
 #import <AGCommon/NSString+Common.h>
 #import "UIView+Common.h"
+#import "NSString+HD.h"
 @interface MeViewController (){
     User *_user;
 }
@@ -121,14 +122,16 @@
     [self.photo sd_setImageWithURL:[NSURL URLWithString:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     self.nickname.text = _user.userNickName;
     CGSize size = CGSizeMake(320,2000);
-    CGSize realsize = [_user.userNickName sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize realsize = [_user.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:14.0f]];
     self.nickname.frame = CGRectMake(self.nickname.frame.origin.x, self.nickname.frame.origin.y, realsize.width, realsize.height);
     
     self.sex.frame = CGRectMake(self.nickname.right + 5, self.sex.top, self.sex.width, self.sex.height);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
-    }else{
+    }else if([_user.userSex isEqualToString:@"女"]){
         self.sex.image = [UIImage imageNamed:@"girl"];
+    }else{
+        [HDTool autoSex:self.sex];
     }
     
     self.vUserImg.frame = CGRectMake(self.sex.right+5, self.vUserImg.top, self.vUserImg.width, self.vUserImg.height);
@@ -158,21 +161,21 @@
 -(void)showShare{
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"findme" ofType:@"png"];
     //构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:@"我是番迷君的小推广，感谢同学的分享，番迷君，请和我做朋友。"
-                                       defaultContent:@"我是番迷君的小推广，感谢同学的分享，番迷君，请和我做朋友。"
+    id<ISSContent> publishContent = [ShareSDK content:@"番迷 在最美的时刻，邂逅最特别的TA。每天清晨番迷君会为你寻找最适合你的Ta，开启一段奇妙的邂逅之旅。"
+                                       defaultContent:@"番迷 在最美的时刻，邂逅最特别的TA。每天清晨番迷君会为你寻找最适合你的Ta，开启一段奇妙的邂逅之旅。"
                                                 image:[ShareSDK imageWithPath:imagePath]
-                                                title:@"番迷君，请和我做朋友"
+                                                title:@"番迷（findme），以最美的方式与你邂逅"
                                                   url:@"http://www.ifanmi.cn"
                                           description:nil
                                             mediaType:SSPublishContentMediaTypeNews];
     
     //定制QQ空间信息
-    [publishContent addQQSpaceUnitWithTitle:@"番迷君，请和我做朋友"
+    [publishContent addQQSpaceUnitWithTitle:INHERIT_VALUE
                                         url:@"http://www.ifanmi.cn"
                                        site:@"http://www.ifanmi.cn"
                                     fromUrl:@"http://www.ifanmi.cn"
-                                    comment:@"我是番迷君的小推广，感谢同学的分享，番迷君，请和我做朋友。"
-                                    summary:@"我是番迷君的小推广，感谢同学的分享，番迷君，请和我做朋友。"
+                                    comment:@"番迷 在最美的时刻，邂逅最特别的TA。每天清晨番迷君会为你寻找最适合你的Ta，开启一段奇妙的邂逅之旅。"
+                                    summary:@"番迷 在最美的时刻，邂逅最特别的TA。每天清晨番迷君会为你寻找最适合你的Ta，开启一段奇妙的邂逅之旅。"
                                       image:[ShareSDK imageWithUrl:@"http://114.215.115.33/upload/bgpic/logo287.png"]
                                        type:INHERIT_VALUE
                                     playUrl:nil
@@ -180,8 +183,8 @@
     
     //定制微信好友信息
     [publishContent addWeixinSessionUnitWithType:[[NSNumber alloc] initWithInt:2]
-                                         content:@"我是番迷君的小推广，感谢同学的分享，番迷君，请和我做朋友。"
-                                           title:@"番迷君，请和我做朋友"
+                                         content:INHERIT_VALUE
+                                           title:INHERIT_VALUE
                                              url:@"http://www.ifanmi.cn"
                                       thumbImage:[ShareSDK imageWithPath:imagePath]
                                            image:[ShareSDK imageWithPath:imagePath]

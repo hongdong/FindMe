@@ -19,4 +19,15 @@
     
     return YES;
 }
+-(CGSize)getRealSize:(CGSize)size andFont:(UIFont *)font{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    NSDictionary *attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle.copy};
+    
+    CGSize textSize = [self boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+    
+    textSize.height = ceil(textSize.height);
+    textSize.width = ceil(textSize.width);
+    return textSize;
+}
 @end

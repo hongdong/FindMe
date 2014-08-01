@@ -43,7 +43,17 @@ NSString *const kRouterEventLocationBubbleTapEventName = @"kRouterEventLocationB
 -(CGSize)sizeThatFits:(CGSize)size
 {
     CGSize textBlockMinSize = {130, 25};
-    CGSize addressSize = [self.model.address sizeWithFont:_addressLabel.font constrainedToSize:textBlockMinSize lineBreakMode:NSLineBreakByCharWrapping];
+    
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    NSDictionary *attributes = @{NSFontAttributeName:_addressLabel.font , NSParagraphStyleAttributeName:paragraphStyle.copy};
+    
+    CGSize addressSize = [self.model.address boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+
+    addressSize.height = ceil(addressSize.height);
+    addressSize.width = ceil(addressSize.width);
+
     CGFloat width = addressSize.width < LOCATION_IMAGEVIEW_SIZE ? LOCATION_IMAGEVIEW_SIZE : addressSize.width;
     
     return CGSizeMake(width + BUBBLE_VIEW_PADDING * 2 + BUBBLE_ARROW_WIDTH, 2 * BUBBLE_VIEW_PADDING + LOCATION_IMAGEVIEW_SIZE);

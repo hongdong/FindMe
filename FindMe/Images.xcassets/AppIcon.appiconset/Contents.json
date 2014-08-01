@@ -8,31 +8,31 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "001_06.png",
+      "filename" : "logo-apple_58.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "001_03.png",
+      "filename" : "logo-apple_80.png",
       "scale" : "2x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "logo57_10.png",
+      "filename" : "logo-apple_57.png",
       "scale" : "1x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "logo114_03.png",
+      "filename" : "logo-apple_114.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "logo.png",
+      "filename" : "logo-apple_120 先试试这个.png",
       "scale" : "2x"
     }
   ],

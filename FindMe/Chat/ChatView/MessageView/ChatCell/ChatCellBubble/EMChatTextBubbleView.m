@@ -11,7 +11,7 @@
   */
 
 #import "EMChatTextBubbleView.h"
-
+#import "NSString+HD.h"
 
 NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTapEventName";
 
@@ -61,7 +61,7 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         retSize = [self.model.content boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[[self class] textLabelFont]} context:nil].size;
     }else{
-        retSize = [self.model.content sizeWithFont:[[self class] textLabelFont] constrainedToSize:textBlockMinSize lineBreakMode:[[self class] textLabelLineBreakModel]];
+        retSize = [self.model.content getRealSize:textBlockMinSize andFont:[[self class] textLabelFont]];
     }
     
     CGFloat height = 40;
@@ -94,7 +94,7 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
     if (systemVersion >= 7.0) {
         size = [object.content boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[self textLabelFont]} context:nil].size;
     }else{
-        size = [object.content sizeWithFont:[self textLabelFont] constrainedToSize:textBlockMinSize lineBreakMode:[self textLabelLineBreakModel]];
+        size = [object.content getRealSize:textBlockMinSize andFont:[self textLabelFont]];
     }
     return 2 * BUBBLE_VIEW_PADDING + size.height;
 }

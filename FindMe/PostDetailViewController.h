@@ -25,8 +25,6 @@ typedef NS_ENUM(NSInteger,ZBMessageViewState) {
 
 @property(nonatomic,strong) Post *post;
 
-@property (weak, nonatomic) IBOutlet UIButton *priseButton;
-
 @property (nonatomic,strong) ZBMessageInputView *messageToolView;
 
 @property (nonatomic,strong) ZBMessageManagerFaceView *faceView;

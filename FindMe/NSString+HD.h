@@ -10,4 +10,5 @@
 
 @interface NSString (HD)
 -(BOOL)isOK;
+-(CGSize)getRealSize:(CGSize)size andFont:(UIFont*)font;
 @end

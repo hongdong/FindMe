@@ -17,8 +17,8 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tb2s"]
-                      withFinishedUnselectedImage:[UIImage imageNamed:@"tb2"]];
+        self.tabBarItem.image = [[UIImage imageNamed:@"tb2"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"tb2s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.tabBarItem.tag = 2;
         self.navigationBar.translucent = NO;        
         if ([[Config sharedConfig] friendNew:nil]) {

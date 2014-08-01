@@ -25,13 +25,11 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tb4s"]
-                      withFinishedUnselectedImage:[UIImage imageNamed:@"tb4"]];
-        
+        self.tabBarItem.image = [[UIImage imageNamed:@"tb4"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"tb4s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.tabBarItem.tag = 4;
         
         self.navigationBar.translucent = NO;
-//        [self.navigationBar hideDividingLine];
     }
     return self;
 }

@@ -26,7 +26,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -68,7 +67,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"PostListwillRefresh" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postNew:) name:PostNew object:nil];
     _dataArr = [[NSMutableArray alloc] init];
-    
+
     [self followScrollView:self.feedTableView];
     
     self.title = @"秘圈";
@@ -261,33 +260,14 @@
 
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = nil;
-    UIFont *font = nil;
-    UIColor *textColor = nil;
-    
-    NSMutableDictionary *attributes = [NSMutableDictionary new];
-    text = @"吐槽星人";
-    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-    textColor = HDRED;
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+
+    return [[NSAttributedString alloc] initWithString:@"吐槽星人" attributes:nil];
 }
 
 - (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = nil;
-    UIFont *font = nil;
-    UIColor *textColor = nil;
-    
-    NSMutableDictionary *attributes = [NSMutableDictionary new];
-    
-    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-    paragraph.alignment = NSTextAlignmentCenter;
-    text = @"怎么能不吐槽";
-    font = [UIFont systemFontOfSize:13.0];
-    textColor = HDRED;
-    paragraph.lineSpacing = 4.0;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"怎么能不吐槽" attributes:nil];
     return attributedString;
 }
 

@@ -1,4 +1,4 @@
-platform :ios ,'6.0'
+platform :ios ,'7.0'
 pod 'MBProgressHUD'
 pod 'AFNetworking'
 pod 'THProgressView'
@@ -10,6 +10,8 @@ pod 'MCSwipeTableViewCell'
 pod 'DZNEmptyDataSet'
 pod 'MDCFocusView'
 pod 'BlocksKit'
+pod 'TNSexyImageUploadProgress'
+pod 'MRProgress/Overlay'
 post_install do |installer|
     installer.project.targets.each do |target|
         target.build_configurations.each do |configuration|

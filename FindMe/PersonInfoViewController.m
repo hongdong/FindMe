@@ -37,10 +37,12 @@
 {
     [super viewDidLoad];
     
-    [self setupForDismissKeyboard];
+    [self setupForDismissKeyboard:self];
     
     self.phtot.layer.cornerRadius = 25.0f;
     self.phtot.layer.masksToBounds = YES;
+    
+    self.navigationItem.leftBarButtonItem = nil;
     
     NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"男生", @"女生"]];
     _user.userSex = @"男";//没改动的话默认是男
@@ -69,7 +71,7 @@
     
 	[self.constellationView whenTouchedUp:^{
 		weakSelf.constellationView.backgroundColor = [UIColor whiteColor];
-        [self performSegueWithIdentifier:@"chooseConstellation" sender:self];
+        [weakSelf performSegueWithIdentifier:@"chooseConstellation" sender:self];
 	}];
     
     
@@ -81,7 +83,7 @@
 		weakSelf.photoView.backgroundColor = [UIColor whiteColor];
         [weakSelf.view endEditing:YES];
         _actionSheet = [[LXActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"拍照",@"从手机相册选择"]];
-        [_actionSheet showInView:self.view];
+        [_actionSheet showInView:weakSelf.view];
 	}];
 }
 
@@ -90,7 +92,7 @@
     if([[segue identifier] isEqualToString:@"chooseConstellation"])
     {
         
-        __weak ChooseConstellationViewController *controller=(ChooseConstellationViewController *)segue.destinationViewController;
+        ChooseConstellationViewController *controller=(ChooseConstellationViewController *)segue.destinationViewController;
         controller.personInfoViewController = sender;
     }
 }
@@ -99,14 +101,9 @@
     if (![self isOK]) {
         return;
     }
-    
-    [self showHudInView:self.view.window hint:@"请稍后..."];
+    [HDTool showHUD:@"加载中..."];
     _user.userRealName = self.nameTextField.text;
     _user.userConstellation = _constellationStr;
-    
-    
-    
-    
     NSString *url = [NSString stringWithFormat:@"%@/data/user/rgst_user.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"userNickName": _user.userNickName,
@@ -132,26 +129,27 @@
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
+            [HDTool dismissHUD];
             NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
             _user._id = [userInfo objectForKey:@"userId"];
             _user.userPhoto = [userInfo objectForKey:@"userPhoto"];
-            [weakSelf showResultWithType:ResultSuccess];
             [_user getUserInfo:^{
                 [_user saveToNSUserDefaults];
             }];
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
+
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:@YES userInfo:@{@"_id": _user._id}];
         }else if ([state isEqualToString:@"10001"]){
-            [weakSelf showResultWithType:ResultError];
+            [HDTool errorHUD];
         }else{
-            [weakSelf showResultWithType:ResultError];
+            [HDTool errorHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
-        NSLog(@"Error: %@", error);
+        [HDTool errorHUD];
     }];
 }
 - (void)segmentSelected:(NYSegmentedControl *)sender {
@@ -282,20 +280,17 @@
 }
 #pragma UIImagePickerControllerDelegate
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    __weak __typeof(&*self)weakSelf = self;
     [picker dismissViewControllerAnimated:YES completion:^{
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
         //判断是静态图像还是视频
         if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
             UIImage *image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
-            //        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
-            [self saveImage:image WithName:@"myPhoto.png"];
+//        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
+            [weakSelf saveImage:image WithName:@"myPhoto.png"];
         }
-
         
-
     }];
-    
-    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -331,9 +326,9 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 -(void)dealloc{
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }

@@ -22,6 +22,7 @@
 #import "MDCSpotlightView.h"
 #import "FansViewController.h"
 #import "UIView+Common.h"
+#import "NSString+HD.h"
 @interface FindMeViewController ()<CoverViewDelegate>{
     User *_user;
     User *_matchUser;
@@ -35,17 +36,6 @@
 @end
 
 @implementation FindMeViewController
-
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-
-    }
-    return self;
-}
 
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -61,7 +51,6 @@
         if ([[Config sharedConfig] isLogin]) {
             _user = [User getUserFromNSUserDefaults];
         }else{
-            NSLog(@"未登入，显示登入界面");
             _loginView = [HDTool loadCustomViewByIndex:1];
             _loginView.delegate = self;
         }
@@ -135,9 +124,8 @@
         [self.view addSubview:_loginView];
     }else{
         if ([[Config sharedConfig] isOnline]) {
-            [self getMatch:nil];
+            [self getMatch:nil andSender:nil];
         }else{
-            NSLog(@"还在登入中");
         }
     }
 
@@ -180,7 +168,7 @@
     __weak __typeof(&*self)weakSelf = self;
     if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
         [_focusView dismiss:^{
-            [weakSelf launchGuide:weakSelf.passBt andText:@"你点击了pass后你将会看到番迷君给你推荐的下一个人。"];
+            [weakSelf launchGuide:weakSelf.passBt andText:@"你点击了pass意味着你放弃这次认识的机会，你将会看到番迷君给你推荐的下一个人。"];
         }];
         return;
     }
@@ -195,7 +183,7 @@
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             if ([_user.userSex isEqualToString:@"男"]) {
-                [weakSelf getMatch:nil];
+                [weakSelf getMatch:nil andSender:nil];
             }else if ([_user.userSex isEqualToString:@"女"]){
                 [weakSelf showHint:@"番迷君知道该怎么做了"];
             }else{
@@ -205,12 +193,16 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
             if ([_user.userSex isEqualToString:@"男"]) {
                 [weakSelf showHint:@"番迷君得知她喜欢你已久"];
-                [weakSelf getMatch:nil];
+                [weakSelf getMatch:nil andSender:sender];
             }else if ([_user.userSex isEqualToString:@"女"]){
                 [weakSelf showHint:@"番迷君得知他喜欢你已久"];
             }else{
                 
             }
+        }else if([state isEqualToString:@"10003"]){
+            [weakSelf showHint:@"用户已经失效，正在帮你刷新"];
+            [weakSelf getMatch:nil andSender:nil];
+            
         }else{
             
         }
@@ -222,12 +214,12 @@
         __weak __typeof(&*self)weakSelf = self;
     if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
         [_focusView dismiss:^{
-            [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。"];
+            [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。他们都真心想和你交朋友，只等你一个准字。（操作指导：右滑YES，左滑NO哦）"];
         }];
         return;
     }
     [self showCover];
-    [self getMatch:_matchUser._id];
+    [self getMatch:_matchUser._id andSender:nil];
 }
 
 -(void)hideCover{
@@ -247,7 +239,13 @@
                              _focusView = [MDCFocusView new];
                              _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
                              _focusView.focalPointViewClass = [MDCSpotlightView class];
-                             [_focusView addSubview:[self buildLabelWithText:@"番迷君每天至多给你推荐三个有缘人，当你点击了like后就看不到下一个人了。"]];
+                             NSString *info;
+                             if ([_user.userSex isEqualToString:@"男"]) {
+                                 info = @"番迷君每天至少都会给你推荐一个有缘人，点击了like意味着你想尝试认识一下Ta。";
+                             }else{
+                                 info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的推荐。";
+                             }
+                             [_focusView addSubview:[self buildLabelWithText:info]];
                              [_focusView focus:weakSelf.likeBt,nil];
                          }
                      }];
@@ -270,7 +268,7 @@
                      }];
 }
 
--(void)getMatch:(NSString *)userMatchId{
+-(void)getMatch:(NSString *)userMatchId andSender:(UIButton *)sender{
 
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -281,6 +279,9 @@
     }
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (sender!=nil) {
+            sender.enabled = YES;
+        }
         NSDictionary *userMatch = [responseObject objectForKey:@"userMatch"];
         NSDictionary *userDic = [userMatch objectForKey:@"user"];
         if (userDic!=nil) {
@@ -288,7 +289,7 @@
             [weakSelf setMatchPeople];
             [weakSelf hideCover];
         }else{
-            [self showHint:@"番迷君休息下了"];
+            [HDTool ToastNotification:@"番迷君也需要休息" andView:weakSelf.view andLoading:NO andIsBottom:NO];
             if ([[Config sharedConfig] matchNew:nil]) {
                 [[Config sharedConfig] matchNew:@"0"];
                 weakSelf.navigationController.tabBarItem.badgeValue = nil;
@@ -296,7 +297,7 @@
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"请求失败");
+        [HDTool ToastNotification:@"番迷君出故障了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
     }];
 }
 
@@ -304,7 +305,7 @@
     if (_matchUser!=nil) {
         [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
         CGSize size = CGSizeMake(320,2000);
-        CGSize realsize = [_matchUser.userNickName sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize realsize = [_matchUser.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:16.0f]];
         self.nickname.bounds = (CGRect){{0,0},realsize};
         self.nickname.center = CGPointMake(0.5*self.view.width, self.nickname.center.y);
         
@@ -316,8 +317,10 @@
         
         if ([_matchUser.userSex isEqualToString:@"男"]) {
             self.sex.image = [UIImage imageNamed:@"boy"];
-        }else{
+        }else if([_matchUser.userSex isEqualToString:@"男"]){
             self.sex.image = [UIImage imageNamed:@"girl"];
+        }else{
+            [HDTool autoSex:self.sex];
         }
         self.xzLbl.frame = CGRectMake(self.nickname.right+2, self.xzLbl.y, self.xzLbl.width, self.xzLbl.height);
         self.xzLbl.text = _matchUser.userConstellation;
@@ -326,6 +329,8 @@
         self.qianmingLbl.text = _matchUser.userSignature;
         if ([_matchUser.userAuth intValue]==1) {
             self.xzimg.hidden = NO;
+        }else{
+            self.xzimg.hidden = YES;
         }
         
     }
@@ -335,7 +340,7 @@
 
 -(void)easeMobShouldLogin:(NSNotification *)notification{
     if ([notification.userInfo objectForKey:@"_id"]!=nil) {
-        [self showHudInView:[UIApplication sharedApplication].keyWindow hint:@"登入中..."];
+        [HDTool showHUD:@"登入中..."];
         [self EaseMobLoginWithUsername:[notification.userInfo objectForKey:@"_id"]];
     }
 
@@ -357,9 +362,9 @@
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
         if (_loginView!=nil) {
-            [_loginView moveToUpSide];
+            [_loginView removeFromSuperview];
         }
-        [self getMatch:nil];
+        [self getMatch:nil andSender:nil];
     }
     else{
         if (_loginView==nil) {
@@ -368,17 +373,17 @@
         }
         _loginView.frame = CGRectMake(0, 0, 320, 455);
         [self.view addSubview:_loginView];
+        self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
 
 -(void)matchTime:(NSNotification *)note{
-    [self getMatch:nil];
+    [self getMatch:nil andSender:nil];
 }
 
 
 #pragma loginViewDelegate
 - (void)login:(UIButton *)sender{
-    [self showHudInView:self.view.window hint:@"请稍后..."];
     ShareType type = ShareTypeSinaWeibo;
     NSString * sendType;
     if (sender.tag==101) {
@@ -398,51 +403,50 @@
                                                                         SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
                                                                         nil]
                                                          authViewStyle:SSAuthViewStyleFullScreenPopup
-                                                          viewDelegate:self
+                                                          viewDelegate:nil
                                                authManagerViewDelegate:nil];
+    [ShareSDK authWithType:type options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
 
-    [ShareSDK getUserInfoWithType:type
-                      authOptions:authOptions
-                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-                               
-                               
-                               if (result) {
+        if (state==SSAuthStateSuccess) {
+            [HDTool showHUD:@"登入中..."];
+            [ShareSDK getUserInfoWithType:type
+                              authOptions:nil
+                                   result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+                                       
+                                       
+                                       if (result) {
+                                           
+                                           [weakSelf initUser:userInfo AndSendType:sendType];
+                                           
+                                           [weakSelf isOauth:[userInfo uid] forType:sendType andBack:@"0"];
+                                           
+                                       }else{
+                                           [HDTool errorHUD];
+                                       }
+                                       
+                                   }];
+        }else{
+            
+        }
 
-                                   [weakSelf initUser:userInfo AndSendType:sendType];
-                                   
-                                   [weakSelf isOauth:[userInfo uid] forType:sendType andBack:@"0"];
-                                   
-                               }else{
-                                   [weakSelf hideHud];
-                               }
-                               
-                           }];
+    }];
+
 }
 
 
 
-#pragma ShareSDKDelegate
-- (void)viewOnWillDisplay:(UIViewController *)viewController shareType:(ShareType)shareType{
-    [self hideHud];
-}
-- (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
-    [self showHudInView:[UIApplication sharedApplication].keyWindow hint:@"登入中..."];
-}
+//#pragma ShareSDKDelegate
+//- (void)viewOnWillDisplay:(UIViewController *)viewController shareType:(ShareType)shareType{
+//    [HDTool dismissHUD];
+//}
+//- (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
+//    [HDTool showHUD:@"登入中..."];
+//}
 
 - (void)initUser:(id<ISSPlatformUser>) userInfo AndSendType:(NSString *) sendType{
     _user = [[User alloc] init];
     _user.openId = [userInfo uid];
     _user.userNickName = [userInfo nickname];
-    _user.userPhoto = [userInfo profileImage];
-    NSString *sex;
-    if ([userInfo gender]==0) {
-        sex = @"男";
-    }else if([userInfo gender]==1){
-        sex = @"女";
-    }else{
-        sex = @"未知";
-    }
-    _user.userSex = sex;
     _user.userAuthType = sendType;
     
 }
@@ -467,21 +471,21 @@
             }];
             
             [[Config sharedConfig] changeLoginState:@"1"];
+            [[Config sharedConfig] friendNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
             [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
             
         }else if ([state isEqualToString:@"10001"]){
             
-            [self hideHud];
-            [self performSegueWithIdentifier:@"chooseSchool" sender:nil];
-            
-        }else if ([state isEqualToString:@"30001"]){
+            [HDTool dismissHUD];
+            [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
             
         }else{
-            
+            [HDTool errorHUD];
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
+        [HDTool errorHUD];
 
     }];
 }
@@ -502,32 +506,34 @@
 
 
 -(void)EaseMobLoginWithUsername:(NSString *)username{
-    __weak __typeof(&*self)weakSelf = self;
     [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
                                                         password:@"123456"
                                                       completion:
      ^(NSDictionary *loginInfo, EMError *error) {
 
          if (loginInfo && !error) {
+            [HDTool dismissHUD];
              [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
              
             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
             options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
              options.nickname = _user.userNickName;
              [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
-            [weakSelf showResultWithType:ResultSuccess];
+
              [[Config sharedConfig] changeOnlineState:@"1"];
+             
              [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
          }else {
-             [weakSelf hideHud];
+             [HDTool errorHUD];
              
          }
      } onQueue:nil];
 }
 
 #pragma delegate
--(void)coverViewRefreshPressed{
-    [self getMatch:nil];
+-(void)coverViewRefreshPressed:(UIButton *)sender{
+    sender.enabled = NO;
+    [self getMatch:nil andSender:sender];
 }
 
 - (void)didReceiveMemoryWarning

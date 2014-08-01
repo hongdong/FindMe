@@ -59,6 +59,15 @@
 //建议只在 Debug 状态时，打开该开关
 - (void)enableUncaughtExceptionHandler;
 
+///*!
+// @method
+// @brief 上传运行日志
+// @discussion 异步方法
+// @param completion   方法运行完的回调
+// @result
+// */
+//- (void)asyncUploadLogToServerWithCompletion:(void(^)(EMError *error))completion;
+
 /*!
  @property
  @brief 聊天管理器, 获取该对象后, 可以做登录、聊天、加好友等操作

@@ -86,7 +86,7 @@
 /*!
  @method
  @brief 异步方法, 使用用户名密码登录聊天服务器
- @discussion 在登陆过程中, EMChatManagerLoginDelegate中的didLoginWithInfo:error:回调会被触发
+ @discussion
  @param username 用户名
  @param password 密码
  @param completion 回调

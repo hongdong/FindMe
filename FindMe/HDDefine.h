@@ -21,5 +21,5 @@
 #define CHATVIEWBACKGROUNDCOLOR [UIColor colorWithRed:0.936 green:0.932 blue:0.907 alpha:1]
 
 #define Host @"http://114.215.115.33"
-//#define Host @"http://192.168.1.88:8080/FindMeServer"
+//#define Host @"http://192.168.1.10:8080/FindMeServer"
 #endif

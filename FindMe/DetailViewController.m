@@ -14,6 +14,7 @@
 #import "UIImageView+MJWebCache.h"
 #import "AFNetworking.h"
 #import "UIView+Common.h"
+#import "NSString+HD.h"
 @interface DetailViewController (){
     User *_user;
     LXActionSheet *_actionSheet;
@@ -44,7 +45,7 @@
     [super viewDidLoad];
     __weak __typeof(&*self)weakSelf = self;
     
-    self.photo.layer.cornerRadius = 35.0f;
+    self.photo.layer.cornerRadius = 40.0f;
     self.photo.layer.masksToBounds = YES;
     [self.photo whenTouchedDown:^{
         [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -119,15 +120,18 @@
     
     [self.photo setImageURLStr:_user.userPhoto placeholder:[UIImage imageNamed:@"defaultImage"]];
     CGSize size = CGSizeMake(320,2000);
-    CGSize realsize = [_user.userRealName sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+
+    CGSize realsize = [_user.userRealName getRealSize:size andFont:[UIFont systemFontOfSize:14.0f]];
     self.realName.bounds = (CGRect){{0,0},realsize};
     self.realName.center = CGPointMake(self.photo.left+self.photo.width*0.5, self.photo.bottom+18);
     self.realName.text = _user.userRealName;
     self.sex.center = CGPointMake(self.realName.right+10, self.photo.bottom+18);
     if ([_user.userSex isEqualToString:@"男"]) {
         self.sex.image = [UIImage imageNamed:@"boy"];
-    }else{
+    }else if([_user.userSex isEqualToString:@"女"]){
         self.sex.image = [UIImage imageNamed:@"girl"];
+    }else{
+        [HDTool autoSex:self.sex];
     }
     if ([_user.userAuth integerValue]==1) {
         self.vUserImg.center = CGPointMake(self.sex.right+10, self.photo.bottom+18);
@@ -165,7 +169,6 @@
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"修改用户资料成功");
 
             if ([parameters objectForKey:@"userSignature"]!=nil) {
                 weakSelf.qianming.text = [parameters objectForKey:@"userSignature"];
@@ -177,11 +180,9 @@
             
             [_user saveToNSUserDefaults];
         }else{
-            NSLog(@"修改用户资料失败");
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"修改用户资料失败");
         
     }];
 }
@@ -243,26 +244,25 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)updatePhoto{
-    [self showHudInView:self.view.window hint:@"上传中..."];
+    [HDTool showHUD:@"上传中..."];
     NSString *url = [NSString stringWithFormat:@"%@/data/user/user_uphoto.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    __weak __typeof(&*self)weakSelf = self;
     NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/myPhoto.png"]];
     [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [weakSelf showResultWithType:ResultSuccess];
+            [HDTool successHUD];
             _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
             [_user saveToNSUserDefaults];
         }else if ([state isEqualToString:@"10001"]){
-            
+            [HDTool errorHUD];
         }else{
+            [HDTool errorHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
-        NSLog(@"Error: %@", error);
+        [HDTool errorHUD];
     }];
 }
 

@@ -34,6 +34,11 @@
     self.schoolLbl.text = [_user getSchoolName];
     [self setupForDismissKeyboard];
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.schoolId becomeFirstResponder];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -41,24 +46,25 @@
 }
 
 - (IBAction)idenButtonPressed:(id)sender {
-    [self.view endEditing:YES];
     if (![self isOK]) {
         return;
     }
-    [self showHudInView:self.view.window hint:@"请稍后..."];
+    
+    [self.view endEditing:YES];
+    [HDTool showHUD:@"加载中..."];
     NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
         if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
-            [weakSelf hideHud];
+            [HDTool dismissHUD];
             NSString *codeName = [codeInfo objectForKey:@"codeName"];
             if (codeName!=nil) {
                 NSString *codeUrl = [NSString stringWithFormat:@"%@/upload/code/%@",Host,codeName];
                 HDCodeView *codeView = [HDCodeView HDCodeViewWithAfterDismiss:^(int buttonIndex, NSString *text) {
                     if (buttonIndex==1) {
-                        [weakSelf showHudInView:weakSelf.view.window hint:@"认证中..."];
+                        [HDTool showHUD:@"认证中..."];
                         NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                                      @"pwd":weakSelf.schoolPwd.text,
                                                      @"code":text};
@@ -67,7 +73,7 @@
                 } andUrl:codeUrl];
                 [codeView show];
             }else{
-                [weakSelf showResultWithType:ResultError];
+                [HDTool errorHUD];
             }
             
         }else{
@@ -77,7 +83,7 @@
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
+        [HDTool errorHUD];
     }];
 }
 
@@ -89,17 +95,17 @@
         if ([state isEqualToString:@"20001"]) {
             [_user getUserInfo:^{
                 [_user saveToNSUserDefaults];
-                [weakSelf showResultWithType:ResultSuccess];
+                [HDTool successHUD];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }];
             
         }else{
             NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
-            [weakSelf hideHud];
+            [HDTool dismissHUD];
             [weakSelf showHint:msg];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showResultWithType:ResultError];
+        [HDTool errorHUD];
     }];
     
 }
@@ -109,22 +115,19 @@
     
     if(temp.length==0)
     {
-        [self showHint:@"学号不能为空"];
+        [HDTool ToastNotification:@"学号不能为空" andView:self.view andLoading:NO andIsBottom:NO];
         return NO;
     }
     
     temp = [self.schoolPwd.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if(temp.length==0)
     {
-        [self showHint:@"密码不能为空"];
+        [HDTool ToastNotification:@"密码不能为空" andView:self.view andLoading:NO andIsBottom:NO];
         return NO;
     }
     return YES;
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-}
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.schoolId resignFirstResponder];

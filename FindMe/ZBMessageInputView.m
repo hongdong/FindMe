@@ -37,10 +37,8 @@
             
             sender.selected = !sender.selected;
             if (sender.selected) {
-                NSLog(@"表情被点击");
                 [self.messageInputTextView resignFirstResponder];
             }else{
-                NSLog(@"表情没被点击");
                 [self.messageInputTextView becomeFirstResponder];
             }
             
@@ -281,21 +279,28 @@
             [self.delegate didSendTextAction:self.messageInputTextView];
         }
         return NO;
-    }else if ([text isEqualToString:@""]&&textView.text.length>=4){
-
-        NSString *chatText = textView.text;
-        NSString *subStr = [chatText substringFromIndex:chatText.length-4];
-        NSString *plistStr = [[NSBundle mainBundle] pathForResource:@"expression" ofType:@"plist"];
-        NSDictionary *plistDic = [[NSDictionary  alloc]initWithContentsOfFile:plistStr];
-        
-        if ([[plistDic allKeys] containsObject:subStr]) {
-            textView.text = [chatText substringToIndex:chatText.length-4];
-        }else{
-            textView.text = [chatText substringToIndex:chatText.length-1];
-        }
-            return NO;
-        
     }
+//    else if ([text isEqualToString:@""]){
+//
+//        NSString *chatText = textView.text;
+//        if (textView.text.length>=4) {
+//            NSString *subStr = [chatText substringFromIndex:chatText.length-4];
+//            NSString *plistStr = [[NSBundle mainBundle] pathForResource:@"expression" ofType:@"plist"];
+//            NSDictionary *plistDic = [[NSDictionary  alloc]initWithContentsOfFile:plistStr];
+//            
+//            if ([[plistDic allKeys] containsObject:subStr]) {
+//                textView.text = [chatText substringToIndex:chatText.length-4];
+//            }else{
+//                textView.text = [chatText substringToIndex:chatText.length-1];
+//            }
+//        }else if(textView.text.length>0){
+//            textView.text = [chatText substringToIndex:chatText.length-1];
+//        }
+//
+//        [self textViewDidChange:textView];
+//        return NO;
+//        
+//    }
     return YES;
 }
 #pragma end
