@@ -11,7 +11,6 @@
 #import "PostDetailHeadView1.h"
 #import "CommentCell.h"
 #import "UIImageView+WebCache.h"
-#import "AFNetworking.h"
 #import "Comment.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "MJRefresh.h"
@@ -82,7 +81,6 @@
 
 
 -(void)getCommentByType:(NSString *)type{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_msg_list.do",Host];
     NSString *index;
     if ([type isEqualToString:@"ol"]) {
         index = [_index objectForKey:@"endIndex"];
@@ -93,9 +91,8 @@
                                  @"type":type,
                                  @"index":index,
                                  @"isNews":@"0"};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet GET:@"/data/post/post_msg_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [weakSelf.tableView footerEndRefreshing];
         NSDictionary *postMsg = [responseObject objectForKey:@"postMsg"];
         if (postMsg!=nil) {
@@ -117,12 +114,10 @@
         }else{
             
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
         [weakSelf.tableView footerEndRefreshing];
-        
     }];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -156,35 +151,31 @@
         [self.likeButton animate];
     }
     
-
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_praise.do",Host];
-    
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"type":type};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/post/post_praise.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            
+            _didChange = @"1";
             weakSelf.likeButton.selected = !weakSelf.likeButton.selected;
             if (weakSelf.likeButton.selected) {
                 weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]+1];
             }else{
                 weakSelf.post.postPraise = [NSNumber numberWithInt:[weakSelf.post.postPraise intValue]-1];
             }
-
+            
             [weakSelf resetHead];
             weakSelf.likeButton.enabled = YES;
         }else{
             
         }
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        
-        
     }];
+    
 }
 -(void)resetHead{
     if (_post.postPhoto==nil) {
@@ -338,16 +329,16 @@
     [self hideInputBar];
     [self hideFaceView];
     [HDTool showHUD:@"发送中..."];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_msg.do",Host];
 
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"postMsgContent":self.messageToolView.messageInputTextView.text};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [HDTool dismissHUD];
+    
+    [HDNet POST:@"/data/post/post_msg.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
+            [HDTool dismissHUD];
             weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
             _didChange = @"1";
             [weakSelf resetHead];
@@ -356,16 +347,14 @@
             
             weakSelf.messageToolView.messageInputTextView.text = @"";
             weakSelf.messageToolView.sendButton.enabled = NO;
-
+            
         }else{
             [HDTool errorHUD];
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-            [HDTool errorHUD];
-        
+        [HDTool errorHUD];
     }];
+    
 }
 
 - (void)didSendFaceAction:(BOOL)sendFace{//切换表情键盘

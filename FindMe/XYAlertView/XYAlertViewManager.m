@@ -12,7 +12,7 @@
 #import "XYInputView.h"
 #import "HDCodeView.h"
 #import "GCPlaceholderTextView.h"
-#import <AFNetworking.h>
+#import "UIImageView+WebCache.h"
 #define AlertViewWidth 280.0f
 #define AlertViewHeight 175.0f
 
@@ -368,10 +368,8 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
 -(void)fresh:(UIButton *)sender{
     sender.enabled = NO;
     _codeImageView.image = [UIImage imageNamed:@"loadingCode"];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet GET:@"/data/user/auth_code.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
         if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
             NSString *codeName = [codeInfo objectForKey:@"codeName"];
@@ -383,13 +381,12 @@ static XYAlertViewManager *sharedAlertViewManager = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+
 }
 
 -(void)getCodeUrl:(NSString *)codeUrl and:(UIButton *)freshButton{
-    
-    NSMutableURLRequest *myRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:codeUrl] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
-    [NSURLConnection sendAsynchronousRequest:myRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [_codeImageView setImage:[UIImage imageWithData:data]];
+    [[SDImageCache sharedImageCache] removeImageForKey:codeUrl];
+    [_codeImageView sd_setImageWithURL:[NSURL URLWithString:codeUrl] placeholderImage:[UIImage imageNamed:@"loadingCode"] options:SDWebImageRetryFailed|SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (freshButton!=nil) {
             freshButton.enabled = YES;
         }

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginView.h"
-#import <ShareSDK/ShareSDK.h>
-@interface FindMeViewController : UIViewController<ISSViewDelegate,LoginViewDelegate>
+
+@interface FindMeViewController : UIViewController<LoginViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UILabel *grade;
 @property (weak, nonatomic) IBOutlet UIImageView *sex;

@@ -26,12 +26,18 @@ static const void *HDHUDKey = &HDHUDKey;
     [self setHUD:HUD];
 }
 -(void)dismissHDHUD{
+    if ([self HUD]==nil) {
+        return;
+    }
     __weak __typeof(&*self)weakSelf = self;
     [[self HUD] dismiss:YES completion:^{
         [[weakSelf HUD] removeFromSuperview];
     }];
 }
 -(void)showSuccess{
+    if ([self HUD]==nil) {
+        return;
+    }
     __weak __typeof(&*self)weakSelf = self;
     [[self HUD] setMode:MRProgressOverlayViewModeCheckmark];
     [[self HUD] setTitleLabelText:@"完成"];
@@ -41,6 +47,9 @@ static const void *HDHUDKey = &HDHUDKey;
     
 }
 -(void)showError{
+    if ([self HUD]==nil) {
+        return;
+    }
     __weak __typeof(&*self)weakSelf = self;
     [[self HUD] setMode:MRProgressOverlayViewModeCross];
     [[self HUD] setTitleLabelText:@"失败"];

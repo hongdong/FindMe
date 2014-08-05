@@ -9,7 +9,6 @@
 #import "IdentifyViewController.h"
 #import "User.h"
 #import "XYAlertViewHeader.h"
-#import <AFNetworking.h>
 @interface IdentifyViewController (){
     User *_user;
 }
@@ -52,10 +51,9 @@
     
     [self.view endEditing:YES];
     [HDTool showHUD:@"加载中..."];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/auth_code.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/user/auth_code.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
         if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
             [HDTool dismissHUD];
@@ -68,7 +66,7 @@
                         NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                                      @"pwd":weakSelf.schoolPwd.text,
                                                      @"code":text};
-                        [weakSelf user_auth:manager parameters:parameters];
+                        [weakSelf user_authParameters:parameters];
                     }
                 } andUrl:codeUrl];
                 [codeView show];
@@ -79,18 +77,18 @@
         }else{
             NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                          @"pwd":weakSelf.schoolPwd.text};
-            [weakSelf user_auth:manager parameters:parameters];
+            [weakSelf user_authParameters:parameters];
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [HDTool errorHUD];
     }];
+
 }
 
--(void)user_auth:(AFHTTPRequestOperationManager *)manager parameters:(id)parameters{
-        NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_auth.do",Host];
+-(void)user_authParameters:(id)parameters{
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/user/user_auth.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [[responseObject objectForKey:@"authInfo"] objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             [_user getUserInfo:^{

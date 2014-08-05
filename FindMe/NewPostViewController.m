@@ -7,8 +7,8 @@
 //
 
 #import "NewPostViewController.h"
-#import <AFNetworking.h>
 #import "NSString+HD.h"
+
 @interface NewPostViewController (){
         LXActionSheet *_actionSheet;
         UIImagePickerController *_imagePicker;
@@ -30,18 +30,15 @@
 - (IBAction)sendPressed:(id)sender {
     [self.view endEditing:YES];
     [HDTool showHUD:@"发送中..."];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/release_post.do",Host];
     NSDictionary *parameters = @{@"postContent": self.content.text,
                                  @"postOfficial": @"2"
                                  };
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
     if (_existImage) {
         NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/postImage.png"]];
-        [manager POST:urlStr parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
-        }success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *files = @{@"photo": filePath};
+        [HDNet POST:@"/data/post/release_post.do" parameters:parameters files:files success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *state = [responseObject objectForKey:@"state"];
             if ([state isEqualToString:@"20001"]) {
                 [HDTool dismissHUD];
@@ -50,13 +47,11 @@
             }else{
                 [HDTool errorHUD];
             }
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
             [HDTool errorHUD];
         }];
     }else{
-        [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [HDNet POST:@"/data/post/release_post.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *state = [responseObject objectForKey:@"state"];
             if ([state isEqualToString:@"20001"]) {
                 [HDTool dismissHUD];
@@ -65,10 +60,8 @@
             }else{
                 [HDTool errorHUD];
             }
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-                [HDTool errorHUD];
+            [HDTool errorHUD];
         }];
     }
 
@@ -155,10 +148,10 @@
         
         
     }];
-    
-    
 }
-
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName{
     [self.addimage setImage:tempImage forState:UIControlStateNormal];
     _existImage = YES;

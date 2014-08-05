@@ -15,7 +15,7 @@
     [super viewDidLoad];
 
     self.title = @"选择学校";
-    
+    [self.navigationItem setHidesBackButton:YES];
     mySearchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
     mySearchBar.delegate = self;
     [mySearchBar setPlaceholder:@"快速找到你的组织吧"];

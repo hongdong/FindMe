@@ -152,6 +152,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+
     return [ShareSDK handleOpenURL:url
                  sourceApplication:sourceApplication
                         annotation:annotation
@@ -212,6 +213,7 @@
 
 -(void)handleUserInfo:(NSDictionary *)userInfo{
     if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
         
         [[Config sharedConfig] postNew:@"1"];
@@ -260,20 +262,27 @@
 {
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     if ([[Config sharedConfig] isLogin]) {
-        NSLog(@"后台登入：%hhd",[[Config sharedConfig] needFresh]);
-        if ([[Config sharedConfig] needFresh]) {
-            [[Config sharedConfig] changeOnlineState:@"0"];
+        if ([[Config sharedConfig] isOnline]) {
+            if ([[Config sharedConfig] needFresh]) {
+                [[Config sharedConfig] changeOnlineState:@"0"];
+                User *user = [User getUserFromNSUserDefaults];
+                [user freshSession];
+            }else{
+                
+            }
+        }else{
+            User *user = [User getUserFromNSUserDefaults];
+            [user freshSession];
         }
+    }else{
+        
     }
     
-    if (![[Config sharedConfig] isOnline]) {
-        User *user = [User getUserFromNSUserDefaults];
-        [user freshSession];
-    }
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+
 }
 
 

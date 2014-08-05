@@ -42,7 +42,7 @@
     self.phtot.layer.cornerRadius = 25.0f;
     self.phtot.layer.masksToBounds = YES;
     
-    self.navigationItem.leftBarButtonItem = nil;
+    [self.navigationItem setHidesBackButton:YES];
     
     NYSegmentedControl *segmentedControl = [[NYSegmentedControl alloc] initWithItems:@[@"男生", @"女生"]];
     _user.userSex = @"男";//没改动的话默认是男
@@ -140,7 +140,6 @@
             [[Config sharedConfig] changeOnlineState:@"1"];
 
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
-
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:@YES userInfo:@{@"_id": _user._id}];
         }else if ([state isEqualToString:@"10001"]){
