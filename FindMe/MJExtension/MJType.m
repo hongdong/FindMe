@@ -8,6 +8,8 @@
 
 #import "MJType.h"
 #import "MJExtension.h"
+#import "MJFoundation.h"
+#import "MJConst.h"
 
 @implementation MJType
 
@@ -24,6 +26,8 @@
 {
     _code = code;
     
+    MJAssertParamNotNil(code);
+    
     if (code.length == 0 || [code isEqualToString:MJTypeSEL] ||
         [code isEqualToString:MJTypeIvar] ||
         [code isEqualToString:MJTypeMethod]) {
@@ -34,7 +38,7 @@
         _code = [_code substringToIndex:_code.length - 1];
         _typeClass = NSClassFromString(_code);
         
-        _fromFoundation = [_code hasPrefix:@"NS"];
+        _fromFoundation = [MJFoundation isClassFromFoundation:_typeClass];
     }
 }
 

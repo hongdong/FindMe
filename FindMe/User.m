@@ -11,7 +11,6 @@
 @implementation User
 -(void)saveToNSUserDefaults{
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
-    [setting removeObjectForKey:@"user"];
     [setting setObject:[self keyValues] forKey:@"user"];
     [setting synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserInfoChange object:nil];

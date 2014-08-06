@@ -18,7 +18,7 @@
 /** 成员属性名 */
 @property (nonatomic, copy, readonly) NSString *propertyName;
 /** 成员变量的值 */
-@property (nonatomic, assign) id value;
+@property (nonatomic) id value;
 /** 成员变量的类型 */
 @property (nonatomic, strong, readonly) MJType *type;
 

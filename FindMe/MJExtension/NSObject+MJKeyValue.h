@@ -26,6 +26,16 @@
  *  @return 字典中的key是数组属性名，value是数组中存放模型的Class
  */
 - (NSDictionary *)objectClassInArray;
+
+/**
+ *  当字典转模型完毕时调用
+ */
+- (void)keyValuesDidFinishConvertingToObject;
+
+/**
+ *  当模型转字典完毕时调用
+ */
+- (void)objectDidFinishConvertingToKeyValues;
 @end
 
 @interface NSObject (MJKeyValue) <MJKeyValue>
@@ -50,6 +60,13 @@
 
 #pragma mark - 字典转模型
 /**
+ *  通过JSON数据来创建一个模型
+ *  @param data JSON数据
+ *  @return 新建的对象
+ */
++ (instancetype)objectWithJSONData:(NSData *)data;
+
+/**
  *  通过字典来创建一个模型
  *  @param keyValues 字典
  *  @return 新建的对象
@@ -71,6 +88,13 @@
 + (instancetype)objectWithFile:(NSString *)file;
 
 #pragma mark - 字典数组转模型数组
+/**
+ *  通过JSON数据来创建一个模型数组
+ *  @param data JSON数据
+ *  @return 新建的对象
+ */
++ (NSArray *)objectArrayWithJSONData:(NSData *)data;
+
 /**
  *  通过字典数组来创建一个模型数组
  *  @param keyValuesArray 字典数组
