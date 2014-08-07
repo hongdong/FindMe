@@ -59,6 +59,7 @@
 -(void)setPhoto{
     myImageUrlArr = self.user.userAlbum;
     if (myImageUrlArr==nil||[myImageUrlArr count]==0) {
+        self.emptyLbl.hidden = NO;
         return;
     }
     int BtnW = 100;
@@ -122,7 +123,7 @@
     FirstPageView *firstView = [HDTool loadCustomViewByIndex:2];
     firstView.contentMode = UIViewContentModeScaleAspectFill;
     firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    firstView.user = self.user;
+    [firstView setUser:self.user];
     [_scrollView addSubview:firstView];
 
     SecondPageView *secondPageView = [HDTool loadCustomViewByIndex:3];
@@ -139,6 +140,7 @@
     [_scrollView addSubview:secondPageView];
     
     CGSize pageScrollViewSize = _scrollView.frame.size;
+    
     _scrollView.contentSize = CGSizeMake(pageScrollViewSize.width * 2, 0);
 }
 - (IBAction)valueChanged:(id)sender {

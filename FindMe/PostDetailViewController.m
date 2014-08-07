@@ -87,6 +87,10 @@
     }else{
         index = @"0";
     }
+    if (index==nil) {
+        [self.tableView footerEndRefreshing];
+        return;
+    }
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"type":type,
                                  @"index":index,

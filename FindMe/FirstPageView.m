@@ -28,6 +28,7 @@
 }
 
 -(void)setUser:(User *)user{
+    _user = user;
     [self.photo sd_setImageWithURL:[NSURL URLWithString:user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
     
     CGSize size = CGSizeMake(320,2000);
