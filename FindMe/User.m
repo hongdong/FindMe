@@ -7,7 +7,6 @@
 //
 
 #import "User.h"
-#import "AFNetworking.h"
 @implementation User
 -(void)saveToNSUserDefaults{
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
@@ -16,53 +15,13 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:UserInfoChange object:nil];
     
 }
--(void)getUserInfo{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
-    NSDictionary *parameters = @{@"userId": self._id};
-    __weak __typeof(&*self)weakSelf = self;
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
-        if (userInfo!=nil) {
-            weakSelf._id = [userInfo objectForKey:@"_id"];
-            weakSelf.userRealName = [userInfo objectForKey:@"userRealName"];
-            weakSelf.department = [userInfo objectForKey:@"department"];
-            weakSelf.school = [userInfo objectForKey:@"school"];
-            weakSelf.userAuthType = [userInfo objectForKey:@"userAuthType"];
-            weakSelf.userAuth = [userInfo objectForKey:@"userAuth"];
-            weakSelf.userConstellation = [userInfo objectForKey:@"userConstellation"];
-            weakSelf.userGrade = [userInfo objectForKey:@"userGrade"];
-            weakSelf.userNickName = [userInfo objectForKey:@"userNickName"];
-            weakSelf.userPhoto = [userInfo objectForKey:@"userPhoto"];
-            weakSelf.openId = [userInfo objectForKey:@"userOpenId"];
-            weakSelf.userSex = [userInfo objectForKey:@"userSex"];
-            weakSelf.userSignature = [userInfo objectForKey:@"userSignature"];
-            weakSelf.isOnLine = [userInfo objectForKey:@"isOnLine"];
-            weakSelf.userLoginCount = [userInfo objectForKey:@"userLoginCount"];
-            if (weakSelf.userAlbum==nil) {
-                weakSelf.userAlbum = [[NSMutableArray alloc] init];
-            }else{
-                weakSelf.userAlbum = [[userInfo objectForKey:@"userAlbum"] mutableCopy];
-            }
-            
-            if ([self.class getUserFromNSUserDefaults]==nil) {
-                    [weakSelf saveToNSUserDefaults];
-            }
-
-            
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-}
 
 
 -(void)getUserInfo:(void (^)())complete{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_info.do",Host];
     NSDictionary *parameters = @{@"userId": self._id};
     __weak __typeof(&*self)weakSelf = self;
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/user/user_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
         if (userInfo!=nil) {
             weakSelf._id = [userInfo objectForKey:@"_id"];
@@ -84,13 +43,14 @@
             if (weakSelf.userAlbum==nil) {
                 weakSelf.userAlbum = [[NSMutableArray alloc] init];
             }
-            if (complete!=nil) {
+            if (complete) {
                 complete();
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        MJLog(@"获取用户信息错误%@",error.debugDescription);
     }];
+    
 }
 
 -(NSString *)getSchoolId{
@@ -117,22 +77,20 @@
 }
 
 -(void)freshSession{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/grant_user.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager.operationQueue setMaxConcurrentOperationCount:1];
     NSDictionary *parameters = @{@"userOpenId"     : self.openId,
                                  @"userAuthType"       : self.userAuthType,
                                  @"equitNo"    : [[Config sharedConfig] getRegistrationID],
                                  @"osType"      : @"1",
                                  @"backLogin"   : @"1"};
-    [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet POST:@"/data/user/grant_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *state = [responseObject objectForKey:@"state"];
         
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"刷新session成功");
-        [[Config sharedConfig] changeOnlineState:@"1"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+            MJLog(@"刷新session成功");
+            [[Config sharedConfig] changeOnlineState:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             
         }else if ([state isEqualToString:@"10001"]){
             
@@ -142,10 +100,10 @@
         }else{
             
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+
 }
 @end
 

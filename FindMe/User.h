@@ -46,8 +46,6 @@
 -(NSString *)getDepartmentName;
 
 -(void)saveToNSUserDefaults;
-
--(void)getUserInfo;
 -(void)getUserInfo:(void (^)())complete;
 -(void)freshSession;
 

@@ -8,7 +8,6 @@
 
 #import "FansViewController.h"
 #import "FansCell.h"
-#import "AFNetworking.h"
 #import "User.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "FindMeDetailViewController.h"
@@ -45,15 +44,13 @@
 
 
 -(void)getFans{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/fans_list.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet GET:@"/data/user/fans_list.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([[Config sharedConfig] fansNew:nil]) {
             [[Config sharedConfig] fansNew:@"0"];
             weakSelf.fansItem.badgeValue = nil;
         }
-
+        
         NSArray *userFans = [responseObject objectForKey:@"userFans"];
         if (userFans!=nil&&[userFans count]!=0) {
             _dataArr = [[User objectArrayWithKeyValuesArray:userFans] mutableCopy];
@@ -62,8 +59,9 @@
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"请求失败");
+        MJLog(@"获取粉丝失败");
     }];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,35 +129,32 @@
 }
 
 -(void)like:(NSString *)_id{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/like_user.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"type":@"2",@"likeUserId": _id};
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/user/like_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            NSLog(@"LIKE成功");
+            MJLog(@"LIKE成功");
         }else if ([state isEqualToString:@"20002"]){
-            NSLog(@"你们已经成为朋友了");
+            MJLog(@"你们已经成为朋友了");
             [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
         }else{
-            NSLog(@"LIKE失败");
+            MJLog(@"LIke失败");
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"请求失败");
+        MJLog(@"LIke失败");
     }];
 }
 
 -(void)pass:(NSString *)_id{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/match_info.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
     NSDictionary *parameters = @{@"type":@"2",@"userMatchId": _id};;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet GET:@"/data/user/match_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *fansPass = [responseObject objectForKey:@"fansPass"];
-        NSLog(@"%@",fansPass);
-        
+        MJLog(@"%@",fansPass);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        MJLog(@"pass失败");
     }];
+
 }
 
 

@@ -20,5 +20,6 @@
     #import "HDTool.h"
     #import "HDNet.h"
     #import "UIViewController+DismissKeyboard.h"
+    #import "MJConst.h"
 #endif
 #define AppVersion @"1.0"
