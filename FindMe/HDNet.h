@@ -29,4 +29,6 @@
         forType:(NSString *) type
         andBack:(NSString *) back
          handle:(void (^)(id responseObject,NSError *error))handle;
+
++ (void)EaseMobLoginWithUsername:(NSString *)username;
 @end

@@ -8,6 +8,7 @@
 
 #import "HDNet.h"
 #import "AFNetworking.h"
+#import "EaseMob.h"
 @implementation HDNet
 + (void)GET:(NSString *)URLString
  parameters:(id)parameters
@@ -86,5 +87,30 @@
         handle(nil,error);
     }];
     
+}
+
++ (void)EaseMobLoginWithUsername:(NSString *)username{
+    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
+                                                        password:@"123456"
+                                                      completion:
+     ^(NSDictionary *loginInfo, EMError *error) {
+         
+         if (loginInfo && !error) {
+             
+             [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
+             
+             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+             options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
+//             options.nickname = _user.userNickName;
+             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
+             
+//             [[Config sharedConfig] changeOnlineState:@"1"];
+             
+             
+         }else {
+             
+             
+         }
+     } onQueue:nil];
 }
 @end

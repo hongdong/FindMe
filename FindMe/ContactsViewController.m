@@ -17,7 +17,6 @@
 @property (strong, nonatomic) NSMutableArray *contactsSource;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
-
 @property (strong, nonatomic) UITableView *tableView;
 
 
@@ -86,12 +85,12 @@
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
         [self myReloadDataSource];
-    }
-    else{
+    }else{
         [self.dataSource removeAllObjects];
         [self.contactsSource removeAllObjects];
         [self.sectionTitles removeAllObjects];
         [self.tableView reloadData];
+        self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
 
@@ -120,11 +119,6 @@
 }
 
 #pragma mark - getter
-
-
-
-
-
 - (UITableView *)tableView
 {
     if (_tableView == nil)

@@ -38,7 +38,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadMatch:) name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadFriend:) name:FriendChange object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     if ([[Config sharedConfig] matchNew:nil]) {
         [self addUnreadMatch:nil];
     }
@@ -53,6 +53,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self unregisterNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
 -(void)addUnreadMatch:(NSNotification *)note{
@@ -67,6 +68,17 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }
     UIViewController *vc = [self.viewControllers objectAtIndex:2];
     vc.tabBarItem.badgeValue = @"HI";
+}
+
+-(void)loginChange:(NSNotification *)notification{
+    
+    BOOL isLogin = [notification.object boolValue];
+    if (isLogin) {
+        
+    }else{
+        UIViewController *vc = [self.viewControllers objectAtIndex:2];
+        vc.tabBarItem.badgeValue = nil;
+    }
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item

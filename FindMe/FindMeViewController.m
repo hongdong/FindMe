@@ -1,17 +1,6 @@
-//
-//  LoginViewController.m
-//  FindMe
-//
-//  Created by mac on 14-6-21.
-//  Copyright (c) 2014年 mac. All rights reserved.
-//
-#import <ShareSDK/ShareSDK.h>
 #import "FindMeViewController.h"
 #import "User.h"
-#import "EaseMob.h"
-#import "EMError.h"
 #import "ChooseSchoolViewController.h"
-#import "LoginView.h"
 #import "JMWhenTapped.h"
 #import "UIImageView+WebCache.h"
 #import "FindMeDetailViewController.h"
@@ -22,14 +11,16 @@
 #import "FansViewController.h"
 #import "UIView+Common.h"
 #import "NSString+HD.h"
-@interface FindMeViewController ()<CoverViewDelegate>{
+#import "LoginViewController.h"
+@interface FindMeViewController ()<CoverViewDelegate,LoginViewControllerDelegate>{
     User *_user;
     User *_matchUser;
-    LoginView *_loginView;
     CoverView *_coverView;
     BBBadgeBarButtonItem *_fansItem;
     UIButton *_fansButton;
     MDCFocusView *_focusView;
+    
+    LoginViewController *_loginViewController;
 }
 
 @end
@@ -46,9 +37,6 @@
         
         if ([[Config sharedConfig] isLogin]) {
             _user = [User getUserFromNSUserDefaults];
-        }else{
-            _loginView = [HDTool loadCustomViewByIndex:1];
-            _loginView.delegate = self;
         }
         
     }
@@ -99,11 +87,6 @@
                                              selector:@selector(userChange:)
                                                  name:UserInfoChange
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(easeMobShouldLogin:)
-                                                 name:EaseMobShouldLogin
-                                               object:nil];
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(matchTime:)
@@ -132,14 +115,10 @@
     
     self.navigationItem.rightBarButtonItem = _fansItem;
     
-    if (_loginView!=nil) {//如果是未登入状态
-        [self.view addSubview:_loginView];
-    }else{
-        if ([[Config sharedConfig] isOnline]) {
-//            [self getMatch:nil andSender:nil];
-        }else{
-            
-        }
+    if (![[Config sharedConfig] isLogin]) {
+        _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
+        _loginViewController.delegate = self;
+        [self.view addSubview:_loginViewController.view];
     }
 
 }
@@ -263,7 +242,6 @@
 
 }
 -(void)showCover{
-
     [UIView animateWithDuration:0.7 //速度0.7秒
                           delay:0
                         options:UIViewAnimationOptionBeginFromCurrentState
@@ -344,12 +322,7 @@
     
 }
 
--(void)easeMobShouldLogin:(NSNotification *)notification{
-    if ([notification.userInfo objectForKey:@"_id"]!=nil) {
-        [self EaseMobLoginWithUsername:[notification.userInfo objectForKey:@"_id"]];
-    }
 
-}
 -(void)userChange:(NSNotification *)notification{
     _user = [User getUserFromNSUserDefaults];
 }
@@ -359,26 +332,21 @@
 }
 
 -(void)loginStateChange:(NSNotification *)notification{
-//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-//    BOOL isLogin1 = loginInfo && [loginInfo count] > 0;
-//    if (notification.object) {
-//        isLogin = [notification.object boolValue] && isLogin;
-//    }
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
-        if (_loginView!=nil) {
-            [_loginView removeFromSuperview];
-            _loginView=nil;
+        if (_loginViewController!=nil) {
+            [_loginViewController.view removeFromSuperview];
+            _loginViewController=nil;
         }
         [self getMatch:nil andSender:nil];
     }
     else{
-        if (_loginView==nil) {
-            _loginView = [HDTool loadCustomViewByIndex:1];
-            _loginView.delegate = self;
+        if (_loginViewController==nil) {
+            _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
+            _loginViewController.delegate = self;
         }
-        _loginView.frame = CGRectMake(0, 0, 320, 455);
-        [self.view addSubview:_loginView];
+        [self showCover];
+        [self.view addSubview:_loginViewController.view];
         self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
@@ -390,117 +358,12 @@
     [super viewDidAppear:animated];
 }
 
-#pragma loginViewDelegate
-- (void)login:(UIButton *)sender{
-    ShareType type = ShareTypeSinaWeibo;
-    NSString * sendType;
-    if (sender.tag==101) {
-        type = ShareTypeSinaWeibo;
-        sendType = @"SinaWeibo";
-    } else {
-        type = ShareTypeQQSpace;
-        sendType = @"QZone";
-    }
-        __weak __typeof(&*self)weakSelf = self;
-    
-    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
-                                                         allowCallback:NO
-                                                                scopes:nil
-                                                         powerByHidden:YES
-                                                        followAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                        [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"洪小东东"],
-                                                                        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                                                        nil]
-                                                         authViewStyle:SSAuthViewStyleFullScreenPopup
-                                                          viewDelegate:nil
-                                               authManagerViewDelegate:nil];
-    
-    [ShareSDK authWithType:type options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
-        switch (state) {
-            case SSAuthStateBegan:
-                MJLog(@"SSAuthStateBegan");
-                break;
-            case SSAuthStateSuccess:{
-                MJLog(@"SSAuthStateSuccess");
-                [HDTool showHUD:@"登入中..."];
-                
-                [ShareSDK getUserInfoWithType:type
-                                  authOptions:authOptions
-                                       result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-                                           if (result) {
-                                               
-                                               [weakSelf initUser:userInfo AndSendType:sendType];
-                                               
-                                               [HDNet isOauth:[userInfo uid] forType:sendType andBack:@"0" handle:^(id responseObject, NSError *error) {
-                                                   if (responseObject==nil) {
-                                                       [HDTool errorHUD];
-                                                       return;
-                                                   }
-                                                   NSString *state = [responseObject objectForKey:@"state"];
-                                                   
-                                                   if ([state isEqualToString:@"20001"]) {
-                                                       [HDTool dismissHUD];
-                                                       _user._id = [responseObject objectForKey:@"userId"];
-                                                       
-                                                       [_user getUserInfo:^{
-                                                           [_user saveToNSUserDefaults];//保存登入信息
-                                                       }];
-                                                       
-                                                       [[Config sharedConfig] changeLoginState:@"1"];
-                                                       [[Config sharedConfig] friendNew:@"1"];
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-                                                       [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
-                                                       
-                                                   }else if ([state isEqualToString:@"10001"]){
-                                                       
-                                                       [HDTool dismissHUD];
-                                                       [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
-                                                       
-                                                   }else{
-                                                       [HDTool errorHUD];
-                                                   }
-                                                   
-                                               }];
-                                               
-                                           }else{
-                                               
-                                               [HDTool dismissHUD];
-                                               
-                                               [HDTool ToastNotification:@"网络太糟糕了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
-                                           }
-                                           
-                                       }];
-            }
-                break;
-            case SSAuthStateFail:
-                MJLog(@"SSAuthStateFail");
-                break;
-            case SSAuthStateCancel:
-                MJLog(@"SSAuthStateCancel");
-                break;
-            default:
-                break;
-        }
-    }];
-
-}
-
-
-- (void)initUser:(id<ISSPlatformUser>) userInfo AndSendType:(NSString *) sendType{
-    _user = [[User alloc] init];
-    _user.openId = [userInfo uid];
-    _user.userNickName = [userInfo nickname];
-    _user.userAuthType = sendType;
-    
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"chooseSchool"])
     {
         ChooseSchoolViewController *controller=(ChooseSchoolViewController *)(segue.destinationViewController);;
-        controller.user = _user;
+        controller.user = sender;
     }else if ([segue.identifier isEqualToString:@"findmeDetail"]) {
         FindMeDetailViewController *controller = segue.destinationViewController;
         controller.user = sender;
@@ -510,36 +373,13 @@
     }
 }
 
-
--(void)EaseMobLoginWithUsername:(NSString *)username{
-    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
-                                                        password:@"123456"
-                                                      completion:
-     ^(NSDictionary *loginInfo, EMError *error) {
-
-         if (loginInfo && !error) {
-
-             [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
-             
-            EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-            options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
-             options.nickname = _user.userNickName;
-             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
-
-             [[Config sharedConfig] changeOnlineState:@"1"];
-             
-
-         }else {
-             
-             
-         }
-     } onQueue:nil];
-}
-
 #pragma delegate
 -(void)coverViewRefreshPressed:(UIButton *)sender{
     sender.enabled = NO;
     [self getMatch:nil andSender:sender];
+}
+- (void)shouldShowChooseSchool:(User *)user{
+    [self performSegueWithIdentifier:@"chooseSchool" sender:user];
 }
 
 - (void)didReceiveMemoryWarning
@@ -552,7 +392,6 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UserInfoChange object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:EaseMobShouldLogin object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FansNew object:nil];
     

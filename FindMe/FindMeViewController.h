@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LoginView.h"
 
-@interface FindMeViewController : UIViewController<LoginViewDelegate>
+@interface FindMeViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UILabel *grade;
 @property (weak, nonatomic) IBOutlet UIImageView *sex;

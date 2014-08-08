@@ -7,7 +7,7 @@
 //
 #import <ShareSDK/ShareSDK.h>
 #import "LoginViewController.h"
-#import "EaseMob.h"
+#import "ChooseSchoolViewController.h"
 #import "User.h"
 @interface LoginViewController (){
     User *_user;
@@ -95,7 +95,7 @@
                 break;
             case SSAuthStateSuccess:{
                 MJLog(@"SSAuthStateSuccess");
-                [HDTool showHUD:@"登入中..."];
+                [HDTool showHUD:@"请稍后..."];
                 
                 [ShareSDK getUserInfoWithType:type
                                   authOptions:authOptions
@@ -120,15 +120,18 @@
                                                        }];
                                                        
                                                        [[Config sharedConfig] changeLoginState:@"1"];
+                                                       [[Config sharedConfig] changeOnlineState:@"1"];
                                                        [[Config sharedConfig] friendNew:@"1"];
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+//                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
                                                        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-                                                       [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
+                                                       [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
                                                        
                                                    }else if ([state isEqualToString:@"10001"]){
                                                        
                                                        [HDTool dismissHUD];
-                                                       [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
+                                                       if (_delegate && [_delegate respondsToSelector:@selector(shouldShowChooseSchool:)]) {
+                                                           [_delegate shouldShowChooseSchool:_user];
+                                                       }
                                                        
                                                    }else{
                                                        [HDTool errorHUD];
@@ -158,6 +161,15 @@
     }];
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([[segue identifier] isEqualToString:@"chooseSchool"])
+    {
+        ChooseSchoolViewController *controller=(ChooseSchoolViewController *)(segue.destinationViewController);;
+        controller.user = _user;
+    }
+}
+
 - (void)initUser:(id<ISSPlatformUser>) userInfo AndSendType:(NSString *) sendType{
     _user = [[User alloc] init];
     _user.openId = [userInfo uid];
@@ -166,30 +178,7 @@
     
 }
 
--(void)EaseMobLoginWithUsername:(NSString *)username{
-    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
-                                                        password:@"123456"
-                                                      completion:
-     ^(NSDictionary *loginInfo, EMError *error) {
-         
-         if (loginInfo && !error) {
-             
-             [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
-             
-             EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-             options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
-             options.nickname = _user.userNickName;
-             [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
-             
-             [[Config sharedConfig] changeOnlineState:@"1"];
-             
-             
-         }else {
-             
-             
-         }
-     } onQueue:nil];
-}
+
 
 #pragma delegate
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView
