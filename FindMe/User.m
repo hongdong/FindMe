@@ -77,13 +77,10 @@
 }
 
 -(void)freshSession{
-    NSDictionary *parameters = @{@"userOpenId"     : self.openId,
-                                 @"userAuthType"       : self.userAuthType,
-                                 @"equitNo"    : [[Config sharedConfig] getRegistrationID],
-                                 @"osType"      : @"1",
-                                 @"backLogin"   : @"1"};
-    
-    [HDNet POST:@"/data/user/grant_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet isOauth:self.openId forType:self.userAuthType andBack:@"1" handle:^(id responseObject, NSError *error) {
+        if (responseObject==nil) {
+            return;
+        }
         
         NSString *state = [responseObject objectForKey:@"state"];
         
@@ -100,8 +97,6 @@
         }else{
             
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
     }];
 
 }

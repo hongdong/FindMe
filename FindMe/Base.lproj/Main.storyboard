@@ -1183,6 +1183,76 @@
             </objects>
             <point key="canvasLocation" x="862" y="848"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="0Jw-Km-h0x">
+            <objects>
+                <viewController storyboardIdentifier="loginViewController" id="l7z-mF-Z7R" customClass="LoginViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jCD-yu-zyz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="dc5-p7-aw2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="l7z-mF-Z7R" id="oJS-DO-9ee"/>
+                                </connections>
+                            </scrollView>
+                            <pageControl autoresizesSubviews="NO" opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="OKL-o4-pUR">
+                                <rect key="frame" x="0.0" y="352" width="320" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="currentPageIndicatorTintColor" red="1" green="0.44051174830000001" blue="0.47992174739999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="valueChanged:" destination="l7z-mF-Z7R" eventType="valueChanged" id="f3I-p2-Zvh"/>
+                                </connections>
+                            </pageControl>
+                            <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="w2v-QG-IGZ">
+                                <rect key="frame" x="72" y="370" width="58" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="QQ_login">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginPressed:" destination="l7z-mF-Z7R" eventType="touchUpInside" id="qKk-Ye-2sQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UQS-Kg-jgm">
+                                <rect key="frame" x="190" y="370" width="58" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="sina_login">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginPressed:" destination="l7z-mF-Z7R" eventType="touchUpInside" id="Rw4-gW-9cl"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QQ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cwG-32-5iw">
+                                <rect key="frame" x="89" y="430" width="26" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sina" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Py-G3-Tqr">
+                                <rect key="frame" x="200" y="430" width="39" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="pageControl" destination="OKL-o4-pUR" id="mSt-bj-Q3S"/>
+                        <outlet property="scrollView" destination="dc5-p7-aw2" id="z7j-9j-5iM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8rV-by-Cu6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="395" y="-699"/>
+        </scene>
         <!--View Controller - 番迷-->
         <scene sceneID="akh-Gj-cXv">
             <objects>
@@ -2074,6 +2144,7 @@
     <resources>
         <image name="HUD_YES" width="24" height="24"/>
         <image name="NavBar64" width="320" height="64"/>
+        <image name="QQ_login" width="58" height="58"/>
         <image name="VUser" width="13" height="13"/>
         <image name="aboutUs" width="320" height="455"/>
         <image name="addimage" width="52" height="52"/>
@@ -2092,6 +2163,7 @@
         <image name="setting" width="30" height="30"/>
         <image name="share" width="30" height="30"/>
         <image name="signOut" width="300" height="30"/>
+        <image name="sina_login" width="58" height="58"/>
         <image name="submitBt" width="300" height="31"/>
         <image name="v" width="30" height="30"/>
         <image name="xzd0" width="30" height="30"/>

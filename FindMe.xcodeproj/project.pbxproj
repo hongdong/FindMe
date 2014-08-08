@@ -182,7 +182,6 @@
 		04B2D9E41963D1F000EF0C74 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B2D9E31963D1F000EF0C74 /* CommentCell.m */; };
 		04B30B62198B1CD6008DE328 /* QQConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B30B46198B1CD5008DE328 /* QQConnection.framework */; };
 		04B30B63198B1CD6008DE328 /* QZoneConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B30B47198B1CD5008DE328 /* QZoneConnection.framework */; };
-		04B30B64198B1CD6008DE328 /* SinaWeiboConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B30B48198B1CD5008DE328 /* SinaWeiboConnection.framework */; };
 		04B30B65198B1CD6008DE328 /* WeChatConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B30B49198B1CD5008DE328 /* WeChatConnection.framework */; };
 		04B30B66198B1CD6008DE328 /* AGCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B30B4B198B1CD5008DE328 /* AGCommon.framework */; };
 		04B30B67198B1CD6008DE328 /* ShareSDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B30B4C198B1CD5008DE328 /* ShareSDKLocalizable.strings */; };
@@ -264,6 +263,8 @@
 		04B317551956FDE600F93C73 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B317521956FDE600F93C73 /* NSDate+Category.m */; };
 		04B317561956FDE600F93C73 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B317541956FDE600F93C73 /* NSDateFormatter+Category.m */; };
 		04B3175C1957013300F93C73 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3175B1957013300F93C73 /* UIResponder+Router.m */; };
+		04B331E41994AB1C00DBFCCB /* SinaWeiboConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B331E31994AB1C00DBFCCB /* SinaWeiboConnection.framework */; };
+		04B331E71994CA5100DBFCCB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B331E61994CA5100DBFCCB /* LoginViewController.m */; };
 		04B43E88195F003F00DB70B0 /* FriendNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E87195F003F00DB70B0 /* FriendNavViewController.m */; };
 		04B43E8B195F006800DB70B0 /* PostNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8A195F006800DB70B0 /* PostNavViewController.m */; };
 		04B43E8E195F020200DB70B0 /* MeNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B43E8D195F020200DB70B0 /* MeNavViewController.m */; };
@@ -580,7 +581,6 @@
 		04B2D9E31963D1F000EF0C74 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
 		04B30B46198B1CD5008DE328 /* QQConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QQConnection.framework; sourceTree = "<group>"; };
 		04B30B47198B1CD5008DE328 /* QZoneConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QZoneConnection.framework; sourceTree = "<group>"; };
-		04B30B48198B1CD5008DE328 /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
 		04B30B49198B1CD5008DE328 /* WeChatConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WeChatConnection.framework; sourceTree = "<group>"; };
 		04B30B4B198B1CD5008DE328 /* AGCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGCommon.framework; sourceTree = "<group>"; };
 		04B30B4D198B1CD5008DE328 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ShareSDKLocalizable.strings; sourceTree = "<group>"; };
@@ -764,6 +764,9 @@
 		04B317541956FDE600F93C73 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		04B3175A1957013300F93C73 /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
 		04B3175B1957013300F93C73 /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
+		04B331E31994AB1C00DBFCCB /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
+		04B331E51994CA5100DBFCCB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		04B331E61994CA5100DBFCCB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		04B43E86195F003F00DB70B0 /* FriendNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendNavViewController.h; sourceTree = "<group>"; };
 		04B43E87195F003F00DB70B0 /* FriendNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendNavViewController.m; sourceTree = "<group>"; };
 		04B43E89195F006800DB70B0 /* PostNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNavViewController.h; sourceTree = "<group>"; };
@@ -878,7 +881,6 @@
 				04A961C61955B175002E30AF /* CFNetwork.framework in Frameworks */,
 				04A961C41955B165002E30AF /* libz.dylib in Frameworks */,
 				04A961C21955B158002E30AF /* libxml2.dylib in Frameworks */,
-				04B30B64198B1CD6008DE328 /* SinaWeiboConnection.framework in Frameworks */,
 				04AF10041951515500A3E74B /* CoreGraphics.framework in Frameworks */,
 				04B30B6E198B1CD6008DE328 /* libWeChatSDK.a in Frameworks */,
 				04A9614719551F9E002E30AF /* libsqlite3.dylib in Frameworks */,
@@ -894,6 +896,7 @@
 				04AF10021951515500A3E74B /* Foundation.framework in Frameworks */,
 				9FED4FC75D60427788D81610 /* libPods.a in Frameworks */,
 				04B30B65198B1CD6008DE328 /* WeChatConnection.framework in Frameworks */,
+				04B331E41994AB1C00DBFCCB /* SinaWeiboConnection.framework in Frameworks */,
 				04B30BCE198B24DD008DE328 /* libEaseMobClientSDKLite.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1182,6 +1185,8 @@
 		04AA9B84195BC8F0001C83C2 /* LoginController */ = {
 			isa = PBXGroup;
 			children = (
+				04B331E51994CA5100DBFCCB /* LoginViewController.h */,
+				04B331E61994CA5100DBFCCB /* LoginViewController.m */,
 				04AA9B85195BC9EF001C83C2 /* ChooseSchoolViewController.h */,
 				04AA9B86195BC9EF001C83C2 /* ChooseSchoolViewController.m */,
 				04AA9B89195C2168001C83C2 /* ChooseDepartmentViewController.h */,
@@ -1435,9 +1440,9 @@
 		04B30B45198B1CD5008DE328 /* Connection */ = {
 			isa = PBXGroup;
 			children = (
+				04B331E31994AB1C00DBFCCB /* SinaWeiboConnection.framework */,
 				04B30B46198B1CD5008DE328 /* QQConnection.framework */,
 				04B30B47198B1CD5008DE328 /* QZoneConnection.framework */,
-				04B30B48198B1CD5008DE328 /* SinaWeiboConnection.framework */,
 				04B30B49198B1CD5008DE328 /* WeChatConnection.framework */,
 			);
 			path = Connection;
@@ -2329,6 +2334,7 @@
 				04B315AB1956BF0600F93C73 /* BaseTableViewCell.m in Sources */,
 				04AF10121951515500A3E74B /* AppDelegate.m in Sources */,
 				04B2D9E11963CFB200EF0C74 /* PostDetailHeadView.m in Sources */,
+				04B331E71994CA5100DBFCCB /* LoginViewController.m in Sources */,
 				04169AD21964FCBC00A64585 /* ZBFaceView.m in Sources */,
 				04169AD11964FCBC00A64585 /* ZBExpressionSectionBar.m in Sources */,
 				04AAE2B1196FA3C900D1CCA1 /* PostMessageViewController.m in Sources */,

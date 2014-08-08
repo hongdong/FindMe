@@ -24,4 +24,9 @@
        files:(NSDictionary *)files
      success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
++ (void)isOauth:(NSString *) uid
+        forType:(NSString *) type
+        andBack:(NSString *) back
+         handle:(void (^)(id responseObject,NSError *error))handle;
 @end

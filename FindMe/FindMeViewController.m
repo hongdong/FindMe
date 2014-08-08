@@ -109,6 +109,7 @@
                                              selector:@selector(matchTime:)
                                                  name:MatchTime
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fansNew:) name:FansNew object:nil];
     
     self.photo.layer.cornerRadius = 75.0f;
@@ -401,6 +402,7 @@
         sendType = @"QZone";
     }
         __weak __typeof(&*self)weakSelf = self;
+    
     id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
                                                          allowCallback:NO
                                                                 scopes:nil
@@ -412,23 +414,75 @@
                                                          authViewStyle:SSAuthViewStyleFullScreenPopup
                                                           viewDelegate:nil
                                                authManagerViewDelegate:nil];
-
-            [ShareSDK getUserInfoWithType:type
-                              authOptions:authOptions
-                                   result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-                                       if (result) {
+    
+    [ShareSDK authWithType:type options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
+        switch (state) {
+            case SSAuthStateBegan:
+                MJLog(@"SSAuthStateBegan");
+                break;
+            case SSAuthStateSuccess:{
+                MJLog(@"SSAuthStateSuccess");
+                [HDTool showHUD:@"登入中..."];
+                
+                [ShareSDK getUserInfoWithType:type
+                                  authOptions:authOptions
+                                       result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+                                           if (result) {
+                                               
+                                               [weakSelf initUser:userInfo AndSendType:sendType];
+                                               
+                                               [HDNet isOauth:[userInfo uid] forType:sendType andBack:@"0" handle:^(id responseObject, NSError *error) {
+                                                   if (responseObject==nil) {
+                                                       [HDTool errorHUD];
+                                                       return;
+                                                   }
+                                                   NSString *state = [responseObject objectForKey:@"state"];
+                                                   
+                                                   if ([state isEqualToString:@"20001"]) {
+                                                       [HDTool dismissHUD];
+                                                       _user._id = [responseObject objectForKey:@"userId"];
+                                                       
+                                                       [_user getUserInfo:^{
+                                                           [_user saveToNSUserDefaults];//保存登入信息
+                                                       }];
+                                                       
+                                                       [[Config sharedConfig] changeLoginState:@"1"];
+                                                       [[Config sharedConfig] friendNew:@"1"];
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+                                                       [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
+                                                       
+                                                   }else if ([state isEqualToString:@"10001"]){
+                                                       
+                                                       [HDTool dismissHUD];
+                                                       [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
+                                                       
+                                                   }else{
+                                                       [HDTool errorHUD];
+                                                   }
+                                                   
+                                               }];
+                                               
+                                           }else{
+                                               
+                                               [HDTool dismissHUD];
+                                               
+                                               [HDTool ToastNotification:@"网络太糟糕了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
+                                           }
                                            
-                                           [weakSelf initUser:userInfo AndSendType:sendType];
-                                           
-                                           [weakSelf isOauth:[userInfo uid] forType:sendType andBack:@"0"];
-                                           
-                                       }else{
-                                           [HDTool ToastNotification:@"网络太糟糕了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
-                                       }
-                                       
-                                   }];
-
-
+                                       }];
+            }
+                break;
+            case SSAuthStateFail:
+                MJLog(@"SSAuthStateFail");
+                break;
+            case SSAuthStateCancel:
+                MJLog(@"SSAuthStateCancel");
+                break;
+            default:
+                break;
+        }
+    }];
 
 }
 
@@ -441,43 +495,6 @@
     
 }
 
-- (void)isOauth:(NSString *) uid forType:(NSString *) type andBack:(NSString *) back{
-    [HDTool showHUD:@"登入中..."];
-    NSDictionary *parameters = @{@"userOpenId"     : uid,
-                                 @"userAuthType"       : type,
-                                 @"equitNo"    : [[Config sharedConfig] getRegistrationID],
-                                @"osType"      : @"1",
-                                @"backLogin"   : back};
-        __weak __typeof(&*self)weakSelf = self;
-    [HDNet POST:@"/data/user/grant_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
-            _user._id = [responseObject objectForKey:@"userId"];
-            
-            [_user getUserInfo:^{
-                [_user saveToNSUserDefaults];//保存登入信息
-            }];
-            
-            [[Config sharedConfig] changeLoginState:@"1"];
-            [[Config sharedConfig] friendNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-            [weakSelf EaseMobLoginWithUsername:_user._id];//IM登入
-            
-        }else if ([state isEqualToString:@"10001"]){
-            
-            [HDTool dismissHUD];
-            [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
-            
-        }else{
-            [HDTool errorHUD];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
-    }];
-    
-}
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"chooseSchool"])

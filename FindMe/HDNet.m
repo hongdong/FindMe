@@ -71,4 +71,20 @@
         }];
 
 }
+
+
+
++ (void)isOauth:(NSString *) uid forType:(NSString *) type andBack:(NSString *) back handle:(void (^)(id responseObject,NSError *error))handle{
+    NSDictionary *parameters = @{@"userOpenId"     : uid,
+                                 @"userAuthType"   : type,
+                                 @"equitNo"        : [[Config sharedConfig] getRegistrationID],
+                                 @"osType"         : @"1",
+                                 @"backLogin"      : back};
+    [HDNet POST:@"/data/user/grant_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        handle(responseObject,nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        handle(nil,error);
+    }];
+    
+}
 @end
