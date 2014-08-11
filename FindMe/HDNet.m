@@ -9,6 +9,7 @@
 #import "HDNet.h"
 #import "AFNetworking.h"
 #import "EaseMob.h"
+#import "User.h"
 @implementation HDNet
 + (void)GET:(NSString *)URLString
  parameters:(id)parameters
@@ -85,6 +86,35 @@
         handle(responseObject,nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         handle(nil,error);
+    }];
+    
+}
+
++ (void)freshSession:(void (^)())complete{
+    User *user = [User getUserFromNSUserDefaults];
+    [HDNet isOauth:user.openId forType:user.userAuthType andBack:@"1" handle:^(id responseObject, NSError *error) {
+        if (responseObject==nil) {
+            return;
+        }
+        
+        NSString *state = [responseObject objectForKey:@"state"];
+        
+        if ([state isEqualToString:@"20001"]) {
+            MJLog(@"刷新session成功");
+            [[Config sharedConfig] changeOnlineState:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"1"}];
+            if (complete) {
+                complete();
+            }
+            
+        }else if ([state isEqualToString:@"10001"]){
+            MJLog(@"刷新session失败");
+            
+        }else if ([state isEqualToString:@"30001"]){
+            MJLog(@"刷新session失败");
+        }else{
+            MJLog(@"刷新session失败");
+        }
     }];
     
 }

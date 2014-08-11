@@ -30,5 +30,7 @@
         andBack:(NSString *) back
          handle:(void (^)(id responseObject,NSError *error))handle;
 
++ (void)freshSession:(void (^)())complete;
+
 + (void)EaseMobLoginWithUsername:(NSString *)username;
 @end

@@ -42,7 +42,7 @@
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"请求失败");
+            MJLog(@"请求失败");
         }];
     }else{
        [self changeCover:nil]; 

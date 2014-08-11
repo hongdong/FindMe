@@ -112,7 +112,7 @@
             for(int lineIndex=0;lineIndex<self.match.numberOfLimitLines;lineIndex++){
                 CTLineRef line=(__bridge CTLineRef)(lines[lineIndex]);
                 CGContextSetTextPosition(context,origins[lineIndex].x,origins[lineIndex].y);
-             //   NSLog(@"%d: %f,%f",lineIndex,origins[lineIndex].x,origins[lineIndex].y);
+             //   MJLog(@"%d: %f,%f",lineIndex,origins[lineIndex].x,origins[lineIndex].y);
                 CTLineDraw(line, context);
             }
             for (NSDictionary* imageData in self.match.images) {

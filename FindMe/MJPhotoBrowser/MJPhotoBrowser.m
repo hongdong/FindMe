@@ -89,8 +89,8 @@
 {
     
     
-    NSLog(@"ThisImageIndex---%ld", (long)ThisImageIndex );
-    NSLog(@"_currentPhotoIndex---%lu", (unsigned long)_currentPhotoIndex );
+    MJLog(@"ThisImageIndex---%ld", (long)ThisImageIndex );
+    MJLog(@"_currentPhotoIndex---%lu", (unsigned long)_currentPhotoIndex );
     
     if ( ThisImageIndex == 0 ) {
         _currentPhotoIndex = 1;

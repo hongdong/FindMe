@@ -62,7 +62,7 @@
     // Use tintColor instead of barTintColor on iOS < 7
     if (IOS7_OR_LATER) {
         if (!self.navigationController.navigationBar.barTintColor) {
-            NSLog(@"[%s]: %@", __PRETTY_FUNCTION__, @"[AMScrollingNavbarViewController] Warning: no bar tint color set");
+            MJLog(@"[%s]: %@", __PRETTY_FUNCTION__, @"[AMScrollingNavbarViewController] Warning: no bar tint color set");
         }
         [self.overlay setBackgroundColor:self.navigationController.navigationBar.barTintColor];
     } else {
@@ -70,7 +70,7 @@
     }
 	
 	if ([self.navigationController.navigationBar isTranslucent]) {
-		NSLog(@"[%s]: %@", __PRETTY_FUNCTION__, @"[AMScrollingNavbarViewController] Warning: the navigation bar should not be translucent");
+		MJLog(@"[%s]: %@", __PRETTY_FUNCTION__, @"[AMScrollingNavbarViewController] Warning: the navigation bar should not be translucent");
 	}
 	
 	[self.overlay setUserInteractionEnabled:NO];

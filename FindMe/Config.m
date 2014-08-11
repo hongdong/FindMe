@@ -70,7 +70,6 @@
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     NSDate * resignActiveDate = [setting objectForKey:@"resignActiveDate"];
     NSTimeInterval timeInterval = -[resignActiveDate timeIntervalSinceNow];
-    NSLog(@"%f",timeInterval);
     if (timeInterval>60*10) {
         return YES;
     }else{

@@ -76,29 +76,5 @@
     return user;
 }
 
--(void)freshSession{
-    [HDNet isOauth:self.openId forType:self.userAuthType andBack:@"1" handle:^(id responseObject, NSError *error) {
-        if (responseObject==nil) {
-            return;
-        }
-        
-        NSString *state = [responseObject objectForKey:@"state"];
-        
-        if ([state isEqualToString:@"20001"]) {
-            MJLog(@"刷新session成功");
-            [[Config sharedConfig] changeOnlineState:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-            
-        }else if ([state isEqualToString:@"10001"]){
-            
-            
-        }else if ([state isEqualToString:@"30001"]){
-            
-        }else{
-            
-        }
-    }];
-
-}
 @end
 

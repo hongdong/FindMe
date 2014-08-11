@@ -226,7 +226,7 @@
     
     NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error) {
-            NSLog(@"Error: %@", error);
+            MJLog(@"Error: %@", error);
         } else {
                     NSString *state = [responseObject objectForKey:@"state"];
                     if ([state isEqualToString:@"20001"]) {

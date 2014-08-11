@@ -120,13 +120,13 @@
     
     _scrollView.delegate = self;
 
-    FirstPageView *firstView = [HDTool loadCustomViewByIndex:2];
+    FirstPageView *firstView = [HDTool loadCustomViewByIndex:FirstPageViewIndex];
     firstView.contentMode = UIViewContentModeScaleAspectFill;
     firstView.frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
     [firstView setUser:self.user];
     [_scrollView addSubview:firstView];
 
-    SecondPageView *secondPageView = [HDTool loadCustomViewByIndex:3];
+    SecondPageView *secondPageView = [HDTool loadCustomViewByIndex:SecondPageViewIndex];
     secondPageView.contentMode = UIViewContentModeScaleAspectFill;
     secondPageView.frame = CGRectMake(_scrollView.frame.size.width, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
     

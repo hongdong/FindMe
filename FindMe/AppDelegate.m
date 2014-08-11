@@ -56,7 +56,7 @@
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
     
     if ([HDTool isFirstLoad]) {
-        NSLog(@"这个版本第一次启动");
+        MJLog(@"这个版本第一次启动");
         [[Config sharedConfig] initBadge];
 
     }
@@ -77,15 +77,21 @@
     
     [self initJpushSDK:launchOptions];
     
-
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
-    
 
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
-        NSDictionary *remoteNotification = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+        MJLog(@"didFinishLaunchingWithOptions----点击提醒打开软件");
+        NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         [self handleUserInfo:remoteNotification];
     }else{
-        NSLog(@"点击ICON打开软件");
+        MJLog(@"点击ICON打开软件");
+        NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];//无效
+        for (UILocalNotification *noti in notifications) {
+            [self handleUserInfo:[noti userInfo]];
+            [[UIApplication sharedApplication] cancelLocalNotification:noti];
+            MJLog(@"----------------------%@",noti);
+        }
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
     
     
@@ -97,7 +103,7 @@
     NSDictionary * userInfo = [notification userInfo];
     NSString *registrationID = [userInfo valueForKey:@"RegistrationID"];
     [[Config sharedConfig] saveRegistrationID:registrationID];
-    NSLog(@"registrationID:%@",registrationID);
+    MJLog(@"registrationID:%@",registrationID);
 }
 
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
@@ -188,10 +194,32 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
    
     [APService registerDeviceToken:deviceToken];
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+    if(application.applicationState == UIApplicationStateInactive) {//点击提醒进来时调用
+        MJLog(@"UIApplicationStateInactive");
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+//        [self handleUserInfo:userInfo];
+        
+    } else if (application.applicationState == UIApplicationStateBackground) {
+        MJLog(@"UIApplicationStateBackground");
+        [self handleUserInfo:userInfo];
+        
+    } else {
+        MJLog(@"active");
+        [self handleUserInfo:userInfo];
+        
+    }
+    
+    [APService handleRemoteNotification:userInfo];
+    
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -199,42 +227,47 @@
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
-        NSLog(@"IApplicationStateInactive时收到推送");//点击提醒进来时调用
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self handleUserInfo:userInfo];
     }else if (application.applicationState==UIApplicationStateActive) {
-        NSLog(@"UIApplicationStateActive时收到推送");//直接调用
         [self handleUserInfo:userInfo];
     }else if(application.applicationState==UIApplicationStateBackground){
-        NSLog(@"UIApplicationStateBackground时收到推送");
         [self handleUserInfo:userInfo];
     }
 }
-
+/**
+ 对推送的处理
+ */
 -(void)handleUserInfo:(NSDictionary *)userInfo{
-    if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {
+    if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {//强退
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
-    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){
+        
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){//秘圈动态
         
         [[Config sharedConfig] postNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
         
-    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10003"]){//女生匹配动态
+        
         [[Config sharedConfig] matchNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
         
-    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10004"]){//男生匹配动态
 
-            [[Config sharedConfig] matchNew:@"1"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+        [[Config sharedConfig] matchNew:@"1"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
 
+    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){//好友动态
         
-    }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10005"]){
         [[Config sharedConfig] friendNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-    }else if ([[userInfo objectForKey:@"type"] isEqualToString:@"10006"]){
+        
+    }else if ([[userInfo objectForKey:@"type"] isEqualToString:@"10006"]){//女生粉丝动态
+        
         [[Config sharedConfig] fansNew:@"1"];
         [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
+        
     }
 }
 
@@ -268,14 +301,41 @@
         if ([[Config sharedConfig] isOnline]) {
             if ([[Config sharedConfig] needFresh]) {
                 [[Config sharedConfig] changeOnlineState:@"0"];
-                User *user = [User getUserFromNSUserDefaults];
-                [user freshSession];
+                [HDNet freshSession:nil];
             }else{
                 
             }
         }else{
-            User *user = [User getUserFromNSUserDefaults];
-            [user freshSession];
+            [HDNet freshSession:^{
+                [HDNet GET:@"/data/user/syc_item.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSDictionary *sycItem = responseObject[@"sycItem"];
+                    NSString *syscFriends = sycItem[@"syscFriends"];
+                    NSString *sycPost = sycItem[@"sycPost"];
+                    NSString *sycMatch = sycItem[@"sycMatch"];
+                    NSString *sycFans = sycItem[@"sycFans"];
+                    if (1==[syscFriends intValue]) {
+                        [[Config sharedConfig] friendNew:@"1"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+                    }
+ 
+                    if (1==[sycPost intValue]) {
+                        [[Config sharedConfig] postNew:@"1"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
+                    }
+                    
+                    if (1==[sycMatch intValue]) {
+                        [[Config sharedConfig] matchNew:@"1"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+                    }
+                    
+                    if (1==[sycFans intValue]) {
+                        [[Config sharedConfig] fansNew:@"1"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
+                    }
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    
+                }];
+            }];
         }
     }else{
         
@@ -291,9 +351,9 @@
 - (void)didLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
 {
     if (error) {
-        NSLog(@"IM后台登入失败");
+        MJLog(@"IM后台登入失败");
     }else{
-        NSLog(@"后台登入IM成功");
+        MJLog(@"后台登入IM成功");
     }
 }
 
@@ -302,7 +362,7 @@
 - (void)didBindDeviceWithError:(EMError *)error
 {
     if (error) {
-        NSLog(@"消息推送与设备绑定失败");
+        MJLog(@"消息推送与设备绑定失败");
     }
 }
 
@@ -312,7 +372,7 @@
 	[[EaseMob sharedInstance] applicationWillTerminate:application];
 
     [[Config sharedConfig] changeOnlineState:@"0"];
-    NSLog(@"Terminate");
+    MJLog(@"Terminate");
 }
 
 @end

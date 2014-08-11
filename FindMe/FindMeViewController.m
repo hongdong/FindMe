@@ -12,6 +12,7 @@
 #import "UIView+Common.h"
 #import "NSString+HD.h"
 #import "LoginViewController.h"
+#import "HYCircleLoadingView.h"
 @interface FindMeViewController ()<CoverViewDelegate,LoginViewControllerDelegate>{
     User *_user;
     User *_matchUser;
@@ -21,6 +22,8 @@
     MDCFocusView *_focusView;
     
     LoginViewController *_loginViewController;
+    
+    HYCircleLoadingView *_circleLoadingView;
 }
 
 @end
@@ -44,7 +47,7 @@
 }
 
 -(void)initCoverView{
-    _coverView = [HDTool loadCustomViewByIndex:4];
+    _coverView = [HDTool loadCustomViewByIndex:CoverViewIndex];
     _coverView.delegate = self;
 }
 
@@ -95,8 +98,13 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fansNew:) name:FansNew object:nil];
     
+    _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
+    self.navigationItem.leftBarButtonItem = loadingItem;
+    
     self.photo.layer.cornerRadius = 75.0f;
     self.photo.layer.masksToBounds = YES;
+    
 
     [self.photo whenTouchedDown:^{
         [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -257,12 +265,14 @@
 }
 
 -(void)getMatch:(NSString *)userMatchId andSender:(UIButton *)sender{
+    [_circleLoadingView startAnimation];
     NSMutableDictionary *parameters = [@{@"type": @"1"} mutableCopy];
     if (userMatchId!=nil) {
         [parameters setValue:userMatchId forKey:@"userMatchId"];
     }
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/user/match_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [_circleLoadingView stopAnimation];
         if (sender!=nil) {
             sender.enabled = YES;
         }
@@ -281,6 +291,10 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [HDTool ToastNotification:@"番迷君出故障了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
+        [_circleLoadingView stopAnimation];
+        if (sender!=nil) {
+            sender.enabled = YES;
+        }
     }];
     
 }
@@ -297,7 +311,7 @@
         self.nickname.text = _matchUser.userNickName;
         self.grade.text = _matchUser.userGrade;
         
-        self.sex.center = CGPointMake(self.nickname.left-20, self.sex.center.y);
+        self.sex.center = CGPointMake(self.nickname.left-10, self.sex.center.y);
         
         if ([_matchUser.userSex isEqualToString:@"男"]) {
             self.sex.image = [UIImage imageNamed:@"boy"];
@@ -312,6 +326,7 @@
         self.departmentLbl.text = [_matchUser getDepartmentName];
         self.qianmingLbl.text = _matchUser.userSignature;
         if ([_matchUser.userAuth intValue]==1) {
+            self.xzimg.center = CGPointMake(self.sex.left-10, self.xzimg.centerY);
             self.xzimg.hidden = NO;
         }else{
             self.xzimg.hidden = YES;

@@ -45,7 +45,7 @@
     self.title = @"我的";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"meTitleView"]];
     if (![[Config sharedConfig] isLogin]) {
-        [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
+        [self.view addSubview:[HDTool loadCustomViewByIndex:EmptyViewIndex]];
         return;
     }
     [self setup];
@@ -60,7 +60,7 @@
         [self setup];
     }
     else{
-        [self.view addSubview:[HDTool loadCustomViewByIndex:6]];
+        [self.view addSubview:[HDTool loadCustomViewByIndex:EmptyViewIndex]];
  }
 }
 
@@ -243,11 +243,11 @@
                                                                                               
                                                                                               if (state == SSPublishContentStateSuccess)
                                                                                               {
-                                                                                                  NSLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"分享成功"));
+                                                                                                  MJLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"分享成功"));
                                                                                               }
                                                                                               else if (state == SSPublishContentStateFail)
                                                                                               {
-                                                                                                  NSLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
+                                                                                                  MJLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
                                                                                               }
                                                                                           }];
                                                                       }];
@@ -265,11 +265,11 @@
                                                                                                
                                                                                                if (state == SSPublishContentStateSuccess)
                                                                                                {
-                                                                                                   NSLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"分享成功"));
+                                                                                                   MJLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"分享成功"));
                                                                                                }
                                                                                                else if (state == SSPublishContentStateFail)
                                                                                                {
-                                                                                                   NSLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
+                                                                                                   MJLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
                                                                                                }
                                                                                            }];
                                                                        }];
@@ -303,11 +303,11 @@
                                 
                                 if (state == SSPublishContentStateSuccess)
                                 {
-                                    NSLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"发表成功"));
+                                    MJLog(NSLocalizedString(@"TEXT_SHARE_SUC", @"发表成功"));
                                 }
                                 else if (state == SSPublishContentStateFail)
                                 {
-                                    NSLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"发布失败!error code == %d, error code == %@"), [error errorCode], [error errorDescription]);
+                                    MJLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"发布失败!error code == %d, error code == %@"), [error errorCode], [error errorDescription]);
 
                                 }
                             }];

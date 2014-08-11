@@ -60,7 +60,8 @@
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([[Config sharedConfig] postNew:nil]) {
             [[Config sharedConfig] postNew:@"0"];
-            weakSelf.postMessageItem.badgeValue = nil;
+            weakSelf.postMessageItem.badgeValue = nil;//移除角标
+            weakSelf.navigationController.tabBarItem.badgeValue = nil;
         }
 
         NSArray *newsList = [responseObject objectForKey:@"newsList"];

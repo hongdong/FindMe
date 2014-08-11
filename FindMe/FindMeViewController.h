@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LoginView.h"
 
 @interface FindMeViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *photo;

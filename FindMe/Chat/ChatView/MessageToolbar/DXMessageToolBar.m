@@ -39,7 +39,7 @@
  */
 @property (nonatomic) BOOL isShowButtomView;
 @property (strong, nonatomic) UIView *activityButtomView;//当前活跃的底部扩展页面
-
+@property (strong, nonatomic) UIView *willActivityButtomView;//将要活跃的底部扩展页面
 @end
 
 @implementation DXMessageToolBar
@@ -83,7 +83,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     _delegate = nil;
     _inputTextView.delegate = nil;
     _inputTextView = nil;
@@ -246,6 +246,10 @@
     [UIView animateWithDuration:duration delay:0.0f options:(curve << 16 | UIViewAnimationOptionBeginFromCurrentState) animations:animations completion:completion];
 }
 
+- (void)keyboardDidShow:(NSNotification *)note{
+    self.willActivityButtomView = nil;
+}
+
 #pragma mark - private
 
 /**
@@ -268,6 +272,8 @@
     [self addSubview:self.toolbarView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }
 
 - (void)setupSubviews
@@ -381,8 +387,10 @@
     else{
         self.isShowButtomView = YES;
     }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.frame = toFrame;
+    }];
     
-    self.frame = toFrame;
     
     if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
         [_delegate didChangeFrameToHeight:toHeight];
@@ -422,7 +430,11 @@
     }
     else if (toFrame.origin.y == [[UIScreen mainScreen] bounds].size.height)
     {
-        [self willShowBottomHeight:0];
+        if (self.willActivityButtomView==nil) {
+            self.willActivityButtomView = nil;
+            [self willShowBottomHeight:0];
+        }
+
     }
     else{
         [self willShowBottomHeight:toFrame.size.height];
@@ -517,6 +529,7 @@
         case 1://表情
         {
             if (button.selected) {
+                self.willActivityButtomView = self.faceView;
                 self.moreButton.selected = NO;
                 //如果选择表情并且处于录音状态，切换成文字输入状态，但是不显示键盘
                 if (self.styleChangeButton.selected) {
@@ -534,10 +547,12 @@
                     
                 }];
             } else {
+                self.willActivityButtomView = nil;
                 if (!self.styleChangeButton.selected) {
                     [self.inputTextView becomeFirstResponder];
                 }
                 else{
+                    
                     [self willShowBottomView:nil];
                 }
             }
@@ -546,6 +561,7 @@
         case 2://更多
         {
             if (button.selected) {
+                self.willActivityButtomView = self.moreView;
                 self.faceButton.selected = NO;
                 //如果选择表情并且处于录音状态，切换成文字输入状态，但是不显示键盘
                 if (self.styleChangeButton.selected) {
@@ -565,6 +581,7 @@
             }
             else
             {
+                self.willActivityButtomView = nil;
                 self.styleChangeButton.selected = NO;
                 [self.inputTextView becomeFirstResponder];
             }

@@ -78,6 +78,9 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 {
     [super setModel:model];
     _textLabel.text = self.model.content;
+//    if (model.isSender) {
+//        _textLabel.textColor = [UIColor whiteColor];
+//    }
 }
 
 #pragma mark - public

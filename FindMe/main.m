@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"Stack Trace:%@",[exception callStackSymbols]);
+        MJLog(@"Stack Trace:%@",[exception callStackSymbols]);
     }
 //    @finally {
 //        

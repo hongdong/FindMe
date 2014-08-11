@@ -123,7 +123,7 @@
                                                        [[Config sharedConfig] changeOnlineState:@"1"];
                                                        [[Config sharedConfig] friendNew:@"1"];
 //                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
                                                        [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
                                                        
                                                    }else if ([state isEqualToString:@"10001"]){

@@ -23,9 +23,8 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 {
     self = [super initWithMessageModel:model reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
         self.headImageView.clipsToBounds = YES;
-        self.headImageView.layer.cornerRadius = 3.0;
+        self.headImageView.layer.cornerRadius = 20.0;
     }
     return self;
 }
@@ -103,8 +102,6 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
 }
 
 #pragma mark - action

@@ -47,7 +47,6 @@
 
 -(void)saveToNSUserDefaults;
 -(void)getUserInfo:(void (^)())complete;
--(void)freshSession;
 
 +(id)getUserFromNSUserDefaults;
 @end

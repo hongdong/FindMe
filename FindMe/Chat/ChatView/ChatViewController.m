@@ -181,23 +181,23 @@
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
             switch ([exportSession status]) {
                 case AVAssetExportSessionStatusFailed: {
-                    NSLog(@"failed, error:%@.", exportSession.error);
+                    MJLog(@"failed, error:%@.", exportSession.error);
                 } break;
                 case AVAssetExportSessionStatusCancelled: {
-                    NSLog(@"cancelled.");
+                    MJLog(@"cancelled.");
                 } break;
                 case AVAssetExportSessionStatusCompleted: {
-                    NSLog(@"completed.");
+                    MJLog(@"completed.");
                 } break;
                 default: {
-                    NSLog(@"others.");
+                    MJLog(@"others.");
                 } break;
             }
             dispatch_semaphore_signal(wait);
         }];
         int timeout = dispatch_semaphore_wait(wait, DISPATCH_TIME_FOREVER);
         if (timeout) {
-            NSLog(@"timeout.");
+            MJLog(@"timeout.");
         }
         if (wait) {
             //dispatch_release(wait);
@@ -294,7 +294,8 @@
 {
     if (indexPath.row < [self.dataSource count]) {
         id obj = [self.dataSource objectAtIndex:indexPath.row];
-        if ([obj isKindOfClass:[NSString class]]) {
+        
+        if ([obj isKindOfClass:[NSString class]]) {//如果是时间
             EMChatTimeCell *timeCell = (EMChatTimeCell *)[tableView dequeueReusableCellWithIdentifier:@"MessageCellTime"];
             if (timeCell == nil) {
                 timeCell = [[EMChatTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MessageCellTime"];
@@ -305,9 +306,9 @@
             timeCell.textLabel.text = (NSString *)obj;
             
             return timeCell;
-        }
-        else{
+        } else {
             MessageModel *model = (MessageModel *)obj;
+            
             if (model.isSender) {
                 model.headImageURL = [NSURL URLWithString:_user.userPhoto];
             }else{
@@ -569,7 +570,7 @@
 
 
 - (void)didFetchingMessageAttachments:(EMMessage *)message progress:(float)progress{
-    NSLog(@"didFetchingMessageAttachment: %f", progress);
+    MJLog(@"didFetchingMessageAttachment: %f", progress);
 }
 
 -(void)didReceiveMessage:(EMMessage *)message
@@ -651,12 +652,21 @@
 
 - (void)didChangeFrameToHeight:(CGFloat)toHeight
 {
+//    __weak __typeof(&*self)weakSelf = self;
     [UIView animateWithDuration:0.3 animations:^{
         CGRect rect = self.tableView.frame;
         rect.size.height = self.view.frame.size.height - toHeight;
         self.tableView.frame = rect;
+    } completion:^(BOOL finished) {
+//        if (finished) {
+//            [weakSelf scrollViewToBottom:YES];
+//        }
     }];
-    [self scrollViewToBottom:YES];
+    if (toHeight!=46) {
+        [self scrollViewToBottom:YES];
+    }
+    
+    
 }
 
 - (void)didSendText:(NSString *)text

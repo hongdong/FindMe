@@ -277,7 +277,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
     
     if (!self.appStoreID)
     {
-        NSLog(@"Error: No App Store ID was found for this application. If the application is not intended for App Store release then you must specify a custom updateURL.");
+        MJLog(@"Error: No App Store ID was found for this application. If the application is not intended for App Store release then you must specify a custom updateURL.");
     }
     
 #if TARGET_OS_IPHONE
@@ -539,11 +539,11 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
             //log the error
             if (self.downloadError)
             {
-                NSLog(@"iVersion update check failed because: %@", [self.downloadError localizedDescription]);
+                MJLog(@"iVersion update check failed because: %@", [self.downloadError localizedDescription]);
             }
             else
             {
-                NSLog(@"iVersion update check failed because an unknown error occured");
+                MJLog(@"iVersion update check failed because an unknown error occured");
             }
             
             if ([self.delegate respondsToSelector:@selector(iVersionVersionCheckDidFailWithError:)])
@@ -554,7 +554,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
             //deprecated code path
             else if ([self.delegate respondsToSelector:@selector(iVersionVersionCheckFailed:)])
             {
-                NSLog(@"iVersionVersionCheckFailed: delegate method is deprecated, use iVersionVersionCheckDidFailWithError: instead");
+                MJLog(@"iVersionVersionCheckFailed: delegate method is deprecated, use iVersionVersionCheckDidFailWithError: instead");
                 [self.delegate performSelector:@selector(iVersionVersionCheckFailed:) withObject:self.downloadError];
             }
             return;
@@ -574,7 +574,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
             //deprecated code path
             else if ([self.delegate respondsToSelector:@selector(iVersionDetectedNewVersion:details:)])
             {
-                NSLog(@"iVersionDetectedNewVersion:details: delegate method is deprecated, use iVersionDidDetectNewVersion:details: instead");
+                MJLog(@"iVersionDetectedNewVersion:details: delegate method is deprecated, use iVersionDidDetectNewVersion:details: instead");
                 [self.delegate performSelector:@selector(iVersionDetectedNewVersion:details:) withObject:mostRecentVersion withObject:details];
             }
             
@@ -587,13 +587,13 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
                     showDetails = [self.delegate iVersionShouldDisplayNewVersion:mostRecentVersion details:details];
                     if (!showDetails && self.verboseLogging)
                     {
-                        NSLog(@"iVersion did not display the new version because the iVersionShouldDisplayNewVersion:details: delegate method returned NO");
+                        MJLog(@"iVersion did not display the new version because the iVersionShouldDisplayNewVersion:details: delegate method returned NO");
                     }
                 }
             }
             else if (self.verboseLogging)
             {
-                NSLog(@"iVersion did not display the new version because it was marked as ignored");
+                MJLog(@"iVersion did not display the new version because it was marked as ignored");
             }
             
             //show details

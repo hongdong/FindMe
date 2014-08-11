@@ -20,6 +20,14 @@
 
 #define CHATVIEWBACKGROUNDCOLOR [UIColor colorWithRed:0.936 green:0.932 blue:0.907 alpha:1]
 
+#define PostDetailHeadViewIndex 0
+#define FirstPageViewIndex 1
+#define SecondPageViewIndex 2
+#define CoverViewIndex 3
+#define PostDetailHeadView1Index 4
+#define EmptyViewIndex 5
+#define RandomHiViewIndex 6
+
 #define Host @"http://114.215.115.33"
-//#define Host @"http://192.168.1.7:8080/FindMeServer"
+//#define Host @"http://192.168.1.2:8080/FindMeServer"
 #endif

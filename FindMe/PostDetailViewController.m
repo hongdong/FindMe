@@ -48,16 +48,17 @@
     _dataArr = [[NSMutableArray alloc] init];
     
     
-	self.likeButton.particleImage = [UIImage imageNamed:@"Sparkle"];
+//	self.likeButton.particleImage = [UIImage imageNamed:@"Sparkle"];
 	self.likeButton.particleScale = 0.05;
     self.likeButton.particleScaleRange = 0.02;
+    self.likeButton.enabled = NO;
     [self.likeButton setImage:[UIImage imageNamed:@"marks"] forState:UIControlStateSelected];
     
     if (self.post.postPhoto==nil) {
-        _head = [HDTool loadCustomViewByIndex:5];
+        _head = [HDTool loadCustomViewByIndex:PostDetailHeadView1Index];
         [(PostDetailHeadView1 *)_head setDataWithPost:self.post];
     }else{
-        _head = [HDTool loadCustomViewByIndex:0];
+        _head = [HDTool loadCustomViewByIndex:PostDetailHeadViewIndex];
         [(PostDetailHeadView *)_head setDataWithPost:self.post];
         
     }

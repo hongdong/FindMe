@@ -54,7 +54,7 @@
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
     __weak __typeof(&*self)weakSelf = self;
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    UIView *headView = [HDTool loadCustomViewByIndex:7];
+    UIView *headView = [HDTool loadCustomViewByIndex:RandomHiViewIndex];
     [((UIButton *)[headView viewWithTag:1000]) bk_addEventHandler:^(id sender) {
         if (![[Config sharedConfig] isOnline]) {
             [weakSelf showHint:@"请先登入"];
@@ -70,13 +70,14 @@
     self.tableView.tableHeaderView = headView;
     [self.view addSubview:self.tableView];
     [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
-    
-    if ([[Config sharedConfig] friendNew:nil]||[HDTool isFirstLoad2]) {
-        [self myReloadDataSource];
-    }else{
+
+    if ([[Config sharedConfig] isLogin]) {
         [self loadLocalFriends];
     }
-
+    
+    if ([[Config sharedConfig] friendNew:nil]) {
+        [self myReloadDataSource];
+    }
 }
 
 

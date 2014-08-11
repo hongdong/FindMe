@@ -3,14 +3,15 @@
 #import "XHFeedCell4.h"
 #import "XHFeedCell1.h"
 #import "MJRefresh.h"
-#import <AFNetworking.h>
 #import "User.h"
 #import "BBBadgeBarButtonItem.h"
 #import "PostDetailViewController.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "PostMessageViewController.h"
 #import "UIViewController+ScrollingNavbar.h"
+
 @interface XHFeedController4 ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
+    
     NSMutableArray *_dataArr;
     NSInteger _seletedRow;
     BBBadgeBarButtonItem *_postMessageItem;
@@ -79,6 +80,7 @@
 
     _postMessageItem.badgeOriginX = 13;
     _postMessageItem.badgeOriginY = -9;
+    
     if ([[Config sharedConfig] postNew:nil]) {
             _postMessageItem.badgeValue = @"N";
     }
@@ -176,7 +178,6 @@
 
 -(void)loadDataWithPostId:(NSString *)postId{
     _freshing = YES;
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/post/post_list.do",Host];
     NSString *type = (postId?@"ol":@"nl");
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": type}];
     if ([type isEqualToString:@"nl"]) {
@@ -184,17 +185,17 @@
     }else{
         [parameters setValue:postId forKey:@"postId"];
     }
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [HDNet GET:@"/data/post/post_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *postList = [responseObject objectForKey:@"postList"];
         if (postList!=nil) {
             if ([type isEqualToString:@"nl"]) {
-                    [_dataArr removeAllObjects];
+                [_dataArr removeAllObjects];
             }
             [_dataArr addObjectsFromArray:[Post objectArrayWithKeyValuesArray:postList]];
             [weakSelf.feedTableView reloadData];
-
+            
         }else{
             
         }
@@ -205,8 +206,8 @@
         [weakSelf.feedTableView headerEndRefreshing];
         [weakSelf.feedTableView footerEndRefreshing];
         _freshing = NO;
-        
     }];
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

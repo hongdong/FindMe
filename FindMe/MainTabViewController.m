@@ -9,6 +9,7 @@
 #import "MainTabViewController.h"
 #import "EaseMob.h"
 #import "ChatListViewController.h"
+#import "ContactsViewController.h"
 #import "User.h"
 //两次提示的默认间隔
 const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -38,6 +39,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadMatch:) name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadFriend:) name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadPostMsg:) name:PostNew object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     if ([[Config sharedConfig] matchNew:nil]) {
         [self addUnreadMatch:nil];
@@ -46,6 +48,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     if ([[Config sharedConfig] friendNew:nil]) {
         [self addUnreadFriend:nil];
     }
+    
 
 }
 - (void)dealloc
@@ -53,6 +56,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [self unregisterNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MatchTime object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PostNew object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
@@ -69,12 +73,21 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     UIViewController *vc = [self.viewControllers objectAtIndex:2];
     vc.tabBarItem.badgeValue = @"HI";
 }
+-(void)addUnreadPostMsg:(NSNotification *)note{
+    UIViewController *vc = [self.viewControllers objectAtIndex:3];
+    vc.tabBarItem.badgeValue = @"N";
+}
 
 -(void)loginChange:(NSNotification *)notification{
     
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
-        
+        if ([notification.userInfo[@"isBack"] isEqualToString:@"0"]) {
+            UINavigationController *nav = (UINavigationController *)[self.viewControllers objectAtIndex:2];
+            ContactsViewController *contactsViewController = nav.viewControllers[0];
+            [contactsViewController myReloadDataSource];
+        }
+
     }else{
         UIViewController *vc = [self.viewControllers objectAtIndex:2];
         vc.tabBarItem.badgeValue = nil;
@@ -167,7 +180,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)playSoundAndVibration{
     
     //如果距离上次响铃和震动时间太短, 则跳过响铃
-    NSLog(@"%@, %@", [NSDate date], self.lastPlaySoundDate);
+    MJLog(@"%@, %@", [NSDate date], self.lastPlaySoundDate);
     NSTimeInterval timeInterval = [[NSDate date]
                                    timeIntervalSinceDate:self.lastPlaySoundDate];
     if (timeInterval < kDefaultPlaySoundInterval) {
