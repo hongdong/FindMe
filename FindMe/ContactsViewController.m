@@ -6,7 +6,6 @@
 #import "EaseMob.h"
 #import "ChatViewController.h"
 #import "MJRefresh.h"
-#import <AFNetworking.h>
 #import "User.h"
 #import "UIImageView+WebCache.h"
 #import "UIScrollView+EmptyDataSet.h"
@@ -75,11 +74,17 @@
         [self loadLocalFriends];
     }
     
-    if ([[Config sharedConfig] friendNew:nil]) {
-        [self myReloadDataSource];
-    }
+
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if ([[Config sharedConfig] friendNew:nil]) {
+        [self myReloadDataSource];
+        [[Config sharedConfig] friendNew:@"0"];
+        self.navigationController.tabBarItem.badgeValue = nil;
+    }
+}
 
 -(void)loginChange:(NSNotification *)notification{
     
@@ -129,13 +134,11 @@
         if (iOS7) {
           _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         }
-
         _tableView.sectionIndexColor = HDRED;
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        
         _tableView.emptyDataSetSource = self;
         _tableView.emptyDataSetDelegate = self;
         _tableView.tableFooterView = [[UIView alloc] init];
@@ -293,26 +296,17 @@
 {
     [self.dataSource removeAllObjects];
     [self.contactsSource removeAllObjects];
-    
-    
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/user_friend.do",Host];
-
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([[Config sharedConfig] friendNew:nil]) {
-            [[Config sharedConfig] friendNew:@"0"];
-            weakSelf.navigationController.tabBarItem.badgeValue = nil;
-        }
+    [HDNet GET:@"/data/user/user_friend.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
             weakSelf.contactsSource = [[NSMutableArray alloc] initWithArray:[User objectArrayWithKeyValuesArray:friendList]];
             [User removeDbObjectsWhere:@"1=1"];
             for (User *user in weakSelf.contactsSource) {
                 if (![User existDbObjectsWhere:[NSString stringWithFormat:@"_id='%@'",user._id]]) {
-                        [user insertToDb];
+                    [user insertToDb];
                 }
-
+                
             }
             [weakSelf.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
             [weakSelf.tableView reloadData];
@@ -321,7 +315,6 @@
         }else{
             [weakSelf.tableView headerEndRefreshing];
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [weakSelf.tableView headerEndRefreshing];
     }];

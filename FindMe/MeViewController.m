@@ -119,7 +119,7 @@
 
 -(void)setData{
 
-    [self.photo sd_setImageWithURL:[NSURL URLWithString:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+    [self.photo sd_setImageWithURL:[HDTool getSImage:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"] options:SDWebImageRetryFailed];
     self.nickname.text = _user.userNickName;
     CGSize size = CGSizeMake(320,2000);
     CGSize realsize = [_user.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:14.0f]];

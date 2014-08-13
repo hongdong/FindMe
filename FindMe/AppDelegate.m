@@ -78,20 +78,14 @@
     [self initJpushSDK:launchOptions];
     
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
-
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
         MJLog(@"didFinishLaunchingWithOptions----点击提醒打开软件");
-        NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-        [self handleUserInfo:remoteNotification];
+//        NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//        [self handleUserInfo:remoteNotification];
     }else{
         MJLog(@"点击ICON打开软件");
-        NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];//无效
-        for (UILocalNotification *noti in notifications) {
-            [self handleUserInfo:[noti userInfo]];
-            [[UIApplication sharedApplication] cancelLocalNotification:noti];
-            MJLog(@"----------------------%@",noti);
-        }
-        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+       
     }
     
     
@@ -200,39 +194,37 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-
+    MJLog(@"didReceiveRemoteNotification2");
+    [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if(application.applicationState == UIApplicationStateInactive) {//点击提醒进来时调用
         MJLog(@"UIApplicationStateInactive");
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
 //        [self handleUserInfo:userInfo];
-        
+        completionHandler(UIBackgroundFetchResultNewData);
     } else if (application.applicationState == UIApplicationStateBackground) {
         MJLog(@"UIApplicationStateBackground");
         [self handleUserInfo:userInfo];
-        
+        completionHandler(UIBackgroundFetchResultNewData);
     } else {
         MJLog(@"active");
         [self handleUserInfo:userInfo];
-        
+        completionHandler(UIBackgroundFetchResultNewData);
     }
-    
-    [APService handleRemoteNotification:userInfo];
-    
-    completionHandler(UIBackgroundFetchResultNewData);
+    completionHandler(UIBackgroundFetchResultNoData);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    
+    MJLog(@"didReceiveRemoteNotification1");
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
-        [self handleUserInfo:userInfo];
+//        [self handleUserInfo:userInfo];
     }else if (application.applicationState==UIApplicationStateActive) {
         [self handleUserInfo:userInfo];
     }else if(application.applicationState==UIApplicationStateBackground){
-        [self handleUserInfo:userInfo];
+//        [self handleUserInfo:userInfo];
     }
 }
 /**
@@ -293,6 +285,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    __weak __typeof(&*self)weakSelf = self;
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
@@ -301,50 +294,53 @@
         if ([[Config sharedConfig] isOnline]) {
             if ([[Config sharedConfig] needFresh]) {
                 [[Config sharedConfig] changeOnlineState:@"0"];
-                [HDNet freshSession:nil];
+                [HDNet freshSession:^{
+                    [weakSelf sysData];
+                }];
             }else{
-                
+                [self sysData];
             }
         }else{
             [HDNet freshSession:^{
-                [HDNet GET:@"/data/user/syc_item.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSDictionary *sycItem = responseObject[@"sycItem"];
-                    NSString *syscFriends = sycItem[@"syscFriends"];
-                    NSString *sycPost = sycItem[@"sycPost"];
-                    NSString *sycMatch = sycItem[@"sycMatch"];
-                    NSString *sycFans = sycItem[@"sycFans"];
-                    if (1==[syscFriends intValue]) {
-                        [[Config sharedConfig] friendNew:@"1"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-                    }
- 
-                    if (1==[sycPost intValue]) {
-                        [[Config sharedConfig] postNew:@"1"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
-                    }
-                    
-                    if (1==[sycMatch intValue]) {
-                        [[Config sharedConfig] matchNew:@"1"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
-                    }
-                    
-                    if (1==[sycFans intValue]) {
-                        [[Config sharedConfig] fansNew:@"1"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
-                    }
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    
-                }];
+                [weakSelf sysData];
             }];
         }
     }else{
         
     }
-    
-    
 
 }
 
+- (void)sysData{    //同步更新数据
+    [HDNet GET:@"/data/user/syc_item.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *sycItem = responseObject[@"sycItem"];
+        NSString *syscFriends = sycItem[@"syscFriends"];
+        NSString *sycPost = sycItem[@"sycPost"];
+        NSString *sycMatch = sycItem[@"sycMatch"];
+        NSString *sycFans = sycItem[@"sycFans"];
+        if (1==[syscFriends intValue]) {
+            [[Config sharedConfig] friendNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
+        }
+        
+        if (1==[sycPost intValue]) {
+            [[Config sharedConfig] postNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PostNew object:nil];
+        }
+        
+        if (1==[sycMatch intValue]) {
+            [[Config sharedConfig] matchNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MatchTime object:nil];
+        }
+        
+        if (1==[sycFans intValue]) {
+            [[Config sharedConfig] fansNew:@"1"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
 
 #pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
 

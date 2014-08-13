@@ -8,6 +8,7 @@
 
 #import "UIView+HDHUD.h"
 #import "MRProgressOverlayView.h"
+#import "MRActivityIndicatorView.h"
 #import <objc/runtime.h>
 static const void *HDHUDKey = &HDHUDKey;
 @implementation UIView (HDHUD)
@@ -23,6 +24,7 @@ static const void *HDHUDKey = &HDHUDKey;
 -(void)showHDHUDWithTitle:(NSString *)title{
    MRProgressOverlayView *HUD = [MRProgressOverlayView showOverlayAddedTo:self title:title mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     [HUD setTintColor:HDRED];
+    ((MRActivityIndicatorView *)HUD.modeView).lineWidth = 1.0f;
     [self setHUD:HUD];
 }
 -(void)dismissHDHUD{

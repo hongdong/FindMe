@@ -16,6 +16,7 @@
 #import "MJRefresh.h"
 #import "MCFireworksButton.h"
 #import "NSString+HD.h"
+#import "HYCircleLoadingView.h"
 @interface PostDetailViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     
     NSMutableArray *_dataArr;
@@ -25,6 +26,7 @@
     NSString *_didChange;
     NSDictionary *_index;
     ZBMessageViewState _nowState;
+    HYCircleLoadingView *_circleLoadingView;
 }
 @property (weak, nonatomic) IBOutlet MCFireworksButton *likeButton;
 
@@ -44,6 +46,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
+    self.navigationItem.rightBarButtonItem = loadingItem;
     
     _dataArr = [[NSMutableArray alloc] init];
     
@@ -82,6 +88,7 @@
 
 
 -(void)getCommentByType:(NSString *)type{
+    [_circleLoadingView startAnimation];
     NSString *index;
     if ([type isEqualToString:@"ol"]) {
         index = [_index objectForKey:@"endIndex"];
@@ -98,6 +105,7 @@
                                  @"isNews":@"0"};
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/post/post_msg_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [_circleLoadingView stopAnimation];
         [weakSelf.tableView footerEndRefreshing];
         NSDictionary *postMsg = [responseObject objectForKey:@"postMsg"];
         if (postMsg!=nil) {
@@ -120,6 +128,7 @@
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [_circleLoadingView stopAnimation];
         [weakSelf.tableView footerEndRefreshing];
     }];
     

@@ -39,7 +39,7 @@ PODS:
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - DACircularProgress (2.2.0)
-  - DZNEmptyDataSet (1.4)
+  - DZNEmptyDataSet (1.4.1)
   - GPUImage (0.1.4)
   - MBProgressHUD (0.8)
   - MCSwipeTableViewCell (2.1.0)
@@ -96,7 +96,7 @@ SPEC CHECKSUMS:
   BBBadgeBarButtonItem: 9fd6089e0694ee1e9dfb96fb66fbcb4bfa22f3ee
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
-  DZNEmptyDataSet: cafc5d62b130df3cacb482e7a252ad9853e5cc97
+  DZNEmptyDataSet: 381e880cb3bb2d33885cb0325218443df265bc98
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323

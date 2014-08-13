@@ -12,13 +12,17 @@
 #import "XYAlertViewHeader.h"
 #import "User.h"
 #import "UIImageView+MJWebCache.h"
-#import "AFNetworking.h"
 #import "UIView+Common.h"
 #import "NSString+HD.h"
+#import "TNSexyImageUploadProgress.h"
 @interface DetailViewController (){
     User *_user;
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
+    QiniuSimpleUploader *_uploader;
+    NSString *_photoName;
+    TNSexyImageUploadProgress *_progress;
+    UIImage *_image;
 }
 
 @end
@@ -117,8 +121,7 @@
         [inputView setButtonStyle:XYButtonStyleGreen atIndex:1];
         [inputView show];
     }];
-    
-    [self.photo setImageURLStr:_user.userPhoto placeholder:[UIImage imageNamed:@"defaultImage"]];
+    [self.photo sd_setImageWithURL:[HDTool getSImage:_user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"] options:SDWebImageRetryFailed];
     CGSize size = CGSizeMake(320,2000);
 
     CGSize realsize = [_user.userRealName getRealSize:size andFont:[UIFont systemFontOfSize:14.0f]];
@@ -163,13 +166,11 @@
 }
 
 -(void)updateInfo:(NSDictionary *)parameters{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/update_info.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet POST:@"/data/user/update_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-
+        
             if ([parameters objectForKey:@"userSignature"]!=nil) {
                 weakSelf.qianming.text = [parameters objectForKey:@"userSignature"];
                 _user.userSignature = [parameters objectForKey:@"userSignature"];
@@ -177,14 +178,14 @@
                 weakSelf.nickname.text = [parameters objectForKey:@"userNickName"];
                 _user.userNickName = [parameters objectForKey:@"userNickName"];
             }
-            
+        
             [_user saveToNSUserDefaults];
         }else{
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+    
     }];
+    
 }
 #pragma mark - LXActionSheetDelegate
 
@@ -201,7 +202,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             _imagePicker.allowsEditing = YES;
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请选择照片"];
+                [weakSelf showHint:@"请拍照"];
             }];
             
             break;}
@@ -228,13 +229,11 @@
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
         //判断是静态图像还是视频
         if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-            UIImage *image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
+            _image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
             //        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
-            [self saveImage:image WithName:@"myPhoto.png"];
+            [self saveImage:_image WithName:@"myPhoto.png"];
             [self updatePhoto];
         }
-        
-        
         
     }];
     
@@ -244,26 +243,66 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)updatePhoto{
-    [HDTool showHUD:@"上传中..."];
-    NSString *url = [NSString stringWithFormat:@"%@/data/user/user_uphoto.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/myPhoto.png"]];
-    [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *state = [responseObject objectForKey:@"state"];
-        if ([state isEqualToString:@"20001"]) {
-            [HDTool successHUD];
-            _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
-            [_user saveToNSUserDefaults];
-        }else if ([state isEqualToString:@"10001"]){
-            [HDTool errorHUD];
+    _progress = [[TNSexyImageUploadProgress alloc] init];
+    _progress.radius = 100;
+    _progress.progressBorderThickness = -10;
+    _progress.trackColor = [UIColor blackColor];
+    _progress.progressColor = [UIColor whiteColor];
+    _progress.imageToUpload = _image;
+    [_progress show];
+    
+    NSString *filePath = [[self documentFolderPath] stringByAppendingString:@"/myPhoto.png"];
+    _photoName = [NSString stringWithFormat:@"%@%@%@",_user._id,@"/",[HDTool generateImgName]];
+    NSDictionary *parameters = @{@"type": @"user"};
+    [HDNet GET:@"/data/qiniu/uploadtoken.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *result = responseObject[@"result"];
+        if (1==[result intValue]) {
+            NSString *token = responseObject[@"token"];
+            _uploader = [QiniuSimpleUploader uploaderWithToken:token];
+            _uploader.delegate = self;
+            [_uploader uploadFile:filePath key:_photoName extra:nil];
         }else{
-            [HDTool errorHUD];
+            [_progress removeFromSuperview];
+            
         }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [_progress removeFromSuperview];
     }];
+
+}
+
+#pragma qiniuDelegate
+
+- (void)uploadProgressUpdated:(NSString *)theFilePath percent:(float)percent
+{
+       _progress.progress = percent*0.95;
+}
+
+- (void)uploadSucceeded:(NSString *)theFilePath ret:(NSDictionary *)ret
+{
+    NSDictionary *parameters = @{@"key": _photoName};
+    [HDNet POST:@"/data/user/user_uphoto_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *state = [responseObject objectForKey:@"state"];
+                if ([state isEqualToString:@"20001"]) {
+                     _progress.progress = 1.0f;
+                    _user.userPhoto = [responseObject objectForKey:@"userPhoto"];
+                    [_user saveToNSUserDefaults];
+                }else if ([state isEqualToString:@"10001"]){
+                    [_progress removeFromSuperview];
+                }else{
+                    [_progress removeFromSuperview];
+                }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [_progress removeFromSuperview];
+    }];
+    
+    
+}
+
+- (void)uploadFailed:(NSString *)theFilePath error:(NSError *)error
+{
+    [_progress removeFromSuperview];
 }
 
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName{
@@ -295,7 +334,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 

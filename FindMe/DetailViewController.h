@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "LXActionSheet.h"
-@interface DetailViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate>
+#import "QiniuSimpleUploader.h"
+@interface DetailViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,QiniuUploadDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UILabel *realName;
 @property (weak, nonatomic) IBOutlet UIImageView *sex;

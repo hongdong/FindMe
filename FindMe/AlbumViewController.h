@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LXActionSheet.h"
-@interface AlbumViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate>
+#import "QiniuSimpleUploader.h"
+@interface AlbumViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,QiniuUploadDelegate>
 
 @end

@@ -13,8 +13,10 @@
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
 #import "UIView+Common.h"
+#import "HYCircleLoadingView.h"
 @interface FindMeDetailViewController (){
         NSMutableArray *myImageUrlArr;
+        HYCircleLoadingView *_circleLoadingView;
 }
 
 @end
@@ -39,11 +41,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
+    self.navigationItem.rightBarButtonItem = loadingItem;
     __weak __typeof(&*self)weakSelf = self;
     if (self.userId!=nil) {
         self.user._id = self.userId;
-        
+        [_circleLoadingView startAnimation];
         [self.user getUserInfo:^{
+            [_circleLoadingView stopAnimation];
             [weakSelf setUpScroll];
             weakSelf.qianming.text = weakSelf.user.userSignature;
             [weakSelf setPhoto];
@@ -82,7 +88,7 @@
         imageview.clipsToBounds = YES;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
         
-        [imageview sd_setImageWithURL:[NSURL URLWithString: [myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] ];
+        [imageview sd_setImageWithURL:[HDTool getSImage:[myImageUrlArr objectAtIndex:i]] placeholderImage: [UIImage imageNamed:@"defaultImage"] options:SDWebImageRetryFailed];
         [imageview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         
         [self.photoWallView addSubview: imageview];
@@ -92,13 +98,13 @@
 -(void)photoClick:(UITapGestureRecognizer *)imageTap
 {
     // 1.封装图片数据
-    NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [myImageUrlArr count] ];
+    NSMutableArray *photos = [NSMutableArray arrayWithCapacity: [myImageUrlArr count]];
     for (int i = 0; i < [myImageUrlArr count]; i++) {
         // 替换为中等尺寸图片
         
-        NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [myImageUrlArr objectAtIndex:i] ];
+        NSString * getImageStrUrl = [NSString stringWithFormat:@"%@", [myImageUrlArr objectAtIndex:i]];
         MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [HDTool getLImage:getImageStrUrl];        
+        photo.url = [NSURL URLWithString:getImageStrUrl];
         UIImageView * imageView = (UIImageView *)[self.view viewWithTag:10000+i];
         photo.srcImageView = imageView;
         [photos addObject:photo];

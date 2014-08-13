@@ -196,6 +196,10 @@
     [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
     return [NSURL URLWithString:temp];
 }
++(NSURL *)getSImage:(NSString *)url{
+    NSString *temp = [NSString stringWithFormat:@"%@%@",url,@"?imageView2/1/w/150/h/150"];
+    return [NSURL URLWithString:temp];
+}
 
 +(void)showHUD:(NSString *)title{
     [[[UIApplication sharedApplication] keyWindow] showHDHUDWithTitle:title];
@@ -218,5 +222,13 @@
     }else if([user.userSex isEqualToString:@"女"]){
         imageView.image = [UIImage imageNamed:@"boy"];
     }
+}
+
++(NSString *)generateImgName{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat: @"yyyyMMddHHmmssSSS"];
+    int i = arc4random()%90000000 +10000000;
+    NSString *imgName = [NSString stringWithFormat:@"%@%d%@",[formatter stringFromDate:[NSDate date]],i,@"l.png"];
+    return imgName;
 }
 @end

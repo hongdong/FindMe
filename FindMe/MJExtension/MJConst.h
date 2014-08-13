@@ -19,8 +19,7 @@
 // 断言
 #define MJAssert2(condition, desc, returnValue) \
 if ((condition) == NO) { \
-NSString *file = [NSString stringWithUTF8String:__FILE__]; \
-MJLog(@"\n警告文件：%@\n警告行数：第%d行\n警告方法：%s\n警告描述：%@", file, __LINE__,  __FUNCTION__, desc); \
+MJLog(@"\n警告文件：%@\n警告行数：第%d行\n警告方法：%s\n警告描述：%@", [NSString stringWithUTF8String:__FILE__], __LINE__,  __FUNCTION__, desc); \
 return returnValue; \
 }
 

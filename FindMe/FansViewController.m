@@ -149,8 +149,7 @@
 -(void)pass:(NSString *)_id{
     NSDictionary *parameters = @{@"type":@"2",@"userMatchId": _id};;
     [HDNet GET:@"/data/user/match_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *fansPass = [responseObject objectForKey:@"fansPass"];
-        MJLog(@"%@",fansPass);
+        MJLog(@"%@",[responseObject objectForKey:@"fansPass"]);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         MJLog(@"pass失败");
     }];

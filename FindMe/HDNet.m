@@ -21,6 +21,15 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = responseObject[@"state"];
+        if ([state isEqualToString:@"20004"]) {
+            [HDNet freshSession:^{
+                if (success) {
+                    success(operation,responseObject);
+                }
+            }];
+            return;
+        }
         if (success) {
             success(operation,responseObject);
         }
@@ -40,6 +49,15 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = responseObject[@"state"];
+        if ([state isEqualToString:@"20004"]) {
+            [HDNet freshSession:^{
+                if (success) {
+                    success(operation,responseObject);
+                }
+            }];
+            return;
+        }
         if (success) {
             success(operation,responseObject);
         }
@@ -63,6 +81,15 @@
                 [formData appendPartWithFileURL:files[key] name:key error:nil];
             }
         }success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *state = responseObject[@"state"];
+            if ([state isEqualToString:@"20004"]) {
+                [HDNet freshSession:^{
+                    if (success) {
+                        success(operation,responseObject);
+                    }
+                }];
+                return;
+            }
             if (success) {
                 success(operation,responseObject);
             }
@@ -109,7 +136,6 @@
             
         }else if ([state isEqualToString:@"10001"]){
             MJLog(@"刷新session失败");
-            
         }else if ([state isEqualToString:@"30001"]){
             MJLog(@"刷新session失败");
         }else{

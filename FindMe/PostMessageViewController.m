@@ -7,13 +7,14 @@
 //
 
 #import "PostMessageViewController.h"
-#import "AFNetworking.h"
 #import "MJExtension.h"
 #import "PostNews.h"
 #import "PostDetailViewController.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "HYCircleLoadingView.h"
 @interface PostMessageViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
+    HYCircleLoadingView *_circleLoadingView;
 }
 
 @end
@@ -31,6 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
+    self.navigationItem.rightBarButtonItem = loadingItem;
+    
     _dataArr = [[NSMutableArray alloc] init];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.emptyDataSetSource = self;
@@ -46,7 +51,7 @@
     [super didReceiveMemoryWarning];
 }
 -(void)getPostMessageByNewsId:(NSString *)newsId{
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/news/news_list.do",Host];
+    [_circleLoadingView startAnimation];
     NSString *type = (newsId?@"ol":@"nl");
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": type}];
     if ([type isEqualToString:@"nl"]) {
@@ -54,26 +59,25 @@
     }else{
         [parameters setValue:newsId forKey:@"newsId"];
     }
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     __weak __typeof(&*self)weakSelf = self;
-    [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet GET:@"/data/news/news_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [_circleLoadingView stopAnimation];
         if ([[Config sharedConfig] postNew:nil]) {
             [[Config sharedConfig] postNew:@"0"];
             weakSelf.postMessageItem.badgeValue = nil;//移除角标
             weakSelf.navigationController.tabBarItem.badgeValue = nil;
         }
-
+        
         NSArray *newsList = [responseObject objectForKey:@"newsList"];
         if (newsList!=nil) {
             [_dataArr addObjectsFromArray:[PostNews objectArrayWithKeyValuesArray:newsList]];
             [weakSelf.tableView reloadData];
         }else{
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+       [_circleLoadingView stopAnimation]; 
     }];
+    
 }
 #pragma mark - Table view data source
 
@@ -98,14 +102,18 @@
         cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     }
     cell.textLabel.text = ((PostNews *)_dataArr[indexPath.row]).postContent;
+    cell.detailTextLabel.text = ((PostNews *)_dataArr[indexPath.row]).updateTime;
     if ([((PostNews *)_dataArr[indexPath.row]).isRead isEqualToString:@"0"]) {
-            [cell viewWithTag:100].hidden = NO;
+        [cell viewWithTag:100].hidden = NO;
+    }else{
+        [cell viewWithTag:100].hidden = YES;
     }
 
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:100].hidden = YES;
     [self performSegueWithIdentifier:@"messageToPostDetail" sender:_dataArr[indexPath.row]];
     
 }

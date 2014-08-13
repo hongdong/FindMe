@@ -79,6 +79,13 @@
 		04169B6E196587D000A64585 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 04169B6D196587D000A64585 /* Comment.m */; };
 		0476D532196D0B0E0077B376 /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0476D531196D0B0E0077B376 /* UIColor+FlatUI.m */; };
 		0476D535196D1A5C0077B376 /* PostDetailHeadView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 0476D534196D1A5C0077B376 /* PostDetailHeadView1.m */; };
+		049FB333199A5A80007B10D7 /* QiniuBlkputRet.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB324199A5A80007B10D7 /* QiniuBlkputRet.m */; };
+		049FB334199A5A80007B10D7 /* QiniuConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB326199A5A80007B10D7 /* QiniuConfig.m */; };
+		049FB335199A5A80007B10D7 /* QiniuHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB328199A5A80007B10D7 /* QiniuHttpClient.m */; };
+		049FB336199A5A80007B10D7 /* QiniuResumableClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB32A199A5A80007B10D7 /* QiniuResumableClient.m */; };
+		049FB337199A5A80007B10D7 /* QiniuResumableUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB32C199A5A80007B10D7 /* QiniuResumableUploader.m */; };
+		049FB338199A5A80007B10D7 /* QiniuSimpleUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB32F199A5A80007B10D7 /* QiniuSimpleUploader.m */; };
+		049FB339199A5A80007B10D7 /* QiniuUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 049FB332199A5A80007B10D7 /* QiniuUtils.m */; };
 		04A4E2221967D57400E9BC63 /* FindMeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */; };
 		04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2241967DC2500E9BC63 /* FirstPageView.m */; };
 		04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4E2271967DC3900E9BC63 /* SecondPageView.m */; };
@@ -405,6 +412,22 @@
 		0476D531196D0B0E0077B376 /* UIColor+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FlatUI.m"; sourceTree = "<group>"; };
 		0476D533196D1A5C0077B376 /* PostDetailHeadView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailHeadView1.h; sourceTree = "<group>"; };
 		0476D534196D1A5C0077B376 /* PostDetailHeadView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailHeadView1.m; sourceTree = "<group>"; };
+		049FB323199A5A80007B10D7 /* QiniuBlkputRet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuBlkputRet.h; sourceTree = "<group>"; };
+		049FB324199A5A80007B10D7 /* QiniuBlkputRet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuBlkputRet.m; sourceTree = "<group>"; };
+		049FB325199A5A80007B10D7 /* QiniuConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuConfig.h; sourceTree = "<group>"; };
+		049FB326199A5A80007B10D7 /* QiniuConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuConfig.m; sourceTree = "<group>"; };
+		049FB327199A5A80007B10D7 /* QiniuHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuHttpClient.h; sourceTree = "<group>"; };
+		049FB328199A5A80007B10D7 /* QiniuHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuHttpClient.m; sourceTree = "<group>"; };
+		049FB329199A5A80007B10D7 /* QiniuResumableClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuResumableClient.h; sourceTree = "<group>"; };
+		049FB32A199A5A80007B10D7 /* QiniuResumableClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuResumableClient.m; sourceTree = "<group>"; };
+		049FB32B199A5A80007B10D7 /* QiniuResumableUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuResumableUploader.h; sourceTree = "<group>"; };
+		049FB32C199A5A80007B10D7 /* QiniuResumableUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuResumableUploader.m; sourceTree = "<group>"; };
+		049FB32D199A5A80007B10D7 /* QiniuSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QiniuSDK-Prefix.pch"; sourceTree = "<group>"; };
+		049FB32E199A5A80007B10D7 /* QiniuSimpleUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuSimpleUploader.h; sourceTree = "<group>"; };
+		049FB32F199A5A80007B10D7 /* QiniuSimpleUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuSimpleUploader.m; sourceTree = "<group>"; };
+		049FB330199A5A80007B10D7 /* QiniuUploadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuUploadDelegate.h; sourceTree = "<group>"; };
+		049FB331199A5A80007B10D7 /* QiniuUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiniuUtils.h; sourceTree = "<group>"; };
+		049FB332199A5A80007B10D7 /* QiniuUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiniuUtils.m; sourceTree = "<group>"; };
 		04A4E2201967D57400E9BC63 /* FindMeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindMeDetailViewController.h; sourceTree = "<group>"; };
 		04A4E2211967D57400E9BC63 /* FindMeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindMeDetailViewController.m; sourceTree = "<group>"; };
 		04A4E2231967DC2500E9BC63 /* FirstPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPageView.h; sourceTree = "<group>"; };
@@ -1002,6 +1025,29 @@
 			path = emoticon;
 			sourceTree = "<group>";
 		};
+		049FB322199A5A80007B10D7 /* QiniuSDK */ = {
+			isa = PBXGroup;
+			children = (
+				049FB323199A5A80007B10D7 /* QiniuBlkputRet.h */,
+				049FB324199A5A80007B10D7 /* QiniuBlkputRet.m */,
+				049FB325199A5A80007B10D7 /* QiniuConfig.h */,
+				049FB326199A5A80007B10D7 /* QiniuConfig.m */,
+				049FB327199A5A80007B10D7 /* QiniuHttpClient.h */,
+				049FB328199A5A80007B10D7 /* QiniuHttpClient.m */,
+				049FB329199A5A80007B10D7 /* QiniuResumableClient.h */,
+				049FB32A199A5A80007B10D7 /* QiniuResumableClient.m */,
+				049FB32B199A5A80007B10D7 /* QiniuResumableUploader.h */,
+				049FB32C199A5A80007B10D7 /* QiniuResumableUploader.m */,
+				049FB32D199A5A80007B10D7 /* QiniuSDK-Prefix.pch */,
+				049FB32E199A5A80007B10D7 /* QiniuSimpleUploader.h */,
+				049FB32F199A5A80007B10D7 /* QiniuSimpleUploader.m */,
+				049FB330199A5A80007B10D7 /* QiniuUploadDelegate.h */,
+				049FB331199A5A80007B10D7 /* QiniuUtils.h */,
+				049FB332199A5A80007B10D7 /* QiniuUtils.m */,
+			);
+			path = QiniuSDK;
+			sourceTree = "<group>";
+		};
 		04A19A8E198150D5005B8A0D /* POPView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1118,6 +1164,7 @@
 		04A960941954FE9A002E30AF /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				049FB322199A5A80007B10D7 /* QiniuSDK */,
 				04AD09E81998404E00FF1464 /* HYCircleLoading */,
 				04B88F5A1991B89800EC1AAE /* MJExtension */,
 				04B30B73198B24DC008DE328 /* EaseMobSDK */,
@@ -2345,6 +2392,7 @@
 				04B331E71994CA5100DBFCCB /* LoginViewController.m in Sources */,
 				04169AD21964FCBC00A64585 /* ZBFaceView.m in Sources */,
 				04169AD11964FCBC00A64585 /* ZBExpressionSectionBar.m in Sources */,
+				049FB333199A5A80007B10D7 /* QiniuBlkputRet.m in Sources */,
 				04AAE2B1196FA3C900D1CCA1 /* PostMessageViewController.m in Sources */,
 				04A9F273196A9D18000A347E /* MessageNavViewController.m in Sources */,
 				04B2D9BB1963828D00EF0C74 /* HPTextViewInternal.m in Sources */,
@@ -2353,6 +2401,7 @@
 				04ADC96D1960EEFE009106A7 /* XHMessageTextView.m in Sources */,
 				04B88F751991B89800EC1AAE /* MJIvar.m in Sources */,
 				04169ADE1964FCFB00A64585 /* NSString+Message.m in Sources */,
+				049FB335199A5A80007B10D7 /* QiniuHttpClient.m in Sources */,
 				04DA3AED19667B4B00E0AE3C /* GCPlaceholderTextView.m in Sources */,
 				04A7640A195D7BC300C92480 /* LXActionSheet.m in Sources */,
 				04B2D9C4196383C900EF0C74 /* MessageModelManager.m in Sources */,
@@ -2360,6 +2409,7 @@
 				04B316AF1956FC7600F93C73 /* ChatListViewController.m in Sources */,
 				04B317561956FDE600F93C73 /* NSDateFormatter+Category.m in Sources */,
 				04B315D31956C84100F93C73 /* MJRefreshHeaderView.m in Sources */,
+				049FB339199A5A80007B10D7 /* QiniuUtils.m in Sources */,
 				04B43E8E195F020200DB70B0 /* MeNavViewController.m in Sources */,
 				04B315D41956C84100F93C73 /* UIScrollView+Extension.m in Sources */,
 				04B8640B19624DCF00326067 /* NewPostViewController.m in Sources */,
@@ -2395,6 +2445,7 @@
 				04B43E8B195F006800DB70B0 /* PostNavViewController.m in Sources */,
 				04B316B91956FC7600F93C73 /* DXFaceView.m in Sources */,
 				0476D535196D1A5C0077B376 /* PostDetailHeadView1.m in Sources */,
+				049FB334199A5A80007B10D7 /* QiniuConfig.m in Sources */,
 				04B2D9531963828D00EF0C74 /* EMChatAudioBubbleView.m in Sources */,
 				04B88F7A1991B89800EC1AAE /* NSObject+MJCoding.m in Sources */,
 				04B2D9541963828D00EF0C74 /* EMChatBaseBubbleView.m in Sources */,
@@ -2412,6 +2463,7 @@
 				04A4E2221967D57400E9BC63 /* FindMeDetailViewController.m in Sources */,
 				04B88F7B1991B89800EC1AAE /* NSObject+MJKeyValue.m in Sources */,
 				04AA9B8B195C2168001C83C2 /* ChooseDepartmentViewController.m in Sources */,
+				049FB337199A5A80007B10D7 /* QiniuResumableUploader.m in Sources */,
 				04DA3AD51966623100E0AE3C /* MeViewController.m in Sources */,
 				04B877B91984D0D200727555 /* UIViewController+ScrollingNavbar.m in Sources */,
 				04ADC8611960E99B009106A7 /* ChatSendHelper.m in Sources */,
@@ -2444,6 +2496,7 @@
 				04B88F741991B89800EC1AAE /* MJFoundation.m in Sources */,
 				04B316AE1956FC7600F93C73 /* ChatListCell.m in Sources */,
 				04A62D001951B8D7007E8ACF /* ViewController.m in Sources */,
+				049FB338199A5A80007B10D7 /* QiniuSimpleUploader.m in Sources */,
 				04DA3AF519667B4B00E0AE3C /* XYAlertView.m in Sources */,
 				04ACA251196EA3A7003F14B1 /* MatchParser.m in Sources */,
 				04B4E42D197FECB3009C8B4F /* MJPhotoLoadingView.m in Sources */,
@@ -2469,6 +2522,7 @@
 				04B2D9571963828D00EF0C74 /* EMChatTextBubbleView.m in Sources */,
 				04B2D9B81963828D00EF0C74 /* EMChatToolBar.m in Sources */,
 				04B2D9DE1963CEAA00EF0C74 /* PostDetailViewController.m in Sources */,
+				049FB336199A5A80007B10D7 /* QiniuResumableClient.m in Sources */,
 				04AF100E1951515500A3E74B /* main.m in Sources */,
 				04AA9B81195BBF8B001C83C2 /* GCDiscreetNotificationView.m in Sources */,
 				04B316B41956FC7600F93C73 /* ChatViewController.m in Sources */,
