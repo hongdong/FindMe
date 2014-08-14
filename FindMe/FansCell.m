@@ -14,14 +14,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    [self.photo setImageURLStr:self.user.userPhoto placeholder:[UIImage imageNamed:@"defaultImage"]];
+    [self.photo sd_setImageWithURL:[HDTool getSImage:self.user.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"] options:SDWebImageRetryFailed];
     self.nicknameLbl.text = self.user.userNickName;
     self.schoolLbl.text = [self.user getSchoolName];
     self.departmentLbl.text = [self.user getDepartmentName];

@@ -148,10 +148,8 @@
     if (![[Config sharedConfig] isOnline]) {
         [self showHint:@"你还没登入"];
         return;
-    }else if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused){
-        [_focusView dismiss:^{
-            [[Config sharedConfig] launchGuide:@"0"];
-        }];
+    }else if (_focusView.isFocused){
+        [_focusView dismiss:^{}];
         return;
     }else if (![_user.userSex isEqualToString:@"女"]){
         [self showHint:@"目前只有女生开通了粉丝服务"];
@@ -170,7 +168,7 @@
 
 - (IBAction)likePressed:(id)sender {
     __weak __typeof(&*self)weakSelf = self;
-    if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
+    if (_focusView.isFocused) {
         [_focusView dismiss:^{
             [weakSelf launchGuide:weakSelf.passBt andText:@"你点击了pass意味着你放弃这次认识的机会，你将会看到番迷君给你推荐的下一个人。"];
         }];
@@ -214,7 +212,7 @@
 }
 - (IBAction)passPressed:(id)sender {
         __weak __typeof(&*self)weakSelf = self;
-    if ([[Config sharedConfig] launchGuide:nil]&&_focusView.isFocused) {
+    if (_focusView.isFocused) {
         [_focusView dismiss:^{
             [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。他们都真心想和你交朋友，只等你一个准字。（操作指导：右滑YES，左滑NO哦）"];
         }];
@@ -244,6 +242,7 @@
                                  info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的推荐。";
                              }
                              [weakSelf launchGuide:weakSelf.likeBt andText:info];
+                             [[Config sharedConfig] launchGuide:@"0"];
                          }
                      }];
     
@@ -353,7 +352,7 @@
             [_loginViewController.view removeFromSuperview];
             _loginViewController=nil;
         }
-        [self getMatch:nil andSender:nil];
+//        [self getMatch:nil andSender:nil];
     }
     else{
         if (_loginViewController==nil) {

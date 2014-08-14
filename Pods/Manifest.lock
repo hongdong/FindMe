@@ -40,8 +40,8 @@ PODS:
     - BlocksKit/DynamicDelegate
   - DACircularProgress (2.2.0)
   - DZNEmptyDataSet (1.4.1)
-  - GPUImage (0.1.4)
-  - MBProgressHUD (0.8)
+  - GPUImage (0.1.5)
+  - MBProgressHUD (0.9)
   - MCSwipeTableViewCell (2.1.0)
   - MDCFocusView (0.1.0)
   - MRProgress/ActivityIndicator (0.6.0):
@@ -97,8 +97,8 @@ SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   DZNEmptyDataSet: 381e880cb3bb2d33885cb0325218443df265bc98
-  GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
-  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  GPUImage: 5114a47f5fc33eb312f3731550a3cea379416d04
+  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
   MDCFocusView: 186d3e1b7b707f64435fa7ff4bcd5874a17fd940
   MRProgress: bacc0f2f6c547e4ab21fd48ed14e19cbd70de3e4

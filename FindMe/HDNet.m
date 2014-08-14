@@ -23,11 +23,15 @@
     [manager GET:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = responseObject[@"state"];
         if ([state isEqualToString:@"20004"]) {
-            [HDNet freshSession:^{
-                if (success) {
-                    success(operation,responseObject);
-                }
-            }];
+            if ([[Config sharedConfig] isLogin]) {
+                [HDNet freshSession:^{
+                    if (success) {
+                        success(operation,responseObject);
+                    }
+                }];
+            }else{
+                MJLog(@"请先登入");
+            }
             return;
         }
         if (success) {
@@ -51,11 +55,15 @@
     [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = responseObject[@"state"];
         if ([state isEqualToString:@"20004"]) {
-            [HDNet freshSession:^{
-                if (success) {
-                    success(operation,responseObject);
-                }
-            }];
+            if ([[Config sharedConfig] isLogin]) {
+                [HDNet freshSession:^{
+                    if (success) {
+                        success(operation,responseObject);
+                    }
+                }];
+            }else{
+                MJLog(@"请先登入");
+            }
             return;
         }
         if (success) {
@@ -83,11 +91,15 @@
         }success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *state = responseObject[@"state"];
             if ([state isEqualToString:@"20004"]) {
-                [HDNet freshSession:^{
-                    if (success) {
-                        success(operation,responseObject);
-                    }
-                }];
+                if ([[Config sharedConfig] isLogin]) {
+                    [HDNet freshSession:^{
+                        if (success) {
+                            success(operation,responseObject);
+                        }
+                    }];
+                }else{
+                    MJLog(@"请先登入");
+                }
                 return;
             }
             if (success) {
@@ -159,9 +171,6 @@
              options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
 //             options.nickname = _user.userNickName;
              [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
-             
-//             [[Config sharedConfig] changeOnlineState:@"1"];
-             
              
          }else {
              

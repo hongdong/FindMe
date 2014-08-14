@@ -11,8 +11,10 @@
 #import "User.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "FindMeDetailViewController.h"
+#import "HYCircleLoadingView.h"
 @interface FansViewController ()<MCSwipeTableViewCellDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
     NSMutableArray *_dataArr;
+    HYCircleLoadingView *_circleLoadingView;
 }
 
 @end
@@ -30,6 +32,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
+    self.navigationItem.rightBarButtonItem = loadingItem;
+    
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [backgroundView setBackgroundColor:[UIColor colorWithRed:227.0 / 255.0 green:227.0 / 255.0 blue:227.0 / 255.0 alpha:1.0]];
     [self.tableView setBackgroundView:backgroundView];
@@ -44,8 +51,11 @@
 
 
 -(void)getFans{
+    
+    [_circleLoadingView startAnimation];
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/user/fans_list.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [_circleLoadingView stopAnimation];
         if ([[Config sharedConfig] fansNew:nil]) {
             [[Config sharedConfig] fansNew:@"0"];
             weakSelf.fansItem.badgeValue = nil;
@@ -59,6 +69,7 @@
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [_circleLoadingView stopAnimation];
         MJLog(@"获取粉丝失败");
     }];
 

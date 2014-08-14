@@ -16,7 +16,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }
@@ -25,8 +24,6 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
 
-
-        
         UIFont *font = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
         UIColor* neutralColor = [UIColor colorWithWhite:0.5 alpha:1.0];
         self.contentLbl.lineBreakMode = NSLineBreakByCharWrapping;
@@ -43,7 +40,7 @@
 }
 
 -(void)setDataWithPost:(Post *) post{
-    [self.image sd_setImageWithURL:[HDTool getLImage:post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+    [self.image sd_setImageWithURL:[NSURL URLWithString:post.postPhoto[0]] placeholderImage:[UIImage imageNamed:@"loadingImage"]];
     
     self.contentLbl.text = post.postContent;
     NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:post.postReleaseTime];

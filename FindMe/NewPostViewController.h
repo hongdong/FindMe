@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 #import "XHMessageTextView.h"
 #import "LXActionSheet.h"
-@interface NewPostViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,UITextViewDelegate>
+#import "QiniuSimpleUploader.h"
+@interface NewPostViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,UITextViewDelegate,QiniuUploadDelegate>
 @property (weak, nonatomic) IBOutlet XHMessageTextView *content;
 @property (weak, nonatomic) IBOutlet UIButton *addimage;
 @property (weak, nonatomic) IBOutlet UILabel *remainTextNum;

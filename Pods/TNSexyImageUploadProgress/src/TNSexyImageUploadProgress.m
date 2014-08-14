@@ -56,7 +56,7 @@ NSString * const IMAGE_UPLOAD_COMPLETED = @"imageUploadCompleted";
 - (void)show {
     
     if(!self.superview){
-        NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
+        NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows] reverseObjectEnumerator];
         
         for (UIWindow *window in frontToBackWindows)
             if (window.windowLevel == UIWindowLevelNormal) {
@@ -159,7 +159,7 @@ NSString * const IMAGE_UPLOAD_COMPLETED = @"imageUploadCompleted";
     self.maskLayer.transform = CATransform3DMakeScale(0, 0, 0);
     
     // Reverse the progress
-    [self.progressLayer addAnimation:self.reverseProgressAnimation forKey:@"reverseProgress"];
+//    [self.progressLayer addAnimation:self.reverseProgressAnimation forKey:@"CGColorRefCGColorRef"];
     self.progressLayer.strokeEnd = 0.0f;
     
     // Shrink track

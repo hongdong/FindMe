@@ -10,5 +10,4 @@
 #import "LXActionSheet.h"
 #import "QiniuSimpleUploader.h"
 @interface AlbumViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,LXActionSheetDelegate,QiniuUploadDelegate>
-
 @end

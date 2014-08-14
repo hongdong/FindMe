@@ -10,5 +10,6 @@
 
 @interface FeedbackViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UILabel *text;
 
 @end

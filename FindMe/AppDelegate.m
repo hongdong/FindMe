@@ -16,7 +16,6 @@
 #import "iVersion.h"
 @implementation AppDelegate
 
-
 #pragma mark 一个类只会调用一次
 + (void)initialize
 {
@@ -53,6 +52,7 @@
 
     
     [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
+    [iVersion sharedInstance].appStoreID = 905006430;
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
     
     if ([HDTool isFirstLoad]) {
@@ -197,10 +197,9 @@
     MJLog(@"didReceiveRemoteNotification2");
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
+    
     if(application.applicationState == UIApplicationStateInactive) {//点击提醒进来时调用
         MJLog(@"UIApplicationStateInactive");
-        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-//        [self handleUserInfo:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
     } else if (application.applicationState == UIApplicationStateBackground) {
         MJLog(@"UIApplicationStateBackground");
@@ -211,6 +210,7 @@
         [self handleUserInfo:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
     }
+    
     completionHandler(UIBackgroundFetchResultNoData);
 }
 
@@ -219,12 +219,11 @@
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
-        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-//        [self handleUserInfo:userInfo];
+
     }else if (application.applicationState==UIApplicationStateActive) {
         [self handleUserInfo:userInfo];
     }else if(application.applicationState==UIApplicationStateBackground){
-//        [self handleUserInfo:userInfo];
+        
     }
 }
 /**
@@ -285,30 +284,16 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    __weak __typeof(&*self)weakSelf = self;
+//    __weak __typeof(&*self)weakSelf = self;
     // 让SDK得到App目前的各种状态，以便让SDK做出对应当前场景的操作
 	[[EaseMob sharedInstance] applicationDidBecomeActive:application];
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
-    if ([[Config sharedConfig] isLogin]) {
-        if ([[Config sharedConfig] isOnline]) {
-            if ([[Config sharedConfig] needFresh]) {
-                [[Config sharedConfig] changeOnlineState:@"0"];
-                [HDNet freshSession:^{
-                    [weakSelf sysData];
-                }];
-            }else{
-                [self sysData];
-            }
-        }else{
-            [HDNet freshSession:^{
-                [weakSelf sysData];
-            }];
-        }
-    }else{
-        
-    }
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
+    if ([[Config sharedConfig] isLogin]) {
+        [self sysData];
+    }
 }
 
 - (void)sysData{    //同步更新数据
@@ -338,7 +323,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:FansNew object:nil];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        MJLog(@"获取更新失败");
     }];
 }
 

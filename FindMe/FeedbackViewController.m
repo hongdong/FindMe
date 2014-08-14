@@ -26,16 +26,19 @@
     [self.textView resignFirstResponder];
 }
 - (IBAction)submit:(UIButton *)sender {
+    __weak __typeof(&*self)weakSelf = self;
     sender.selected = !sender.selected;
     [self.view endEditing:YES];
     [HDTool showHUD:@"逗你玩"];
     if (sender.selected) {
         [self performBlock:^{
             [HDTool successHUD];
+            weakSelf.text.hidden = NO;
         } afterDelay:1.0];
     }else{
         [self performBlock:^{
             [HDTool errorHUD];
+            weakSelf.text.hidden = YES;
         } afterDelay:1.0];
     }
 

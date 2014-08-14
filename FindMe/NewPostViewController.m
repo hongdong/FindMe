@@ -13,6 +13,7 @@
         LXActionSheet *_actionSheet;
         UIImagePickerController *_imagePicker;
         BOOL _existImage;
+        QiniuSimpleUploader *_uploader;
 }
 
 @end
@@ -30,47 +31,80 @@
 - (IBAction)sendPressed:(id)sender {
     [self.view endEditing:YES];
     [HDTool showHUD:@"发送中..."];
-    NSDictionary *parameters = @{@"postContent": self.content.text,
-                                 @"postOfficial": @"2"
-                                 };
 
-    __weak __typeof(&*self)weakSelf = self;
     if (_existImage) {
-        NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/postImage.png"]];
-        NSDictionary *files = @{@"photo": filePath};
-        [HDNet POST:@"/data/post/release_post.do" parameters:parameters files:files success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *state = [responseObject objectForKey:@"state"];
-            if ([state isEqualToString:@"20001"]) {
-                [HDTool dismissHUD];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+        NSString *filePath = [[self documentFolderPath] stringByAppendingString:@"/postImage.png"];
+        NSDictionary *parameters = @{@"type": @"post"};
+        [HDNet GET:@"/data/qiniu/uploadtoken.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *result = responseObject[@"result"];
+            if (1==[result intValue]) {
+                NSString *token = responseObject[@"token"];
+                _uploader = [QiniuSimpleUploader uploaderWithToken:token];
+                _uploader.delegate = self;
+                [_uploader uploadFile:filePath key:[HDTool generateImgName] extra:nil];
             }else{
                 [HDTool errorHUD];
             }
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [HDTool errorHUD];
         }];
+
     }else{
-        [HDNet POST:@"/data/post/release_post.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *state = [responseObject objectForKey:@"state"];
-            if ([state isEqualToString:@"20001"]) {
-                [HDTool dismissHUD];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }else{
-                [HDTool errorHUD];
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [HDTool errorHUD];
-        }];
+        [self sendData:nil];
     }
 
 }
+
+#pragma qiniuDelegate
+
+- (void)uploadProgressUpdated:(NSString *)theFilePath percent:(float)percent
+{
+    
+}
+
+- (void)uploadSucceeded:(NSString *)theFilePath ret:(NSDictionary *)ret
+{
+    [self sendData:ret[@"key"]];
+}
+
+- (void)sendData:(NSString *)key{
+    NSDictionary *parameters;
+    if (key) {
+        parameters = @{@"postContent": self.content.text,
+                                     @"postOfficial": @"2",
+                                     @"key":key};
+    }else{
+        parameters = @{@"postContent": self.content.text,
+                                     @"postOfficial": @"2"};
+    }
+    __weak __typeof(&*self)weakSelf = self;
+    [HDNet POST:@"/data/post/release_post_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+            [HDTool dismissHUD];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }else{
+            [HDTool errorHUD];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [HDTool errorHUD];
+    }];
+}
+
+- (void)uploadFailed:(NSString *)theFilePath error:(NSError *)error
+{
+    [HDTool errorHUD];
+}
+
 - (IBAction)addimagePressed:(id)sender {
     [self.view endEditing:YES];
     _actionSheet = [[LXActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"拍照",@"从手机相册选择",@"移除照片"]];
     [_actionSheet showInView:self.view];
 }
+
+
 
 - (void)viewDidLoad
 {
@@ -104,7 +138,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             _imagePicker.allowsEditing = YES;
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请选择照片"];
+                [weakSelf showHint:@"请拍照"];
             }];
             
             break;}

@@ -10,15 +10,19 @@
 #import "NYSegmentedControl.h"
 #import "JMWhenTapped.h"
 #import "ChooseConstellationViewController.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "EaseMob.h"
 #import "EMError.h"
-
+#import "TNSexyImageUploadProgress.h"
 @interface PersonInfoViewController (){
     LXActionSheet *_actionSheet;
     UIImagePickerController *_imagePicker;
     NSString *_constellationStr;
     BOOL _existPhoto;
+    
+    TNSexyImageUploadProgress *_progress;
+    UIImage *_image;
+    QiniuSimpleUploader *_uploader;
+    NSString *_photoName;
 }
 
 @end
@@ -101,35 +105,72 @@
     if (![self isOK]) {
         return;
     }
-    [HDTool showHUD:@"加载中..."];
+
+//先上传图片到七牛
+
+    NSString *filePathStr = [[self documentFolderPath] stringByAppendingString:@"/myPhoto.png"];
+    
+    _progress = [[TNSexyImageUploadProgress alloc] init];
+    _progress.radius = 100;
+    _progress.progressBorderThickness = -10;
+    _progress.trackColor = [UIColor blackColor];
+    _progress.progressColor = [UIColor whiteColor];
+    _progress.imageToUpload = _image;
+    [_progress show];
+    
+    _photoName = [HDTool generateImgName];
+    
+    NSDictionary *parameters = @{@"type": @"user"};
+    [HDNet GET:@"/data/qiniu/uploadtoken.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *result = responseObject[@"result"];
+        if (1==[result intValue]) {
+            NSString *token = responseObject[@"token"];
+            _uploader = [QiniuSimpleUploader uploaderWithToken:token];
+            _uploader.delegate = self;
+            [_uploader uploadFile:filePathStr key:_photoName extra:nil];
+        }else{
+            [_progress removeFromSuperview];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        MJLog(@"错误");
+        [_progress removeFromSuperview];
+    }];
+
+}
+
+#pragma qiniuDelegate
+
+- (void)uploadProgressUpdated:(NSString *)theFilePath percent:(float)percent
+{
+    _progress.progress = percent*0.95;
+}
+
+- (void)uploadSucceeded:(NSString *)theFilePath ret:(NSDictionary *)ret
+{
+    __weak __typeof(&*self)weakSelf = self;
     _user.userRealName = self.nameTextField.text;
     _user.userConstellation = _constellationStr;
-    NSString *url = [NSString stringWithFormat:@"%@/data/user/rgst_user.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"userNickName": _user.userNickName,
-                                 @"school._id": [_user getSchoolId],
-                                 @"school.schoolName": [_user getSchoolName],
-                                 @"department._id": [_user getDepartmentId],
-                                 @"department.deptName": [_user getDepartmentName],
-                                 @"userConstellation": _user.userConstellation,
-                                 @"userGrade": _user.userGrade,
-                                 @"userSex": _user.userSex,
+    NSDictionary *parameters = @{@"userNickName":           _user.userNickName,
+                                 @"school._id":             [_user getSchoolId],
+                                 @"school.schoolName":      [_user getSchoolName],
+                                 @"department._id":         [_user getDepartmentId],
+                                 @"department.deptName":    [_user getDepartmentName],
+                                 @"userConstellation":      _user.userConstellation,
+                                 @"userGrade":              _user.userGrade,
+                                 @"userSex":                _user.userSex,
                                  @"userEquipment.equitNo": [[Config sharedConfig] getRegistrationID],
-                                 @"userEquipment.osType": @"1",
-                                 @"userOpenId": _user.openId,
-                                 @"userAuthType": _user.userAuthType,
-                                 @"userRealName": _user.userRealName
+                                 @"userEquipment.osType":   @"1",
+                                 @"userOpenId":             _user.openId,
+                                 @"userAuthType":           _user.userAuthType,
+                                 @"userRealName":           _user.userRealName,
+                                 @"key":                    _photoName
                                  };
     
-    
-    __weak __typeof(&*self)weakSelf = self;
-    NSURL *filePath = [NSURL fileURLWithPath:[[self documentFolderPath] stringByAppendingString:@"/myPhoto.png"]];
-    [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileURL:filePath name:@"photo" error:nil];
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet POST:@"/data/user/rgst_user_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+            _progress.progress = 1.0f;
             NSDictionary *userInfo = [responseObject objectForKey:@"userInfo"];
             _user._id = [userInfo objectForKey:@"userId"];
             _user.userPhoto = [userInfo objectForKey:@"userPhoto"];
@@ -138,20 +179,30 @@
             }];
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
-
+            
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isback": @"0"}];
             [HDNet EaseMobLoginWithUsername:_user._id];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"EaseMobShouldLogin" object:@YES userInfo:@{@"_id": _user._id}];
         }else if ([state isEqualToString:@"10001"]){
-            [HDTool errorHUD];
+            [_progress removeFromSuperview];
+            [weakSelf showHint:@"超时"];
         }else{
-            [HDTool errorHUD];
+            [_progress removeFromSuperview];
+            [weakSelf showHint:@"超时"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [_progress removeFromSuperview];
+        [weakSelf showHint:@"超时"];
     }];
+    
 }
+
+- (void)uploadFailed:(NSString *)theFilePath error:(NSError *)error
+{
+    [_progress removeFromSuperview];
+    [self showHint:@"超时"];
+}
+
 - (void)segmentSelected:(NYSegmentedControl *)sender {
     if(sender.selectedSegmentIndex==0){
         _user.userSex = @"男";
@@ -285,9 +336,9 @@
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
         //判断是静态图像还是视频
         if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-            UIImage *image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
+            _image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
 //        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
-            [weakSelf saveImage:image WithName:@"myPhoto.png"];
+            [weakSelf saveImage:_image WithName:@"myPhoto.png"];
         }
         
     }];

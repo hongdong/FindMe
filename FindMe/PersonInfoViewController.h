@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "LXActionSheet.h"
 #import "User.h"
-@interface PersonInfoViewController : UIViewController<UIGestureRecognizerDelegate,LXActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+#import "QiniuSimpleUploader.h"
+@interface PersonInfoViewController : UIViewController<UIGestureRecognizerDelegate,LXActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,QiniuUploadDelegate>
 @property(strong,nonatomic) User *user;
 @property (weak, nonatomic) IBOutlet UIView *sexView;
 @property (weak, nonatomic) IBOutlet UIView *constellationView;

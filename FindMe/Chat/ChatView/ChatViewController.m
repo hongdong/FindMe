@@ -149,6 +149,8 @@
 {
     [super viewWillDisappear:animated];
     [self keyBoardHidden];
+    [self.chatToolBar.inputTextView resignFirstResponder];
+    [self.view endEditing:YES];
     // 设置当前conversation的所有message为已读,这是会给别人通知
     [_conversation markMessagesAsRead:YES];
     
