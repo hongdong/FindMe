@@ -181,7 +181,7 @@
             [[Config sharedConfig] changeOnlineState:@"1"];
             
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isback": @"0"}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
             [HDNet EaseMobLoginWithUsername:_user._id];
         }else if ([state isEqualToString:@"10001"]){
             [_progress removeFromSuperview];
@@ -210,6 +210,7 @@
         _user.userSex = @"女";
     }
 }
+
 
 
 -(BOOL)isOK{

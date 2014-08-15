@@ -5,4 +5,6 @@
 
 //好友个数变化时，重新获取数据
 - (void)myReloadDataSource;
+
+-(void)cleanFriend;
 @end

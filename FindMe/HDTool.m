@@ -191,11 +191,6 @@
 
 }
 
-+(NSURL *)getLImage:(NSString *)url{
-    NSMutableString *temp = [[NSMutableString alloc] initWithString:url];
-    [temp insertString:@"l" atIndex:[temp rangeOfString:@".png"].location];
-    return [NSURL URLWithString:temp];
-}
 +(NSURL *)getSImage:(NSString *)url{
     NSString *temp = [NSString stringWithFormat:@"%@%@",url,@"?imageView2/1/w/150/h/150"];
     return [NSURL URLWithString:temp];

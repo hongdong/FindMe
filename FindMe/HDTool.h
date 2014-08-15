@@ -45,7 +45,7 @@
 
 +(void)ges:(UIViewController *)controller;
 
-+(NSURL *)getLImage:(NSString *)url;
+
 +(NSURL *)getSImage:(NSString *)url;
 +(void)showHUD:(NSString *)title;
 +(void)dismissHUD;

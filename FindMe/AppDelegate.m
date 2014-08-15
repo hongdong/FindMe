@@ -52,7 +52,7 @@
 
     
     [iVersion sharedInstance].applicationBundleID = @"cn.ifanmi.FindMe";
-    [iVersion sharedInstance].appStoreID = 905006430;
+//    [iVersion sharedInstance].appStoreID = 905006430;
     [iVersion sharedInstance].remoteVersionsPlistURL = @"http://114.215.115.33/download/versions.plist";
     
     if ([HDTool isFirstLoad]) {
@@ -78,18 +78,36 @@
     [self initJpushSDK:launchOptions];
     
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateChange:)
+                                                 name:KNOTIFICATION_LOGINCHANGE
+                                               object:nil];
+    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
         MJLog(@"didFinishLaunchingWithOptions----点击提醒打开软件");
-//        NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-//        [self handleUserInfo:remoteNotification];
     }else{
-        MJLog(@"点击ICON打开软件");
+        MJLog(@"didFinishLaunchingWithOptions----点击ICON打开软件");
        
     }
     
     
     return YES;
+}
+
+-(void)loginStateChange:(NSNotification *)notification{
+    
+    BOOL isLogin = [notification.object boolValue];
+
+    if (isLogin) {
+        if ([notification.userInfo[@"isBack"] isEqualToString:@"0"]) {
+            [self sysData];
+        }
+        
+    }else{
+
+    }
 }
 
 #pragma Jpush delegate
@@ -110,9 +128,6 @@
     }
     
 }
-
-
-
 
 -(void)initShareSDK{
     [ShareSDK registerApp:@"1a81fc29a7db"];

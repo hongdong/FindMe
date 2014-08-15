@@ -81,16 +81,17 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 -(void)loginChange:(NSNotification *)notification{
     
     BOOL isLogin = [notification.object boolValue];
+    UINavigationController *nav = (UINavigationController *)[self.viewControllers objectAtIndex:2];
+    ContactsViewController *contactsViewController = nav.viewControllers[0];
     if (isLogin) {
         if ([notification.userInfo[@"isBack"] isEqualToString:@"0"]) {
-            UINavigationController *nav = (UINavigationController *)[self.viewControllers objectAtIndex:2];
-            ContactsViewController *contactsViewController = nav.viewControllers[0];
+
             [contactsViewController myReloadDataSource];
         }
 
     }else{
-        UIViewController *vc = [self.viewControllers objectAtIndex:2];
-        vc.tabBarItem.badgeValue = nil;
+        [contactsViewController cleanFriend];
+        nav.tabBarItem.badgeValue = nil;
     }
 }
 

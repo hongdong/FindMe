@@ -25,9 +25,16 @@
         if ([state isEqualToString:@"20004"]) {
             if ([[Config sharedConfig] isLogin]) {
                 [HDNet freshSession:^{
-                    if (success) {
-                        success(operation,responseObject);
-                    }
+                    [HDNet GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if (success) {
+                            success(operation,responseObject);
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        if (failure) {
+                            failure(operation,error);
+                        }
+                    }];
+
                 }];
             }else{
                 MJLog(@"请先登入");
@@ -57,9 +64,16 @@
         if ([state isEqualToString:@"20004"]) {
             if ([[Config sharedConfig] isLogin]) {
                 [HDNet freshSession:^{
-                    if (success) {
-                        success(operation,responseObject);
-                    }
+                    [HDNet POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if (success) {
+                            success(operation,responseObject);
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        if (failure) {
+                            failure(operation,error);
+                        }
+                    }];
+
                 }];
             }else{
                 MJLog(@"请先登入");
@@ -89,19 +103,7 @@
                 [formData appendPartWithFileURL:files[key] name:key error:nil];
             }
         }success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *state = responseObject[@"state"];
-            if ([state isEqualToString:@"20004"]) {
-                if ([[Config sharedConfig] isLogin]) {
-                    [HDNet freshSession:^{
-                        if (success) {
-                            success(operation,responseObject);
-                        }
-                    }];
-                }else{
-                    MJLog(@"请先登入");
-                }
-                return;
-            }
+
             if (success) {
                 success(operation,responseObject);
             }
@@ -112,8 +114,6 @@
         }];
 
 }
-
-
 
 + (void)isOauth:(NSString *) uid forType:(NSString *) type andBack:(NSString *) back handle:(void (^)(id responseObject,NSError *error))handle{
     NSDictionary *parameters = @{@"userOpenId"     : uid,

@@ -24,10 +24,10 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     __weak __typeof(&*self)weakSelf = self;
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://114.215.115.33/upload/agreement/agreement.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://fmother.qiniudn.com/agreement.png"] placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         [weakSelf.indicator stopAnimating];
-        weakSelf.imageView.frame = CGRectMake(0, 0, 320, 1182);
-        ((UIScrollView *)weakSelf.view).contentSize = CGSizeMake(0, 1182);
+        weakSelf.imageView.frame = CGRectMake(0, 0, 320, 5023/2);
+        ((UIScrollView *)weakSelf.view).contentSize = CGSizeMake(0, 5023/2);
     }];
 }
 

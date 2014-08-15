@@ -97,6 +97,7 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fansNew:) name:FansNew object:nil];
+
     
     _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
     UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
@@ -122,6 +123,10 @@
     [self.view addSubview:_coverView];
     
     self.navigationItem.rightBarButtonItem = _fansItem;
+    if ([[Config sharedConfig] fansNew:nil]) {
+        _fansItem.badgeValue = @"N";
+        [self getMatch:nil andSender:nil];
+    }
     
     if (![[Config sharedConfig] isLogin]) {
         _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
@@ -149,7 +154,9 @@
         [self showHint:@"你还没登入"];
         return;
     }else if (_focusView.isFocused){
-        [_focusView dismiss:^{}];
+        [_focusView dismiss:^{
+            [[Config sharedConfig] launchGuide:@"0"];
+        }];
         return;
     }else if (![_user.userSex isEqualToString:@"女"]){
         [self showHint:@"目前只有女生开通了粉丝服务"];
@@ -234,7 +241,7 @@
                                                        _coverView.frame.size.height);
                      }
                      completion:^(BOOL finished){
-                         if (finished==YES&&[[Config sharedConfig] launchGuide:nil]) {
+                         if (finished==YES&&[[Config sharedConfig] launchGuide:nil]&&self.navigationController.tabBarController.selectedIndex==0) {
                              NSString *info;
                              if ([_user.userSex isEqualToString:@"男"]) {
                                  info = @"番迷君每天至少都会给你推荐一个有缘人，点击了like意味着你想尝试认识一下Ta。";
@@ -242,7 +249,7 @@
                                  info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的推荐。";
                              }
                              [weakSelf launchGuide:weakSelf.likeBt andText:info];
-                             [[Config sharedConfig] launchGuide:@"0"];
+                             
                          }
                      }];
     

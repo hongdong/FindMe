@@ -90,14 +90,19 @@
     
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
-        [self myReloadDataSource];
+        
     }else{
-        [self.dataSource removeAllObjects];
-        [self.contactsSource removeAllObjects];
-        [self.sectionTitles removeAllObjects];
-        [self.tableView reloadData];
-        self.navigationController.tabBarItem.badgeValue = nil;
+        [self cleanFriend];
     }
+}
+
+-(void)cleanFriend{
+    [self.dataSource removeAllObjects];
+    [self.contactsSource removeAllObjects];
+    [self.sectionTitles removeAllObjects];
+    
+    [self.tableView reloadData];
+    self.navigationController.tabBarItem.badgeValue = nil;
 }
 
 -(void)dealloc{
@@ -162,19 +167,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BaseTableViewCell *cell;
-
         static NSString *CellIdentifier = @"ContactListCell";
-        cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
-        
-            User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [cell.imageView sd_setImageWithURL:[HDTool getSImage:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
-            cell.textLabel.text = user.userNickName;
-    
-    
+        User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        [cell.imageView sd_setImageWithURL:[HDTool getSImage:user.userPhoto] placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
+        cell.textLabel.text = user.userNickName;
     
     return cell;
 }
@@ -215,7 +215,8 @@
     [contentView addSubview:label];
     return contentView;
 }
-//索引
+
+//索引  从self.sectionTitles中拿出存在好友的title
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
 
@@ -231,11 +232,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         User *user = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-//        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-//        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
         ChatViewController *chatVC = [[ChatViewController alloc] initWithChatter:user._id andPhoto:user.userPhoto];
         chatVC.title = user.userNickName;
         [self.navigationController pushViewController:chatVC animated:YES];

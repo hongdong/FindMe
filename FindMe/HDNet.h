@@ -19,11 +19,11 @@
      success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
-+ (void)POST:(NSString *)URLString
-  parameters:(id)parameters
-       files:(NSDictionary *)files
-     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+//+ (void)POST:(NSString *)URLString
+//  parameters:(id)parameters
+//       files:(NSDictionary *)files
+//     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+//     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 + (void)isOauth:(NSString *) uid
         forType:(NSString *) type
