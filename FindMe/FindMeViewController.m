@@ -20,9 +20,7 @@
     BBBadgeBarButtonItem *_fansItem;
     UIButton *_fansButton;
     MDCFocusView *_focusView;
-    
     LoginViewController *_loginViewController;
-    
     HYCircleLoadingView *_circleLoadingView;
 }
 
@@ -131,7 +129,9 @@
     if (![[Config sharedConfig] isLogin]) {
         _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
         _loginViewController.delegate = self;
+        MJLog(@"-------------------------%@",NSStringFromCGRect(_loginViewController.view.frame));
         [self.view addSubview:_loginViewController.view];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
     }
 
 }
@@ -208,7 +208,9 @@
         }else if([state isEqualToString:@"10003"]){
             [weakSelf showHint:@"用户已经失效，正在帮你刷新"];
             [weakSelf getMatch:nil andSender:nil];
-            
+        }else if ([state isEqualToString:@"10004"]){
+            [weakSelf showHint:@"请先上传真实头像以后番迷君才会帮你哦"];
+            [weakSelf hideCover];
         }else{
             
         }
@@ -360,13 +362,18 @@
             _loginViewController=nil;
         }
 //        [self getMatch:nil andSender:nil];
-    }
-    else{
+    }else{
         if (_loginViewController==nil) {
             _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
             _loginViewController.delegate = self;
         }
         [self showCover];
+        if (IS_IPHONE_5) {
+            _loginViewController.view.frame = CGRectMake(0, 0, 320, 455);
+        }else{
+            _loginViewController.view.frame = CGRectMake(0, 0, 320, 367);
+        }
+        MJLog(@"-------------------------%@",NSStringFromCGRect(_loginViewController.view.frame));
         [self.view addSubview:_loginViewController.view];
         self.navigationController.tabBarItem.badgeValue = nil;
     }

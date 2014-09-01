@@ -122,7 +122,7 @@
     [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool successHUD];
+            [HDTool dismissHUD];
             [[Config sharedConfig] initBadge];
             [[Config sharedConfig] changeLoginState:@"0"];
             [[Config sharedConfig] changeOnlineState:@"0"];

@@ -8,8 +8,8 @@
 
 #import "MJRefreshBaseView.h"
 #import "MJRefreshConst.h"
-#import "UIView+Extension.h"
-#import "UIScrollView+Extension.h"
+#import "UIView+MJExtension.h"
+#import "UIScrollView+MJExtension.h"
 #import <objc/message.h>
 
 @interface  MJRefreshBaseView()
@@ -85,8 +85,8 @@
     [super layoutSubviews];
     
     // 1.箭头
-    CGFloat arrowX = self.width * 0.5 - 100;
-    self.arrowImage.center = CGPointMake(arrowX, self.height * 0.5);
+    CGFloat arrowX = self.mj_width * 0.5 - 100;
+    self.arrowImage.center = CGPointMake(arrowX, self.mj_height * 0.5);
     
     // 2.指示器
     self.activityView.center = self.arrowImage.center;
@@ -103,9 +103,9 @@
         [newSuperview addObserver:self forKeyPath:MJRefreshContentOffset options:NSKeyValueObservingOptionNew context:nil];
         
         // 设置宽度
-        self.width = newSuperview.width;
+        self.mj_width = newSuperview.mj_width;
         // 设置位置
-        self.x = 0;
+        self.mj_x = 0;
         
         // 记录UIScrollView
         _scrollView = (UIScrollView *)newSuperview;
@@ -132,11 +132,22 @@
 #pragma mark 开始刷新
 - (void)beginRefreshing
 {
-    if (self.window) {
-        self.state = MJRefreshStateRefreshing;
+    if (self.state == MJRefreshStateRefreshing) {
+        // 回调
+        if ([self.beginRefreshingTaget respondsToSelector:self.beginRefreshingAction]) {
+            objc_msgSend(self.beginRefreshingTaget, self.beginRefreshingAction, self);
+        }
+        
+        if (self.beginRefreshingCallback) {
+            self.beginRefreshingCallback();
+        }
     } else {
-        _state = MJRefreshStateWillRefreshing;
-        [super setNeedsDisplay];
+        if (self.window) {
+            self.state = MJRefreshStateRefreshing;
+        } else {
+            _state = MJRefreshStateWillRefreshing;
+            [super setNeedsDisplay];
+        }
     }
 }
 
@@ -151,6 +162,41 @@
 }
 
 #pragma mark - 设置状态
+- (void)setPullToRefreshText:(NSString *)pullToRefreshText
+{
+    _pullToRefreshText = [pullToRefreshText copy];
+    [self settingLabelText];
+}
+- (void)setReleaseToRefreshText:(NSString *)releaseToRefreshText
+{
+    _releaseToRefreshText = [releaseToRefreshText copy];
+    [self settingLabelText];
+}
+- (void)setRefreshingText:(NSString *)refreshingText
+{
+    _refreshingText = [refreshingText copy];
+    [self settingLabelText];
+}
+- (void)settingLabelText
+{
+	switch (self.state) {
+		case MJRefreshStateNormal:
+            // 设置文字
+            self.statusLabel.text = self.pullToRefreshText;
+			break;
+		case MJRefreshStatePulling:
+            // 设置文字
+            self.statusLabel.text = self.releaseToRefreshText;
+			break;
+        case MJRefreshStateRefreshing:
+            // 设置文字
+            self.statusLabel.text = self.refreshingText;
+			break;
+        default:
+            break;
+	}
+}
+
 - (void)setState:(MJRefreshState)state
 {
     // 0.存储当前的contentInset
@@ -158,18 +204,37 @@
         _scrollViewOriginalInset = self.scrollView.contentInset;
     }
     
-    // 1.一样的就直接返回
+    // 1.一样的就直接返回(暂时不返回)
     if (self.state == state) return;
     
     // 2.根据状态执行不同的操作
     switch (state) {
 		case MJRefreshStateNormal: // 普通状态
         {
-            // 显示箭头
-            self.arrowImage.hidden = NO;
-            
-            // 停止转圈圈
-            [self.activityView stopAnimating];
+            if (self.state == MJRefreshStateRefreshing) {
+                [UIView animateWithDuration:MJRefreshSlowAnimationDuration * 0.6 animations:^{
+                    self.activityView.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    // 停止转圈圈
+                    [self.activityView stopAnimating];
+                    
+                    // 恢复alpha
+                    self.activityView.alpha = 1.0;
+                }];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MJRefreshSlowAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    // 再次设置回normal
+                    _state = MJRefreshStatePulling;
+                    self.state = MJRefreshStateNormal;
+                });
+                // 直接返回
+                return;
+            } else {
+                // 显示箭头
+                self.arrowImage.hidden = NO;
+                
+                // 停止转圈圈
+                [self.activityView stopAnimating];
+            }
 			break;
         }
             
@@ -199,5 +264,8 @@
     
     // 3.存储状态
     _state = state;
+    
+    // 4.设置文字
+    [self settingLabelText];
 }
 @end

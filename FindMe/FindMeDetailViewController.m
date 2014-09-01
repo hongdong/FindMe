@@ -14,9 +14,11 @@
 #import "MJPhoto.h"
 #import "UIView+Common.h"
 #import "HYCircleLoadingView.h"
+#import "BlocksKit+UIKit.h"
 @interface FindMeDetailViewController (){
         NSMutableArray *myImageUrlArr;
         HYCircleLoadingView *_circleLoadingView;
+        UIButton *_jbButton;
 }
 
 @end
@@ -42,9 +44,22 @@
 {
     [super viewDidLoad];
     _circleLoadingView = [[HYCircleLoadingView alloc]initWithFrame:CGRectMake(0, 0, 26, 26)];
-    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
-    self.navigationItem.rightBarButtonItem = loadingItem;
+    _jbButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 26)];
+    _jbButton.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+    _jbButton.contentMode = UIViewContentModeRight;
+    [_jbButton setTitle:@"举报" forState:UIControlStateNormal];
     __weak __typeof(&*self)weakSelf = self;
+    [_jbButton bk_addEventHandler:^(id sender) {
+        [weakSelf showHint:@"举报成功"];
+    } forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *jbItem = [[UIBarButtonItem alloc] initWithCustomView:_jbButton];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc] initWithCustomView:_circleLoadingView];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
+                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                       target:nil action:nil];
+    negativeSpacer.width = -16;
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer,jbItem,loadingItem];
+//    self.navigationItem.rightBarButtonItem = loadingItem;
     if (self.userId!=nil) {
         self.user._id = self.userId;
         [_circleLoadingView startAnimation];

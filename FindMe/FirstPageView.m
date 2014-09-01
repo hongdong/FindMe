@@ -59,4 +59,5 @@
         [self addSubview:self.vUserImg];
     }
 }
+
 @end

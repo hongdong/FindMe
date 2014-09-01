@@ -29,6 +29,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    if (IS_IPHONE_5) {
+//        self.view.frame = CGRectMake(0, 0, 320, 513);
+//    }else{
+//        self.view.frame = CGRectMake(0, 0, 320, 425);
+//    }
     [self setupScrollView];
 }
 -(void)setupScrollView{

@@ -8,8 +8,8 @@
 
 #import "MJRefreshConst.h"
 #import "MJRefreshHeaderView.h"
-#import "UIView+Extension.h"
-#import "UIScrollView+Extension.h"
+#import "UIView+MJExtension.h"
+#import "UIScrollView+MJExtension.h"
 
 @interface MJRefreshHeaderView()
 // 最后的更新时间
@@ -45,14 +45,24 @@
     return [[MJRefreshHeaderView alloc] init];
 }
 
+- (id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        self.pullToRefreshText = MJRefreshHeaderPullToRefresh;
+        self.releaseToRefreshText = MJRefreshHeaderReleaseToRefresh;
+        self.refreshingText = MJRefreshHeaderRefreshing;
+    }
+    return self;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     CGFloat statusX = 0;
     CGFloat statusY = 0;
-    CGFloat statusHeight = self.height * 0.5;
-    CGFloat statusWidth = self.width;
+    CGFloat statusHeight = self.mj_height * 0.5;
+    CGFloat statusWidth = self.mj_width;
     // 1.状态标签
     self.statusLabel.frame = CGRectMake(statusX, statusY, statusWidth, statusHeight);
     
@@ -69,7 +79,7 @@
     [super willMoveToSuperview:newSuperview];
     
     // 设置自己的位置和尺寸
-    self.y = - self.height;
+    self.mj_y = - self.mj_height;
 }
 
 #pragma mark - 状态相关
@@ -132,7 +142,7 @@
 - (void)adjustStateWithContentOffset
 {
     // 当前的contentOffset
-    CGFloat currentOffsetY = self.scrollView.contentOffsetY;
+    CGFloat currentOffsetY = self.scrollView.mj_contentOffsetY;
     // 头部控件刚好出现的offsetY
     CGFloat happenOffsetY = - self.scrollViewOriginalInset.top;
     
@@ -141,7 +151,7 @@
     
     if (self.scrollView.isDragging) {
         // 普通 和 即将刷新 的临界点
-        CGFloat normal2pullingOffsetY = happenOffsetY - self.height;
+        CGFloat normal2pullingOffsetY = happenOffsetY - self.mj_height;
         
         if (self.state == MJRefreshStateNormal && currentOffsetY < normal2pullingOffsetY) {
             // 转为即将刷新状态
@@ -172,9 +182,6 @@
 	switch (state) {
 		case MJRefreshStateNormal: // 下拉可以刷新
         {
-            // 设置文字
-			self.statusLabel.text = MJRefreshHeaderPullToRefresh;
-            
             // 刷新完毕
             if (MJRefreshStateRefreshing == oldState) {
                 self.arrowImage.transform = CGAffineTransformIdentity;
@@ -182,7 +189,7 @@
                 self.lastUpdateTime = [NSDate date];
                 
                 [UIView animateWithDuration:MJRefreshSlowAnimationDuration animations:^{
-                    self.scrollView.contentInsetTop = self.scrollViewOriginalInset.top;
+                    self.scrollView.mj_contentInsetTop = self.scrollViewOriginalInset.top;
                 }];
             } else {
                 // 执行动画
@@ -195,8 +202,6 @@
             
 		case MJRefreshStatePulling: // 松开可立即刷新
         {
-            // 设置文字
-            self.statusLabel.text = MJRefreshHeaderReleaseToRefresh;
             // 执行动画
             [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
                 self.arrowImage.transform = CGAffineTransformMakeRotation(M_PI);
@@ -206,17 +211,14 @@
             
 		case MJRefreshStateRefreshing: // 正在刷新中
         {
-            // 设置文字
-            self.statusLabel.text = MJRefreshHeaderRefreshing;
-            
             // 执行动画
             [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
                 // 1.增加滚动区域
-                CGFloat top = self.scrollViewOriginalInset.top + self.height;
-                self.scrollView.contentInsetTop = top;
+                CGFloat top = self.scrollViewOriginalInset.top + self.mj_height;
+                self.scrollView.mj_contentInsetTop = top;
                 
                 // 2.设置滚动位置
-                self.scrollView.contentOffsetY = - top;
+                self.scrollView.mj_contentOffsetY = - top;
             }];
 			break;
         }
