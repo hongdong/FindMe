@@ -165,6 +165,7 @@
 		04AF10231951515500A3E74B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04AF10051951515500A3E74B /* UIKit.framework */; };
 		04AF102B1951515500A3E74B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04AF10291951515500A3E74B /* InfoPlist.strings */; };
 		04AF102D1951515500A3E74B /* FindMeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AF102C1951515500A3E74B /* FindMeTests.m */; };
+		04AF5C4419B450CC00C5ACDC /* iphone_findme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04AF5C4319B450CC00C5ACDC /* iphone_findme.plist */; };
 		04B275FA195A8288007AE0CE /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B275F9195A8288007AE0CE /* Config.m */; };
 		04B275FD195A8297007AE0CE /* HDTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B275FC195A8297007AE0CE /* HDTool.m */; };
 		04B275FF195AF83E007AE0CE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04B275FE195AF83E007AE0CE /* PushConfig.plist */; };
@@ -565,6 +566,7 @@
 		04AF10281951515500A3E74B /* FindMeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FindMeTests-Info.plist"; sourceTree = "<group>"; };
 		04AF102A1951515500A3E74B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		04AF102C1951515500A3E74B /* FindMeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindMeTests.m; sourceTree = "<group>"; };
+		04AF5C4319B450CC00C5ACDC /* iphone_findme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iphone_findme.plist; sourceTree = "<group>"; };
 		04B275F8195A8288007AE0CE /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		04B275F9195A8288007AE0CE /* Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
 		04B275FB195A8297007AE0CE /* HDTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDTool.h; sourceTree = "<group>"; };
@@ -1167,6 +1169,7 @@
 		04A960941954FE9A002E30AF /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				04AF5C4319B450CC00C5ACDC /* iphone_findme.plist */,
 				049FB322199A5A80007B10D7 /* QiniuSDK */,
 				04AD09E81998404E00FF1464 /* HYCircleLoading */,
 				04B88F5A1991B89800EC1AAE /* MJExtension */,
@@ -2216,6 +2219,7 @@
 			files = (
 				04B30B6B198B1CD6008DE328 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				04B316C41956FC7600F93C73 /* chatBar_keyboard@2x.png in Resources */,
+				04AF5C4419B450CC00C5ACDC /* iphone_findme.plist in Resources */,
 				04169B471964FD0D00A64585 /* Expression_44@2x.png in Resources */,
 				04B316C11956FC7600F93C73 /* chatBar_faceSelected.png in Resources */,
 				04B316C51956FC7600F93C73 /* chatBar_keyboardSelected.png in Resources */,
