@@ -80,7 +80,8 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     if ([[Config sharedConfig] friendNew:nil]) {
-        [self myReloadDataSource];
+//        [self myReloadDataSource];
+        [self.tableView headerBeginRefreshing];
         [[Config sharedConfig] friendNew:@"0"];
         self.navigationController.tabBarItem.badgeValue = nil;
     }

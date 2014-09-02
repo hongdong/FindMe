@@ -21,9 +21,6 @@
         self.tabBarItem.selectedImage = [[UIImage imageNamed:@"tb2s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.tabBarItem.tag = 2;
         self.navigationBar.translucent = NO;        
-        if ([[Config sharedConfig] friendNew:nil]) {
-            self.tabBarItem.badgeValue = @"NEW";
-        }
     }
     return self;
 }

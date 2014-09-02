@@ -25,12 +25,13 @@
 //     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
 //     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
-+ (void)isOauth:(NSString *) uid
-        forType:(NSString *) type
-        andBack:(NSString *) back
-         handle:(void (^)(id responseObject,NSError *error))handle;
++ (void)login:(NSString *)userPhoneNumber
+  andPassword:(NSString *)userPassword
+      andBack:(NSString *)back
+      success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
-+ (void)freshSession:(void (^)())complete;
++ (void)freshSession:(void (^)(BOOL isSuccess))complete;
 
 + (void)EaseMobLoginWithUsername:(NSString *)username;
 @end

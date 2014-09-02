@@ -11,19 +11,21 @@
 #import "FansViewController.h"
 #import "UIView+Common.h"
 #import "NSString+HD.h"
-#import "LoginViewController.h"
 #import "HYCircleLoadingView.h"
-@interface FindMeViewController ()<CoverViewDelegate,LoginViewControllerDelegate>{
+#import "LoginView.h"
+#import "BlocksKit+UIKit.h"
+@interface FindMeViewController ()<CoverViewDelegate>{
     User *_user;
     User *_matchUser;
     CoverView *_coverView;
     BBBadgeBarButtonItem *_fansItem;
     UIButton *_fansButton;
     MDCFocusView *_focusView;
-    LoginViewController *_loginViewController;
     HYCircleLoadingView *_circleLoadingView;
+    
+    LoginView *_loginView;
 }
-
+@property(strong,nonatomic) LoginView *loginView;
 @end
 
 @implementation FindMeViewController
@@ -42,6 +44,23 @@
         
     }
     return self;
+}
+
+#pragma mark - Propertys
+
+- (LoginView *)loginView {
+    if (!_loginView) {
+        __weak __typeof(&*self)weakSelf = self;
+        _loginView = [HDTool loadCustomViewByIndex:LoginViewIndex];
+        [_loginView.regBt bk_addEventHandler:^(id sender) {
+            [weakSelf performSegueWithIdentifier:@"regUser" sender:nil];
+        } forControlEvents:UIControlEventTouchUpInside];
+        
+        [_loginView.loginBt bk_addEventHandler:^(id sender) {
+            [weakSelf performSegueWithIdentifier:@"loginUser" sender:nil];
+        } forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _loginView;
 }
 
 -(void)initCoverView{
@@ -127,11 +146,9 @@
     }
     
     if (![[Config sharedConfig] isLogin]) {
-        _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
-        _loginViewController.delegate = self;
-        MJLog(@"-------------------------%@",NSStringFromCGRect(_loginViewController.view.frame));
-        [self.view addSubview:_loginViewController.view];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
+        
+        [self.view addSubview:self.loginView];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:nil];
     }
 
 }
@@ -357,24 +374,19 @@
 -(void)loginStateChange:(NSNotification *)notification{
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
-        if (_loginViewController!=nil) {
-            [_loginViewController.view removeFromSuperview];
-            _loginViewController=nil;
+        if (_loginView!=nil) {
+            [_loginView removeFromSuperview];
+            _loginView=nil;
         }
 //        [self getMatch:nil andSender:nil];
     }else{
-        if (_loginViewController==nil) {
-            _loginViewController = [HDTool getControllerByStoryboardId:@"loginViewController"];
-            _loginViewController.delegate = self;
-        }
         [self showCover];
         if (IS_IPHONE_5) {
-            _loginViewController.view.frame = CGRectMake(0, 0, 320, 455);
+            self.loginView.frame = CGRectMake(0, 0, 320, 411);
         }else{
-            _loginViewController.view.frame = CGRectMake(0, 0, 320, 367);
+            self.loginView.frame = CGRectMake(0, 0, 320, 324);
         }
-        MJLog(@"-------------------------%@",NSStringFromCGRect(_loginViewController.view.frame));
-        [self.view addSubview:_loginViewController.view];
+        [self.view addSubview:self.loginView];
         self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
@@ -388,11 +400,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"chooseSchool"])
-    {
-        ChooseSchoolViewController *controller=(ChooseSchoolViewController *)(segue.destinationViewController);;
-        controller.user = sender;
-    }else if ([segue.identifier isEqualToString:@"findmeDetail"]) {
+    if ([segue.identifier isEqualToString:@"findmeDetail"]) {
         FindMeDetailViewController *controller = segue.destinationViewController;
         controller.user = sender;
     }else if ([segue.identifier isEqualToString:@"fans"]){

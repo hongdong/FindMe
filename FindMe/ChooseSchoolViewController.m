@@ -1,14 +1,22 @@
-#import "AFNetworking.h"
 #import "ChooseSchoolViewController.h"
 #import "ChooseDepartmentViewController.h"
 #import "User.h"
 @interface ChooseSchoolViewController (){
     NSArray *_deptArr;
+    User *_user;
 }
 @property(nonatomic, copy) NSString *currentSearchString;
 @end
 
 @implementation ChooseSchoolViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _user = [User getUserFromNSUserDefaults];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -139,14 +147,13 @@
 }
 
 
-#pragma mark - ASIHTTPRequest methods
+#pragma mark -
 
 - (void)departmentList:(NSString *) deptScNo
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/school/dept_list.do?schoolId=%@",Host,deptScNo];
     __weak __typeof(&*self)weakSelf = self;
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary *parameters = @{@"schoolId": deptScNo};
+    [HDNet GET:@"/data/school/dept_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject&&[responseObject objectForKey:@"department"]) {
             [HDTool successHUD];
             _deptArr = [responseObject objectForKey:@"department"];

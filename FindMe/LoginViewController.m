@@ -2,12 +2,11 @@
 //  LoginViewController.m
 //  FindMe
 //
-//  Created by mac on 14-8-8.
+//  Created by mac on 14-9-2.
 //  Copyright (c) 2014年 mac. All rights reserved.
 //
-#import <ShareSDK/ShareSDK.h>
+
 #import "LoginViewController.h"
-#import "ChooseSchoolViewController.h"
 #import "User.h"
 @interface LoginViewController (){
     User *_user;
@@ -17,11 +16,11 @@
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithCoder:aDecoder];
     if (self) {
-        // Custom initialization
+        _user = [[User alloc] init];
     }
     return self;
 }
@@ -29,169 +28,89 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    if (IS_IPHONE_5) {
-//        self.view.frame = CGRectMake(0, 0, 320, 513);
-//    }else{
-//        self.view.frame = CGRectMake(0, 0, 320, 425);
-//    }
-    [self setupScrollView];
+
 }
--(void)setupScrollView{
-    NSArray *_photoList = @[[UIImage imageNamed:@"int1"],[UIImage imageNamed:@"int2"],[UIImage imageNamed:@"int3"],[UIImage imageNamed:@"int4"]];
-    NSInteger pageCount = [_photoList count];
-    _pageControl.currentPage = 0;
-    _pageControl.numberOfPages = pageCount;
-    for(NSInteger i=0;i<pageCount;i++)
-    {
-        CGRect frame;
-        frame.origin.x = _scrollView.frame.size.width * i;
-        frame.origin.y = 0;
-        frame.size = _scrollView.frame.size;
-        UIImageView *pageView = [[UIImageView alloc] initWithImage:[_photoList objectAtIndex:i]];
-        pageView.contentMode = UIViewContentModeScaleAspectFill;
-        pageView.frame = frame;
-        [_scrollView addSubview:pageView];
-    }
-    CGSize pageScrollViewSize = _scrollView.frame.size;
-    _scrollView.contentSize = CGSizeMake(pageScrollViewSize.width * _photoList.count, 0);
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.phoneText becomeFirstResponder];
 }
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.phoneText resignFirstResponder];
+    [self.passwordText resignFirstResponder];
+    [self.view endEditing:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-
+    // Dispose of any resources that can be recreated.
 }
-- (IBAction)valueChanged:(id)sender {
-    // 更新Scroll View到正确的页面
-    CGRect frame;
-    frame.origin.x = _scrollView.frame.size.width * _pageControl.currentPage;
-    frame.origin.y = 0;
-    frame.size = _scrollView.frame.size;
-    [_scrollView scrollRectToVisible:frame animated:YES];
-}
-
-- (IBAction)loginPressed:(UIButton *)sender {
-    ShareType type = ShareTypeSinaWeibo;
-    NSString * sendType;
-    if (sender.tag==101) {
-        type = ShareTypeSinaWeibo;
-        sendType = @"SinaWeibo";
-    } else {
-        type = ShareTypeQQSpace;
-        sendType = @"QZone";
+- (IBAction)loginPressed:(id)sender {
+    [self.view endEditing:YES];
+    if (![self check]) {
+        return;
     }
+    [HDTool showHUD:@"登入中..."];
     __weak __typeof(&*self)weakSelf = self;
-    
-    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
-                                                         allowCallback:NO
-                                                                scopes:nil
-                                                         powerByHidden:YES
-                                                        followAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                        [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"洪小东东"],
-                                                                        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                                                        nil]
-                                                         authViewStyle:SSAuthViewStyleFullScreenPopup
-                                                          viewDelegate:nil
-                                               authManagerViewDelegate:nil];
-    
-    [ShareSDK authWithType:type options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
-        switch (state) {
-            case SSAuthStateBegan:
-                MJLog(@"SSAuthStateBegan");
-                break;
-            case SSAuthStateSuccess:{
-                MJLog(@"SSAuthStateSuccess");
-                [HDTool showHUD:@"请稍后..."];
-                
-                [ShareSDK getUserInfoWithType:type
-                                  authOptions:authOptions
-                                       result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-                                           if (result) {
-                                               
-                                               [weakSelf initUser:userInfo AndSendType:sendType];
-                                               
-                                               [HDNet isOauth:[userInfo uid] forType:sendType andBack:@"0" handle:^(id responseObject, NSError *error) {
-                                                   if (responseObject==nil) {
-                                                       [HDTool errorHUD];
-                                                       return;
-                                                   }
-                                                   NSString *state = [responseObject objectForKey:@"state"];
-                                                   
-                                                   if ([state isEqualToString:@"20001"]) {
-                                                       [HDTool dismissHUD];
-                                                       _user._id = [responseObject objectForKey:@"userId"];
-                                                       
-                                                       [_user getUserInfo:^{
-                                                           [_user saveToNSUserDefaults];//保存登入信息
-                                                       }];
-                                                       
-                                                       [[Config sharedConfig] changeLoginState:@"1"];
-                                                       [[Config sharedConfig] changeOnlineState:@"1"];
-                                                       [[Config sharedConfig] friendNew:@"1"];
-//                                                       [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
-                                                       [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
-                                                       [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
-                                                       
-                                                   }else if ([state isEqualToString:@"10001"]){
-                                                       
-                                                       [HDTool dismissHUD];
-                                                       if (_delegate && [_delegate respondsToSelector:@selector(shouldShowChooseSchool:)]) {
-                                                           [_delegate shouldShowChooseSchool:_user];
-                                                       }
-                                                       
-                                                   }else{
-                                                       [HDTool errorHUD];
-                                                   }
-                                                   
-                                               }];
-                                               
-                                           }else{
-                                               
-                                               [HDTool dismissHUD];
-                                               
-                                               [HDTool ToastNotification:@"网络太糟糕了" andView:weakSelf.view andLoading:NO andIsBottom:NO];
-                                           }
-                                           
-                                       }];
-            }
-                break;
-            case SSAuthStateFail:
-                MJLog(@"SSAuthStateFail");
-                break;
-            case SSAuthStateCancel:
-                MJLog(@"SSAuthStateCancel");
-                break;
-            default:
-                break;
+    [HDNet login:self.phoneText.text andPassword:self.passwordText.text andBack:@"0" success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        
+        if ([state isEqualToString:@"20001"]) {
+            [HDTool dismissHUD];
+            _user._id = [responseObject objectForKey:@"userId"];
+            
+            [_user getUserInfo:^{
+                [_user saveToNSUserDefaults];//保存登入信息
+            }];
+            
+            [[Config sharedConfig] changeLoginState:@"1"];
+            [[Config sharedConfig] changeOnlineState:@"1"];
+            [[Config sharedConfig] friendNew:@"1"];
+            [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
+            [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
+            
+        }else if ([state isEqualToString:@"20002"]){
+            
+            [HDTool dismissHUD];
+            _user.userPhoneNumber = weakSelf.phoneText.text;
+            _user.userPassword = weakSelf.passwordText.text;
+            [_user saveToNSUserDefaults];
+            [weakSelf performSegueWithIdentifier:@"chooseSchool2" sender:nil];
+            
+        }else if([state isEqualToString:@"10001"]){
+            [HDTool errorHUD];
+        }else if ([state isEqualToString:@"20003"]){
+            [HDTool dismissHUD];
+            [weakSelf showHint:@"此号码还未注册，请点击注册"];
+        }else if ([state isEqualToString:@"20004"]){
+            [HDTool dismissHUD];
+            [weakSelf showHint:@"密码不正确"];
+        }else{
+            [HDTool errorHUD];
         }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [HDTool errorHUD];
     }];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([[segue identifier] isEqualToString:@"chooseSchool"])
-    {
-        ChooseSchoolViewController *controller=(ChooseSchoolViewController *)(segue.destinationViewController);;
-        controller.user = _user;
+-(BOOL)check{
+    if (self.phoneText.text.length!=11) {
+        [self showHint:@"电话号码非法"];
+        return NO;
     }
+    if (self.passwordText.text.length<6) {
+        [self showHint:@"密码非法"];
+        return NO;
+    }
+    return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self loginPressed:nil];
+    return NO;
 }
 
-- (void)initUser:(id<ISSPlatformUser>) userInfo AndSendType:(NSString *) sendType{
-    _user = [[User alloc] init];
-    _user.openId = [userInfo uid];
-    _user.userNickName = [userInfo nickname];
-    _user.userAuthType = sendType;
-    
-}
-
-
-
-#pragma delegate
--(void) scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGFloat pageWidth = _scrollView.frame.size.width;
-    // 在滚动超过页面宽度的50%的时候，切换到新的页面
-    int page = floor((_scrollView.contentOffset.x + pageWidth/2)/pageWidth);
-    _pageControl.currentPage = page;
-    
-}
 @end

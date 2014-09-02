@@ -24,7 +24,10 @@
         NSString *state = responseObject[@"state"];
         if ([state isEqualToString:@"20004"]) {
             if ([[Config sharedConfig] isLogin]) {
-                [HDNet freshSession:^{
+                [HDNet freshSession:^(BOOL isSuccess){
+                    if (!isSuccess) {
+                        return;
+                    }
                     [HDNet GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         if (success) {
                             success(operation,responseObject);
@@ -63,7 +66,10 @@
         NSString *state = responseObject[@"state"];
         if ([state isEqualToString:@"20004"]) {
             if ([[Config sharedConfig] isLogin]) {
-                [HDNet freshSession:^{
+                [HDNet freshSession:^(BOOL isSuccess){
+                    if (!isSuccess) {
+                        return;
+                    }
                     [HDNet POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         if (success) {
                             success(operation,responseObject);
@@ -75,6 +81,7 @@
                     }];
 
                 }];
+
             }else{
                 MJLog(@"请先登入");
             }
@@ -115,43 +122,67 @@
 
 }
 
-+ (void)isOauth:(NSString *) uid forType:(NSString *) type andBack:(NSString *) back handle:(void (^)(id responseObject,NSError *error))handle{
-    NSDictionary *parameters = @{@"userOpenId"     : uid,
-                                 @"userAuthType"   : type,
++ (void)login:(NSString *)userPhoneNumber
+  andPassword:(NSString *)userPassword
+      andBack:(NSString *)back
+      success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure{
+    
+    NSDictionary *parameters = @{@"userPhoneNumber"     : userPhoneNumber,
+                                 @"userPassword"   : userPassword,
                                  @"equitNo"        : [[Config sharedConfig] getRegistrationID],
                                  @"osType"         : @"1",
                                  @"backLogin"      : back};
-    [HDNet POST:@"/data/user/grant_user.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        handle(responseObject,nil);
+    [HDNet POST:@"/data/user/login_user_phonenumber.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success(operation,responseObject);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        handle(nil,error);
+        if (failure) {
+            failure(operation,error);
+        }
     }];
-    
 }
 
-+ (void)freshSession:(void (^)())complete{
+
+
++ (void)freshSession:(void (^)(BOOL isSuccess))complete{
     User *user = [User getUserFromNSUserDefaults];
-    [HDNet isOauth:user.openId forType:user.userAuthType andBack:@"1" handle:^(id responseObject, NSError *error) {
-        if (responseObject==nil) {
-            return;
-        }
-        
+    [HDNet login:user.userPhoneNumber andPassword:user.userPassword andBack:@"1" success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
-        
         if ([state isEqualToString:@"20001"]) {
             MJLog(@"刷新session成功");
             [[Config sharedConfig] changeOnlineState:@"1"];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"1"}];
             if (complete) {
-                complete();
+                complete(YES);
             }
             
+        }else if ([state isEqualToString:@"20002"]){
+            MJLog(@"资料还未完善");
+            if (complete) {
+                complete(NO);
+            }
         }else if ([state isEqualToString:@"10001"]){
             MJLog(@"刷新session失败");
+            if (complete) {
+                complete(NO);
+            }
         }else if ([state isEqualToString:@"30001"]){
             MJLog(@"刷新session失败");
+            if (complete) {
+                complete(NO);
+            }
         }else{
             MJLog(@"刷新session失败");
+            if (complete) {
+                complete(NO);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        MJLog(@"刷新session失败");
+        if (complete) {
+            complete(NO);
         }
     }];
     

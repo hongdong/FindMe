@@ -8,6 +8,7 @@
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import <SMS_SDK/SMS_SDK.h>
 #import "WXApi.h"
 #import "AppDelegate.h"
 #import "EaseMob.h"
@@ -76,6 +77,8 @@
     [self initEaseMobSDK:application and:launchOptions];
     
     [self initJpushSDK:launchOptions];
+    
+    [self initSMS];
     
     [[Config sharedConfig] saveRegistrationID:[APService registrionID]];
     
@@ -158,6 +161,10 @@
                                                    UIRemoteNotificationTypeAlert)];
     // Required
     [APService setupWithOption:launchOptions];
+}
+
+- (void)initSMS{
+   [SMS_SDK registerApp:@"25fd3427d030" withSecret:@"f9892059e729efde69a8eb4ceab1facd"];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url

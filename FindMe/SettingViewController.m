@@ -12,7 +12,6 @@
 #import "EaseMob.h"
 #import "User.h"
 #import "iVersion.h"
-#import <ShareSDK/ShareSDK.h>
 @interface SettingViewController ()<iVersionDelegate>
 
 @end
@@ -131,12 +130,6 @@
             [[Config sharedConfig] fansNew:@"0"];
             [[Config sharedConfig] postNew:@"0"];
             [User removeDbObjectsWhere:@"1=1"];
-            User *user = [User getUserFromNSUserDefaults];
-            ShareType type = ShareTypeSinaWeibo;
-            if ([user.userAuthType isEqualToString:@"QZone"]) {
-                type = ShareTypeQQSpace;
-            }
-            [ShareSDK cancelAuthWithType:type];
             [[Config sharedConfig] cleanUser];
 
             self.tabBarController.selectedIndex = 0;

@@ -27,7 +27,8 @@
 #define PostDetailHeadView1Index 4
 #define EmptyViewIndex 5
 #define RandomHiViewIndex 6
+#define LoginViewIndex 7
 
 #define Host @"http://114.215.115.33"
-//#define Host @"http://192.168.1.3:8080/FindMeServer"
+//#define Host @"http://192.168.1.9:8080/FindMeServer"
 #endif

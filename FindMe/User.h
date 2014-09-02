@@ -9,14 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <STDbKit/STDbObject.h>
 @interface User : STDbObject
-@property (strong,nonatomic) NSString *openId;
+
+@property (strong,nonatomic) NSString *userPhoneNumber;
+@property (strong,nonatomic) NSString *userPassword;
 @property (strong,nonatomic) NSString *userNickName;
 @property (strong,nonatomic) NSString *userPhoto;
 
-//@property (strong,nonatomic) NSString *userDeptNo;
-//@property (strong,nonatomic) NSString *userDeptName;
-//@property (strong,nonatomic) NSString *userScNo;
-//@property (strong,nonatomic) NSString *userScName;
+
 
 @property (strong,nonatomic) NSMutableDictionary *department;
 @property (strong,nonatomic) NSMutableDictionary *school;
@@ -32,8 +31,6 @@
 @property (strong,nonatomic) NSString *userLoginCount;
 @property (strong,nonatomic) NSMutableArray *userAlbum;
 
-
-@property (strong,nonatomic) NSString *userAuthType;
 @property (strong,nonatomic) NSNumber *userAuth;
 
 @property (strong,nonatomic) NSString *registrationID;

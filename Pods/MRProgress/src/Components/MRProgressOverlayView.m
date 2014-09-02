@@ -16,8 +16,8 @@
 #import "MRProgressHelper.h"
 
 
-const CGFloat MRProgressOverlayViewCornerRadius = 7;
-const CGFloat MRProgressOverlayViewMotionEffectExtent = 10;
+static const CGFloat MRProgressOverlayViewCornerRadius = 7;
+static const CGFloat MRProgressOverlayViewMotionEffectExtent = 10;
 
 
 @interface MRProgressOverlayView () {
@@ -592,7 +592,16 @@ static void *MRProgressOverlayViewObservationContext = &MRProgressOverlayViewObs
     self.transform = self.transformForOrientation;
     
     CGRect bounds = self.superview.bounds;
-    self.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    
+    if ([self.superview isKindOfClass:[UIScrollView class]]) {
+        UIScrollView *scrollView = (UIScrollView *)self.superview;
+        insets = scrollView.contentInset;
+    }
+    
+    self.center = CGPointMake((bounds.size.width - insets.left - insets.right) / 2.0f,
+                              (bounds.size.height - insets.top - insets.bottom) / 2.0f);
+
     if ([self.superview isKindOfClass:UIWindow.class] && UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication.statusBarOrientation)) {
         // Swap width and height
         self.bounds = (CGRect){CGPointZero, {bounds.size.height, bounds.size.width}};
@@ -709,8 +718,14 @@ static void *MRProgressOverlayViewObservationContext = &MRProgressOverlayViewObs
 }
 
 - (void)setProgress:(float)progress animated:(BOOL)animated {
+    NSParameterAssert(progress >= 0 && progress <= 1);
+    _progress = progress;
+    [self applyProgressAnimated:(BOOL)animated];
+}
+    
+- (void)applyProgressAnimated:(BOOL)animated {
     if ([self.modeView respondsToSelector:@selector(setProgress:animated:)]) {
-        [((id)self.modeView) setProgress:progress animated:animated];
+        [((id)self.modeView) setProgress:self.progress animated:animated];
     } else if ([self.modeView respondsToSelector:@selector(setProgress:)]) {
         if (animated) {
             #if DEBUG
@@ -720,7 +735,7 @@ static void *MRProgressOverlayViewObservationContext = &MRProgressOverlayViewObs
                       NSStringFromSelector(@selector(setProgress:animated:)));
             #endif
         }
-        [((id)self.modeView) setProgress:progress];
+        [((id)self.modeView) setProgress:self.progress];
     } else {
         NSAssert(self.mode == MRProgressOverlayViewModeDeterminateCircular
                  || self.mode == MRProgressOverlayViewModeDeterminateHorizontalBar,

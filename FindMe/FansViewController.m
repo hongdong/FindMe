@@ -49,6 +49,10 @@
     [self getFans];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self showHint:@"向右YES，向左NO"];
+}
 
 -(void)getFans{
     
@@ -56,10 +60,9 @@
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/user/fans_list.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [_circleLoadingView stopAnimation];
-        if ([[Config sharedConfig] fansNew:nil]) {
-            [[Config sharedConfig] fansNew:@"0"];
-            weakSelf.fansItem.badgeValue = nil;
-        }
+        
+        [[Config sharedConfig] fansNew:@"0"];
+        weakSelf.fansItem.badgeValue = nil;
         
         NSArray *userFans = [responseObject objectForKey:@"userFans"];
         if (userFans!=nil&&[userFans count]!=0) {
@@ -201,7 +204,6 @@
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     text = @"暂无粉丝";
     font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22.0];
-//    textColor = HDRED;
     if (font) [attributes setObject:font forKey:NSFontAttributeName];
     if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];

@@ -151,7 +151,8 @@
     __weak __typeof(&*self)weakSelf = self;
     _user.userRealName = self.nameTextField.text;
     _user.userConstellation = _constellationStr;
-    NSDictionary *parameters = @{@"userNickName":           _user.userNickName,
+    NSDictionary *parameters = @{ @"userPhoneNumber":           _user.userPhoneNumber,
+                                 @"userNickName":           _user.userRealName,
                                  @"school._id":             [_user getSchoolId],
                                  @"school.schoolName":      [_user getSchoolName],
                                  @"department._id":         [_user getDepartmentId],
@@ -161,13 +162,11 @@
                                  @"userSex":                _user.userSex,
                                  @"userEquipment.equitNo": [[Config sharedConfig] getRegistrationID],
                                  @"userEquipment.osType":   @"1",
-                                 @"userOpenId":             _user.openId,
-                                 @"userAuthType":           _user.userAuthType,
                                  @"userRealName":           _user.userRealName,
                                  @"key":                    _photoName
                                  };
     
-    [HDNet POST:@"/data/user/rgst_user_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet POST:@"/data/user/complete_user_info.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             _progress.progress = 1.0f;
@@ -179,7 +178,6 @@
             }];
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
-            
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
             [HDNet EaseMobLoginWithUsername:_user._id];
