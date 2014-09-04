@@ -25,6 +25,7 @@
     [super awakeFromNib];
     self.photo.layer.cornerRadius = 40;
     self.photo.layer.masksToBounds = YES;
+    self.photo.canClick = YES;
 }
 
 -(void)setUser:(User *)user{

@@ -61,15 +61,15 @@
         if ([state isEqualToString:@"20001"]) {
             [HDTool dismissHUD];
             _user._id = [responseObject objectForKey:@"userId"];
-            
+            _user.userPhoneNumber = self.phoneText.text;
+            _user.userPassword = self.passwordText.text;
             [_user getUserInfo:^{
                 [_user saveToNSUserDefaults];//保存登入信息
             }];
-            
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
-            [[Config sharedConfig] friendNew:@"1"];
-            [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+//            [[Config sharedConfig] friendNew:@"1"];
+            [weakSelf.navigationController popToRootViewControllerAnimated:NO];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
             [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
             

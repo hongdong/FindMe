@@ -58,8 +58,6 @@
     
     if ([HDTool isFirstLoad]) {
         MJLog(@"这个版本第一次启动");
-        [[Config sharedConfig] initBadge];
-
     }
 }
 
@@ -88,13 +86,16 @@
                                                object:nil];
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
     if ([launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
         MJLog(@"didFinishLaunchingWithOptions----点击提醒打开软件");
     }else{
         MJLog(@"didFinishLaunchingWithOptions----点击ICON打开软件");
-       
     }
     
+    if ([[Config sharedConfig] isLogin]) {
+        [self sysData];
+    }
     
     return YES;
 }
@@ -216,19 +217,15 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    MJLog(@"didReceiveRemoteNotification2");
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     
     if(application.applicationState == UIApplicationStateInactive) {//点击提醒进来时调用
-        MJLog(@"UIApplicationStateInactive");
         completionHandler(UIBackgroundFetchResultNewData);
     } else if (application.applicationState == UIApplicationStateBackground) {
-        MJLog(@"UIApplicationStateBackground");
         [self handleUserInfo:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
     } else {
-        MJLog(@"active");
         [self handleUserInfo:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
     }
@@ -237,13 +234,12 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    MJLog(@"didReceiveRemoteNotification1");
     [APService handleRemoteNotification:userInfo];
     [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
     if (application.applicationState==UIApplicationStateInactive) {
 
     }else if (application.applicationState==UIApplicationStateActive) {
-        [self handleUserInfo:userInfo];
+        
     }else if(application.applicationState==UIApplicationStateBackground){
         
     }
@@ -252,9 +248,9 @@
  对推送的处理
  */
 -(void)handleUserInfo:(NSDictionary *)userInfo{
-    if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {//强退
+    if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {//强退,未处理
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
         
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){//秘圈动态
         
@@ -313,9 +309,7 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-    if ([[Config sharedConfig] isLogin]) {
-        [self sysData];
-    }
+
 }
 
 - (void)sysData{    //同步更新数据

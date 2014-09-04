@@ -27,6 +27,7 @@
             weakSelf._id = [userInfo objectForKey:@"_id"];
             weakSelf.userPhoneNumber = [userInfo objectForKey:@"userPhoneNumber"];
             weakSelf.userPassword = [userInfo objectForKey:@"userPassword"];
+            weakSelf.registrationID = [userInfo objectForKey:@"registrationID"];
             weakSelf.userRealName = [userInfo objectForKey:@"userRealName"];
             weakSelf.department = [userInfo objectForKey:@"department"];
             weakSelf.school = [userInfo objectForKey:@"school"];

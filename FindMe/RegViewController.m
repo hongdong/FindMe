@@ -159,7 +159,7 @@ static int count = 60;
 }
 
 - (BOOL)check{
-    if (self.passwordText.text.length<6) {
+    if (self.passwordText.text.length<6||self.passwordText.text.length>18) {
         [self showHint:@"密码非法"];
         return NO;
     }

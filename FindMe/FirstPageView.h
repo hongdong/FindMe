@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "ClickImage.h"
 @interface FirstPageView : UIView
-@property (weak, nonatomic) IBOutlet UIImageView *photo;
+@property (weak, nonatomic) IBOutlet ClickImage *photo;
 @property (strong, nonatomic) UILabel *realNameLbl;
 @property (strong, nonatomic) UIImageView *sex;
 @property (strong, nonatomic) UIImageView *vUserImg;

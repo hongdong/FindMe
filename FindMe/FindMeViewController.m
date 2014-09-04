@@ -332,7 +332,6 @@
         self.nickname.bounds = (CGRect){{0,0},realsize};
         self.nickname.center = CGPointMake(0.5*self.view.width, self.nickname.center.y);
         
-        
         self.nickname.text = _matchUser.userNickName;
         self.grade.text = _matchUser.userGrade;
         

@@ -8,7 +8,6 @@
 
 #import "SettingViewController.h"
 #import "JMWhenTapped.h"
-#import "AFNetworking.h"
 #import "EaseMob.h"
 #import "User.h"
 #import "iVersion.h"
@@ -116,13 +115,11 @@
 
 - (IBAction)signOutPressed:(id)sender {
     [HDTool showHUD:@"注销中..."];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/data/user/login_out.do",Host];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [HDNet POST:@"/data/user/login_out.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
             [HDTool dismissHUD];
-            [[Config sharedConfig] initBadge];
+//            [[Config sharedConfig] initBadge];
             [[Config sharedConfig] changeLoginState:@"0"];
             [[Config sharedConfig] changeOnlineState:@"0"];
             [[Config sharedConfig] friendNew:@"0"];
@@ -131,10 +128,10 @@
             [[Config sharedConfig] postNew:@"0"];
             [User removeDbObjectsWhere:@"1=1"];
             [[Config sharedConfig] cleanUser];
-
-            self.tabBarController.selectedIndex = 0;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            
+            self.tabBarController.selectedIndex = 0;
             
             [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
                 if (!error) {
@@ -146,9 +143,7 @@
         }else{
             [HDTool errorHUD];
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
         [HDTool errorHUD];
     }];
 }
