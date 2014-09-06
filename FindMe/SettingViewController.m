@@ -129,9 +129,13 @@
             [User removeDbObjectsWhere:@"1=1"];
             [[Config sharedConfig] cleanUser];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
             
-            self.tabBarController.selectedIndex = 0;
+            
+            [self.navigationController popToRootViewControllerAnimated:NO];
+            
+//            self.tabBarController.selectedIndex = 0;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
             
             [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
                 if (!error) {

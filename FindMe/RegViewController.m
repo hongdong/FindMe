@@ -66,14 +66,12 @@ static int count = 60;
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)getCodePressed:(UIButton *)sender {
-    NSString* rule1 = @"^1(3|5|7|8|4)\d{9}";
+    NSString* rule1 = @"^1(3|5|7|8|4)\\d{9}";
     NSPredicate* pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",rule1];
     BOOL isMatch=[pred evaluateWithObject:self.phoneText.text];
     if (!isMatch&&self.phoneText.text.length!=11) {
         //手机号码不正确
-        UIAlertView* alert=[[UIAlertView alloc] initWithTitle:@"提示" message:@"手机号码非法，请重新填写" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+        [HDTool ToastNotification:@"手机号码非法，请重新填写" andView:self.view andLoading:NO andIsBottom:NO];
     }
 
     count = 60;
@@ -93,24 +91,19 @@ static int count = 60;
     [SMS_SDK getVerifyCodeByPhoneNumber:self.phoneText.text AndZone:@"86" result:^(enum SMS_GetVerifyCodeResponseState state) {
         if (1==state) {
             _user.userPhoneNumber = self.phoneText.text;
+            [HDTool ToastNotification:@"验证码成功发送" andView:self.view andLoading:NO andIsBottom:NO];
         }
         else if(0==state)
         {
-            NSString* str=[NSString stringWithFormat:@"验证码发送失败 请稍后重试"];
-            UIAlertView* alert=[[UIAlertView alloc] initWithTitle:@"发送失败" message:str delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
+            [HDTool ToastNotification:@"验证码发送失败,请稍后重试" andView:self.view andLoading:NO andIsBottom:NO];
         }
-        else if (SMS_ResponseStateMaxVerifyCode==state)
+        else if (SMS_ResponseStateMaxVerifyCode==state)//请求验证码超上限 请稍后重试
         {
-            NSString* str=[NSString stringWithFormat:@"请求验证码超上限 请稍后重试"];
-            UIAlertView* alert=[[UIAlertView alloc] initWithTitle:@"超过上限" message:str delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
+            [HDTool ToastNotification:@"验证码发送失败,请稍后重试" andView:self.view andLoading:NO andIsBottom:NO];
         }
-        else if(SMS_ResponseStateGetVerifyCodeTooOften==state)
+        else if(SMS_ResponseStateGetVerifyCodeTooOften==state)//客户端请求发送短信验证过于频繁
         {
-            NSString* str=[NSString stringWithFormat:@"客户端请求发送短信验证过于频繁"];
-            UIAlertView* alert=[[UIAlertView alloc] initWithTitle:@"提示" message:str delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
+            [HDTool ToastNotification:@"验证码发送失败,请稍后重试" andView:self.view andLoading:NO andIsBottom:NO];
         }
         
     }];

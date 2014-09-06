@@ -41,6 +41,7 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadFriend:) name:FriendChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addUnreadPostMsg:) name:PostNew object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(forceSignOut:) name:ForceSignOut object:nil];
     if ([[Config sharedConfig] matchNew:nil]) {
         [self addUnreadMatch:nil];
     }
@@ -58,6 +59,11 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FriendChange object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PostNew object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ForceSignOut object:nil];
+}
+
+-(void)forceSignOut:(NSNotification *)note{
+    MJLog(@"强退");
 }
 
 -(void)addUnreadMatch:(NSNotification *)note{
@@ -92,6 +98,8 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }else{
         [contactsViewController cleanFriend];
         nav.tabBarItem.badgeValue = nil;
+//        self.selectedIndex = 0;
+        self.selectedViewController = self.viewControllers[0];
     }
 }
 

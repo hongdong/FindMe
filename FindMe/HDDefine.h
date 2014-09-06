@@ -17,6 +17,7 @@
 #define FansNew @"FansNew"
 #define PostNew @"PostNew"
 #define CoverChange @"CoverChange"
+#define ForceSignOut @"ForceSignOut"
 
 #define CHATVIEWBACKGROUNDCOLOR [UIColor colorWithRed:0.936 green:0.932 blue:0.907 alpha:1]
 

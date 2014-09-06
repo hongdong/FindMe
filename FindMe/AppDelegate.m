@@ -250,7 +250,7 @@
 -(void)handleUserInfo:(NSDictionary *)userInfo{
     if ([[userInfo objectForKey:@"type"] isEqualToString:@"10001"]) {//强退,未处理
         
-//        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@"NO"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ForceSignOut object:nil];
         
     }else if([[userInfo objectForKey:@"type"] isEqualToString:@"10002"]){//秘圈动态
         
@@ -315,7 +315,7 @@
 - (void)sysData{    //同步更新数据
     [HDNet GET:@"/data/user/syc_item.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *sycItem = responseObject[@"sycItem"];
-        NSString *syscFriends = sycItem[@"syscFriends"];
+        NSString *syscFriends = sycItem[@"sycFriends"];
         NSString *sycPost = sycItem[@"sycPost"];
         NSString *sycMatch = sycItem[@"sycMatch"];
         NSString *sycFans = sycItem[@"sycFans"];
