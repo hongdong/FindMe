@@ -1351,7 +1351,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="136"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="meinv" id="w6V-6N-BX3">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="w6V-6N-BX3">
                                             <rect key="frame" x="15" y="12" width="110" height="111"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
@@ -1581,7 +1581,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8OG-Nr-wBX">
-                                <rect key="frame" x="185" y="101" width="115" height="40"/>
+                                <rect key="frame" x="190" y="101" width="110" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="getCodeBg">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2270,7 +2270,6 @@
         <image name="like" width="174" height="36"/>
         <image name="loginBtBg" width="300" height="45"/>
         <image name="mark" width="33" height="30"/>
-        <image name="meinv" width="159" height="160"/>
         <image name="pass" width="116" height="36"/>
         <image name="passwordBg" width="300" height="45"/>
         <image name="phoneBg" width="300" height="45"/>
@@ -2301,10 +2300,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fs1-8B-zkn"/>
+        <segue reference="Eoy-Fr-r7m"/>
         <segue reference="SN6-Uy-4IQ"/>
-        <segue reference="2zm-ul-40B"/>
         <segue reference="0cY-PW-pGL"/>
-        <segue reference="2cR-83-HCr"/>
+        <segue reference="2zm-ul-40B"/>
+        <segue reference="xND-bN-GwF"/>
     </inferredMetricsTieBreakers>
 </document>

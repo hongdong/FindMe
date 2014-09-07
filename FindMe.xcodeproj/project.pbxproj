@@ -133,7 +133,6 @@
 		04AAE2B1196FA3C900D1CCA1 /* PostMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAE2B0196FA3C900D1CCA1 /* PostMessageViewController.m */; };
 		04AAE2B4196FAE9500D1CCA1 /* PostNews.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAE2B3196FAE9500D1CCA1 /* PostNews.m */; };
 		04AB534619B6A7AE008D985B /* ClickImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB534519B6A7AE008D985B /* ClickImage.m */; };
-		04AB534819B6F4A1008D985B /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04AB534719B6F4A1008D985B /* Reveal.framework */; };
 		04AB62ED195F9915007D31A6 /* MainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62EC195F9915007D31A6 /* MainTabViewController.m */; };
 		04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62F2195FDF37007D31A6 /* XHFeedController4.m */; };
 		04AB62F6195FDF3F007D31A6 /* XHFeedCell4.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62F5195FDF3F007D31A6 /* XHFeedCell4.m */; };
@@ -515,7 +514,6 @@
 		04AAE2B3196FAE9500D1CCA1 /* PostNews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNews.m; sourceTree = "<group>"; };
 		04AB534419B6A7AE008D985B /* ClickImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickImage.h; sourceTree = "<group>"; };
 		04AB534519B6A7AE008D985B /* ClickImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickImage.m; sourceTree = "<group>"; };
-		04AB534719B6F4A1008D985B /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		04AB62EB195F9915007D31A6 /* MainTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabViewController.h; sourceTree = "<group>"; };
 		04AB62EC195F9915007D31A6 /* MainTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabViewController.m; sourceTree = "<group>"; };
 		04AB62F1195FDF37007D31A6 /* XHFeedController4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHFeedController4.h; sourceTree = "<group>"; };
@@ -906,7 +904,6 @@
 				04AF5C5019B4AE6900C5ACDC /* MessageUI.framework in Frameworks */,
 				04AF5C4E19B4AE5100C5ACDC /* AddressBookUI.framework in Frameworks */,
 				04ACA24A196E0B54003F14B1 /* CoreText.framework in Frameworks */,
-				04AB534819B6F4A1008D985B /* Reveal.framework in Frameworks */,
 				04B30B71198B1CD6008DE328 /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 				04A9614319551F7D002E30AF /* Security.framework in Frameworks */,
 				04B27605195AF99E007AE0CE /* CoreFoundation.framework in Frameworks */,
@@ -1295,7 +1292,6 @@
 		04AF0FF51951515500A3E74B = {
 			isa = PBXGroup;
 			children = (
-				04AB534719B6F4A1008D985B /* Reveal.framework */,
 				04AF10071951515500A3E74B /* FindMe */,
 				04AF10261951515500A3E74B /* FindMeTests */,
 				04AF10001951515500A3E74B /* Frameworks */,
