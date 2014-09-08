@@ -223,7 +223,7 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat: @"yyyyMMddHHmmssSSS"];
     int i = arc4random()%90000000 +10000000;
-    NSString *imgName = [NSString stringWithFormat:@"%@%d%@",[formatter stringFromDate:[NSDate date]],i,@"l.png"];
+    NSString *imgName = [NSString stringWithFormat:@"%@%d%@",[formatter stringFromDate:[NSDate date]],i,@".png"];
     return imgName;
 }
 @end

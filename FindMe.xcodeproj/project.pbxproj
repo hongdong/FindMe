@@ -290,6 +290,7 @@
 		04B4E42E197FECB3009C8B4F /* MJPhotoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B4E425197FECB3009C8B4F /* MJPhotoProgressView.m */; };
 		04B4E42F197FECB3009C8B4F /* MJPhotoToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B4E427197FECB3009C8B4F /* MJPhotoToolbar.m */; };
 		04B4E430197FECB3009C8B4F /* MJPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B4E429197FECB3009C8B4F /* MJPhotoView.m */; };
+		04B7A1D519BD5C740069DD20 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B7A1D419BD5C740069DD20 /* Reveal.framework */; };
 		04B8640B19624DCF00326067 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B8640A19624DCF00326067 /* NewPostViewController.m */; };
 		04B8640D1962B7E700326067 /* CustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04B8640C1962B7E700326067 /* CustomView.xib */; };
 		04B877B21984830C00727555 /* NSString+HD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877B11984830C00727555 /* NSString+HD.m */; };
@@ -827,6 +828,7 @@
 		04B4E427197FECB3009C8B4F /* MJPhotoToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoToolbar.m; sourceTree = "<group>"; };
 		04B4E428197FECB3009C8B4F /* MJPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoView.h; sourceTree = "<group>"; };
 		04B4E429197FECB3009C8B4F /* MJPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoView.m; sourceTree = "<group>"; };
+		04B7A1D419BD5C740069DD20 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		04B8640919624DCF00326067 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewController.h; sourceTree = "<group>"; };
 		04B8640A19624DCF00326067 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewController.m; sourceTree = "<group>"; };
 		04B8640C1962B7E700326067 /* CustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomView.xib; sourceTree = "<group>"; };
@@ -904,6 +906,7 @@
 				04AF5C5019B4AE6900C5ACDC /* MessageUI.framework in Frameworks */,
 				04AF5C4E19B4AE5100C5ACDC /* AddressBookUI.framework in Frameworks */,
 				04ACA24A196E0B54003F14B1 /* CoreText.framework in Frameworks */,
+				04B7A1D519BD5C740069DD20 /* Reveal.framework in Frameworks */,
 				04B30B71198B1CD6008DE328 /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 				04A9614319551F7D002E30AF /* Security.framework in Frameworks */,
 				04B27605195AF99E007AE0CE /* CoreFoundation.framework in Frameworks */,
@@ -1292,6 +1295,7 @@
 		04AF0FF51951515500A3E74B = {
 			isa = PBXGroup;
 			children = (
+				04B7A1D419BD5C740069DD20 /* Reveal.framework */,
 				04AF10071951515500A3E74B /* FindMe */,
 				04AF10261951515500A3E74B /* FindMeTests */,
 				04AF10001951515500A3E74B /* Frameworks */,

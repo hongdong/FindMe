@@ -125,7 +125,7 @@ static int count = 60;
                 [HDNet POST:@"/data/user/simple_rgst.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSString *state = responseObject[@"state"];
                     if ([state isEqualToString:@"20001"]) {
-                        [HDTool dismissHUD];
+                        [HDTool dismissHUD]; 
                         [_user saveToNSUserDefaults];
                         [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
                     }else if ([state isEqualToString:@"20002"]){

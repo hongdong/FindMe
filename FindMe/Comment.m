@@ -32,7 +32,7 @@
             parser.data=self;
             return parser;
         }else{
-            parser=[self createMatch:280];
+            parser=[self createMatch:230];
             if (parser) {
                 [[self.class shareCacheForComment]  setObject:parser forKey:key];
             }
