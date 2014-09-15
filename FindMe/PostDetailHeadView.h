@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Post.h"
+#import "ClickImage.h"
 @interface PostDetailHeadView : UIView
-@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet ClickImage *image;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *markLal;

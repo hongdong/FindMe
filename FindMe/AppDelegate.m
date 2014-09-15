@@ -93,9 +93,9 @@
         MJLog(@"didFinishLaunchingWithOptions----点击ICON打开软件");
     }
     
-    if ([[Config sharedConfig] isLogin]) {
-        [self sysData];
-    }
+//    if ([[Config sharedConfig] isLogin]) {
+//        [self sysData];
+//    }
     
     return YES;
 }
@@ -166,6 +166,7 @@
 
 - (void)initSMS{
    [SMS_SDK registerApp:@"25fd3427d030" withSecret:@"f9892059e729efde69a8eb4ceab1facd"];
+    [SMS_SDK enableAppContactFriends:NO];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
@@ -223,7 +224,7 @@
     if(application.applicationState == UIApplicationStateInactive) {//点击提醒进来时调用
         completionHandler(UIBackgroundFetchResultNewData);
     } else if (application.applicationState == UIApplicationStateBackground) {
-        [self handleUserInfo:userInfo];
+//        [self handleUserInfo:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
     } else {
         [self handleUserInfo:userInfo];
@@ -309,7 +310,9 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-
+    if ([[Config sharedConfig] isLogin]) {
+        [self sysData];
+    }
 }
 
 - (void)sysData{    //同步更新数据

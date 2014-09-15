@@ -23,8 +23,11 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
-    self.contentLbl.lineBreakMode = NSLineBreakByWordWrapping;
+    UIFont *font = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
+    self.contentLbl.lineBreakMode = NSLineBreakByCharWrapping;
     self.contentLbl.numberOfLines = 0;
+    self.contentLbl.font = font;
+
 }
 
 -(void)setDataWithPost:(Post *) post{

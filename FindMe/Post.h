@@ -15,7 +15,7 @@
 @property(strong,nonatomic)NSNumber *postOfficial;
 @property(strong,nonatomic)NSArray *postPhoto;
 @property(strong,nonatomic)NSNumber *postPraise;
-@property(strong,nonatomic)NSString *postReadNumber;
+@property(strong,nonatomic)NSNumber *postReadNumber;
 @property(strong,nonatomic)NSString *postReleaseTime;
 @property(strong,nonatomic)NSString *postTop;
 @property(strong,nonatomic)NSDictionary *postUser;

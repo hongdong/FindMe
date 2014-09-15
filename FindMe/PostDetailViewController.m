@@ -554,6 +554,8 @@
     NSString *commentUserId = [((Comment *)_dataArr[indexPath.row]).postMsgUser objectForKey:@"_id"];
     if ([commentUserId isEqualToString:[self.post.postUser objectForKey:@"_id"]]) {
         cell.hostLbl.hidden = NO;
+    }else{
+        cell.hostLbl.hidden = YES;
     }
     cell.comment = _dataArr[indexPath.row];
     cell.row = indexPath.row;
@@ -624,7 +626,7 @@
 }
 - (CGPoint)offsetForEmptyDataSet:(UIScrollView *)scrollView
 {
-        return CGPointMake(0, 0);
+        return CGPointMake(0, 10);
 
 }
 

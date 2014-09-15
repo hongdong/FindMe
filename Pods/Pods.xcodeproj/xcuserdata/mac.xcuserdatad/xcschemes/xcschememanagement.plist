@@ -8,205 +8,181 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>Pods-AMSmoothAlert.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 		<key>Pods-BBBadgeBarButtonItem.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 		<key>Pods-BlocksKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>Pods-DACircularProgress.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>Pods-DZNEmptyDataSet.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>Pods-GPUImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
+		</dict>
+		<key>Pods-JDFlipNumberView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>Pods-MCSwipeTableViewCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>Pods-MDCFocusView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>Pods-MRProgress.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>Pods-MWPhotoBrowser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
 		</dict>
 		<key>Pods-PSTCollectionView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>14</integer>
 		</dict>
 		<key>Pods-SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>15</integer>
 		</dict>
 		<key>Pods-THProgressView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>16</integer>
 		</dict>
 		<key>Pods-TNSexyImageUploadProgress.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>17</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>25549EC86F314F5FA5623477</key>
+		<key>045F6C13299F4538B0795662</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>35692B3837BC43048063FB62</key>
+		<key>171F97762CC54ECCA4B47DC5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3C7213C2E45C4BA5B71ED77D</key>
+		<key>26282CD7B17448A982EFFAA6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>41C29AE8E3F44AB295571553</key>
+		<key>2CA64846CC6E43B6A6146A1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5AB787B790264DE68E11B5A4</key>
+		<key>42CA09C70F3247F5B61C2684</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>972984C88679455583076111</key>
+		<key>5168B88924834D4E9E73833B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>98D3ED5884EF437F9DC5685F</key>
+		<key>67654398109641A68FB6C901</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A4BF20F84D4B46DD9B32D712</key>
+		<key>690ADE09F75F43DC8516C725</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A9F82CFBC7EC4A1DBA6759F5</key>
+		<key>7AB34E4942014F9B9D4082E8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF63BDA8A59444368FB57550</key>
+		<key>7CC41567736E4387813D021F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5E3C1D64ACB45AEA1929E07</key>
+		<key>B735258DA5B1460EA71E84CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D0FE3B9F955A4337B7085E57</key>
+		<key>BAC97B4B31E14E458E6E112B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E6D69E0628B440E19EBDA525</key>
+		<key>C19692BD69254F42AF994A82</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E98335CDF52F422A909C6B21</key>
+		<key>D08DFB58DE0C498592441530</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F4B74FB43ACD4FB7A9C81BB9</key>
+		<key>D8FE192757DF41DD9D05608F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FDF5929300D8480FACCEB78A</key>
+		<key>E08C66469FC54EC6B05BBE92</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FDF784A1DB8D44669426FBEC</key>
+		<key>EFB5A8F8704F44E3BF264ABA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FAD40D1E6BC44ECEBF55D3D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

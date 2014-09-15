@@ -23,19 +23,20 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-
-        UIFont *font = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
-        UIColor* neutralColor = [UIColor colorWithWhite:0.5 alpha:1.0];
-        self.contentLbl.lineBreakMode = NSLineBreakByCharWrapping;
-        self.contentLbl.textColor =  neutralColor;
-        self.contentLbl.font = font;
-
     }
     return self;
 }
 
 -(void)awakeFromNib{
     [super awakeFromNib];
+    self.image.canClick = YES;
+    UIFont *font = [UIFont fontWithName:@"Avenir-Book" size:13.0f];
+    UIColor* neutralColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+    self.contentLbl.lineBreakMode = NSLineBreakByCharWrapping;
+    self.contentLbl.numberOfLines = 0;
+    self.contentLbl.textColor =  neutralColor;
+    self.contentLbl.font = font;
+
 
 }
 

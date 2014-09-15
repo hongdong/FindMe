@@ -10,7 +10,9 @@
 #import "PopoverView.h"
 #import "UIView+Common.h"
 #import "UIImageView+MJWebCache.h"
-#import "AFNetworking.h"
+
+#import "User.h"
+#import "NSDate+Category.h"
 @interface CoverView(){
     PopoverView *_pv;
 }
@@ -29,10 +31,15 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
+    
+    if (!IS_IPHONE_5) {
+        self.frame = CGRectMake(0, 0, 320, 367+64);
+    }else{
+        self.frame = CGRectMake(0, 0, 320, 455+64);
+    }
+    
     if ([[Config sharedConfig] coverPicUrl:nil]==nil) {
-        NSString *urlStr = [NSString stringWithFormat:@"%@/backstage/getPictureUrl.do",Host];
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [HDNet GET:@"/backstage/getPictureUrl.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *coverpic = [responseObject objectForKey:@"coverpic"];
             if (coverpic!=nil) {
                 [[Config sharedConfig] coverPicUrl:coverpic];
@@ -40,14 +47,55 @@
             }else{
                 
             }
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             MJLog(@"请求失败");
         }];
     }else{
        [self changeCover:nil]; 
     }
+
+}
+
+-(void)addTime{
+    if (self.flipView) {
+        [self.flipView removeFromSuperview];
+        self.flipView=nil;
+    }
+    self.flipView = [[JDDateCountdownFlipView alloc] initWithDayDigitCount:0 imageBundleName:nil];
+    if (IS_IPHONE_5) {
+        self.flipView.frame = CGRectMake(126, 406, 200, 80);
+    }else{
+        self.flipView.frame = CGRectMake(126, 406-88, 200, 80);
+    }
     
+    [self addSubview:self.flipView];
+    NSDate *todayDate = [NSDate date];
+    NSDate *torromoDate = [NSDate dateTomorrow];
+    NSDateFormatter *dateFormatter1 = [[NSDateFormatter alloc] init];
+    [dateFormatter1 setDateFormat: @"HH:mm"];
+    NSDate *girlTime = [dateFormatter1 dateFromString:@"10:00"];
+    NSDate *boyTime = [dateFormatter1 dateFromString:@"21:00"];
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+    User *user = [User getUserFromNSUserDefaults];
+    if ([user.userSex isEqualToString:@"男"]) {
+        if ([todayDate isLaterThanDate:boyTime]) {//已经过了今天的匹配时间了
+            self.flipView.targetDate = [dateFormatter dateFromString:[NSString stringWithFormat: @"%ld-%ld-%ld 21:00",(long)torromoDate.year,(long)torromoDate.month,(long)torromoDate.day]];;
+        }else{
+            self.flipView.targetDate = [dateFormatter dateFromString:[NSString stringWithFormat: @"%ld-%ld-%ld 21:00",(long)todayDate.year,(long)todayDate.month,(long)todayDate.day]];;
+        }
+    }else if ([user.userSex isEqualToString:@"女"]){
+        if ([todayDate isLaterThanDate:girlTime]) {//已经过了今天的匹配时间了
+            self.flipView.targetDate = [dateFormatter dateFromString:[NSString stringWithFormat: @"%ld-%ld-%ld 10:00",(long)torromoDate.year,(long)torromoDate.month, (long)torromoDate.day]];;
+        }else{
+            self.flipView.targetDate = [dateFormatter dateFromString:[NSString stringWithFormat: @"%ld-%ld-%ld 10:00",(long)todayDate.year,(long)todayDate.month, (long)todayDate.day]];;
+        }
+    }else{
+
+    }
+//    [self.flipView updateValuesAnimated:YES];
+//    [self.flipView start];
 }
 
 -(void)changeCover:(NSNotification *)note{

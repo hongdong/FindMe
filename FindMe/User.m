@@ -49,6 +49,7 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [HDTool dismissHUD];
         MJLog(@"获取用户信息错误%@",error.debugDescription);
     }];
     

@@ -34,8 +34,8 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _dataSource = [NSMutableArray array];
-        _contactsSource = [NSMutableArray array];
+        _dataSource = [NSMutableArray array];//分类好的用户数组
+        _contactsSource = [NSMutableArray array];//总用户数组
         _sectionTitles = [NSMutableArray array];
     }
     return self;
@@ -46,13 +46,13 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myReloadDataSource) name:FriendChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unreadFriends:) name:FriendChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
     self.title = @"好友";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
     __weak __typeof(&*self)weakSelf = self;
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
     UIView *headView = [HDTool loadCustomViewByIndex:RandomHiViewIndex];
     [((UIButton *)[headView viewWithTag:1000]) bk_addEventHandler:^(id sender) {
         if (![[Config sharedConfig] isOnline]) {
@@ -68,6 +68,7 @@
     headView.backgroundColor = HDRED;
     self.tableView.tableHeaderView = headView;
     [self.view addSubview:self.tableView];
+    
     [self.tableView addHeaderWithTarget:self action:@selector(myReloadDataSource)];
 
     if ([[Config sharedConfig] isLogin]) {
@@ -80,20 +81,27 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     if ([[Config sharedConfig] friendNew:nil]) {
-        [self myReloadDataSource];
-//        [self.tableView headerBeginRefreshing];
+//        [self myReloadDataSource];
+        [self.tableView headerBeginRefreshing];
         [[Config sharedConfig] friendNew:@"0"];
         self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
 
 -(void)loginChange:(NSNotification *)notification{
-    
     BOOL isLogin = [notification.object boolValue];
     if (isLogin) {
         
     }else{
         [self cleanFriend];
+    }
+
+}
+
+-(void)unreadFriends:(NSNotification *)notification{
+    
+    if (self.tabBarController.selectedIndex==2) {
+        [self.tableView headerBeginRefreshing];
     }
 }
 
@@ -139,6 +147,11 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         if (iOS7) {
           _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+        }
+        if (!IS_IPHONE_5) {
+            _tableView.frame = CGRectMake(0, 0, 320, 367);
+        }else{
+            _tableView.frame = CGRectMake(0, 0, 320, 455);
         }
         _tableView.sectionIndexColor = HDRED;
         _tableView.backgroundColor = [UIColor whiteColor];
@@ -202,6 +215,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    
     if ([[self.dataSource objectAtIndex:section] count] == 0)
     {
         return nil;
@@ -256,7 +270,7 @@
     NSInteger highSection = [self.sectionTitles count];
     //tableView 会被分成27个section
     NSMutableArray *sortedArray = [NSMutableArray arrayWithCapacity:highSection];
-    for (int i = 0; i <= highSection; i++) {
+    for (int i = 0; i < highSection; i++) {
         NSMutableArray *sectionArray = [NSMutableArray arrayWithCapacity:1];
         [sortedArray addObject:sectionArray];
     }
@@ -270,7 +284,6 @@
         NSMutableArray *array = [sortedArray objectAtIndex:section];
         [array addObject:user];
     }
-    
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(User *obj1, User *obj2) {
@@ -293,22 +306,24 @@
 #pragma mark - dataSource
 - (void)myReloadDataSource
 {
-    [self.dataSource removeAllObjects];
-    [self.contactsSource removeAllObjects];
+
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/user/user_friend.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.navigationController.tabBarItem.badgeValue = nil;
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
-            weakSelf.contactsSource = [[NSMutableArray alloc] initWithArray:[User objectArrayWithKeyValuesArray:friendList]];
+            [weakSelf.dataSource removeAllObjects];
+            weakSelf.contactsSource = [[User objectArrayWithKeyValuesArray:friendList] mutableCopy];
             [User removeDbObjectsWhere:@"1=1"];
             for (User *user in weakSelf.contactsSource) {
                 if (![User existDbObjectsWhere:[NSString stringWithFormat:@"_id='%@'",user._id]]) {
                     [user insertToDb];
                 }
-                
             }
-            [weakSelf.dataSource addObjectsFromArray:[self sortDataArray:self.contactsSource]];
+            weakSelf.dataSource = [self sortDataArray:self.contactsSource];
+            
             [weakSelf.tableView reloadData];
+            
             [weakSelf.tableView headerEndRefreshing];
             
         }else{

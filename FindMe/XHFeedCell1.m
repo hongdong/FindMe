@@ -64,6 +64,14 @@
         _nameLabel.textColor =  [UIColor whiteColor];
         _nameLabel.font = nameLabelFont;
         
+        UIFont *countLabelFont = [UIFont fontWithName:fontName size:14.0f];
+        
+        _watchLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _watchLabel.textAlignment = NSTextAlignmentRight;
+        _watchLabel.textColor = [UIColor whiteColor];
+        _watchLabel.backgroundColor = [UIColor clearColor];
+        _watchLabel.font = countLabelFont;
+        
         
         UIFont *updateLabelFont = [UIFont fontWithName:fontName size:13.0f];
         _updateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -80,7 +88,7 @@
         _dateLabel.textColor = [UIColor whiteColor];
         _dateLabel.font = dateLabelFont;
         
-        UIFont *countLabelFont = [UIFont fontWithName:fontName size:14.0f];
+
         _commentCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _commentCountLabel.textColor = countColor;
         _commentCountLabel.backgroundColor = [UIColor clearColor];
@@ -105,6 +113,8 @@
         
         _nameLabel.frame = CGRectMake(nameLabelX, _profileImageView.frame.origin.y, nameLabelWidth, nameLabelHeight);
         
+        _watchLabel.frame = CGRectMake(170, _profileImageView.frame.origin.y, likeCountLabelWidth, nameLabelHeight);
+        
         _dateLabel.frame = CGRectMake(_nameLabel.frame.origin.x+5, _nameLabel.frame.origin.y + dateLabelSpeatorY, dateLabelWidth, _nameLabel.frame.size.height);
         
         _updateLabel.frame = CGRectMake(updateLabelX, updateLabelY, updateLabelWidth, updateLabelHeight);
@@ -115,6 +125,7 @@
         _socialContainer.frame = CGRectMake(0, _updateLabel.frame.origin.y + _updateLabel.frame.size.height + socialContainerSepatorY, _feedContainer.frame.size.width, socialContainerHeight);
         
         [_feedContainer addSubview:self.profileImageView];
+        [_feedContainer addSubview:self.watchLabel];
         [_feedContainer addSubview:self.nameLabel];
         [_feedContainer addSubview:self.dateLabel];
         [_feedContainer addSubview:self.updateLabel];
@@ -142,7 +153,7 @@
     NSDate *date = [_dateFormatter dateFromString:self.post.postReleaseTime];
     self.dateLabel.text = [date formattedDateDescription];
     self.updateLabel.text = self.post.postContent;
-    
+    self.watchLabel.text = [NSString stringWithFormat:@"阅读 %@",self.post.postReadNumber];
     self.likeCountLabel.text = [NSString stringWithFormat:@"赞 %@",self.post.postPraise];
     self.commentCountLabel.text = [NSString stringWithFormat:@"回复 %@",self.post.postMsgNumber];
     if ([self.post.postOfficial intValue]==2) {

@@ -33,11 +33,8 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        
         [self initCoverView];
-        
         [self initFansItem];
-        
         if ([[Config sharedConfig] isLogin]) {
             _user = [User getUserFromNSUserDefaults];
         }
@@ -139,7 +136,7 @@
     
     [self.view addSubview:_coverView];
     
-    self.navigationItem.rightBarButtonItem = _fansItem;
+    
     if ([[Config sharedConfig] fansNew:nil]) {
         _fansItem.badgeValue = @"N";
         [self getMatch:nil andSender:nil];
@@ -155,7 +152,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+//    [_coverView addTime];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -207,7 +204,11 @@
         if ([state isEqualToString:@"20001"]) {
             if ([_user.userSex isEqualToString:@"男"]) {
                 [weakSelf getMatch:nil andSender:nil];
+                [weakSelf showHint:@"番迷君知道该怎么做了"];
             }else if ([_user.userSex isEqualToString:@"女"]){
+                if ([_matchUser._id isEqualToString:@"888888"]) {//如果是番迷君，like过后还要请求
+                    [weakSelf getMatch:nil andSender:nil];
+                }
                 [weakSelf showHint:@"番迷君知道该怎么做了"];
             }else{
                 
@@ -226,7 +227,7 @@
             [weakSelf showHint:@"用户已经失效，正在帮你刷新"];
             [weakSelf getMatch:nil andSender:nil];
         }else if ([state isEqualToString:@"10004"]){
-            [weakSelf showHint:@"请先上传真实头像以后番迷君才会帮你哦"];
+            [weakSelf showHint:@"请先上传真实头像哦"];
             [weakSelf hideCover];
         }else{
             
@@ -240,7 +241,14 @@
         __weak __typeof(&*self)weakSelf = self;
     if (_focusView.isFocused) {
         [_focusView dismiss:^{
-            [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。他们都真心想和你交朋友，只等你一个准字。（操作指导：右滑YES，左滑NO哦）"];
+            if ([_user.userSex isEqualToString:@"男"]) {
+                [[Config sharedConfig] launchGuide:@"0"];
+            }else if ([_user.userSex isEqualToString:@"女"]){
+                [weakSelf launchGuide:_fansButton andText:@"你还会拥有你自己的粉丝，让番迷君给你找到更适合的人。他们都真心想和你交朋友，只等你一个准字。（操作指导：右滑YES，左滑NO哦）"];
+            }else{
+                [[Config sharedConfig] launchGuide:@"0"];
+            }
+
         }];
         return;
     }
@@ -265,7 +273,7 @@
                              if ([_user.userSex isEqualToString:@"男"]) {
                                  info = @"番迷君每天至少都会给你推荐一个有缘人，点击了like意味着你想尝试认识一下Ta。";
                              }else{
-                                 info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的推荐。";
+                                 info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的擦肩。";
                              }
                              [weakSelf launchGuide:weakSelf.likeBt andText:info];
                              
@@ -377,6 +385,14 @@
             [_loginView removeFromSuperview];
             _loginView=nil;
         }
+        if ([_user.userSex isEqualToString:@"女"]) {
+            self.navigationItem.rightBarButtonItem = _fansItem;
+        }else if([_user.userSex isEqualToString:@"男"]){
+            self.navigationItem.rightBarButtonItem = nil;
+        }else{
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        [_coverView addTime];
 //        [self getMatch:nil andSender:nil];
     }else{
         [self showCover];
@@ -395,6 +411,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    [_coverView addTime];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

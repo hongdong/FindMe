@@ -71,6 +71,7 @@
         
         UIFont *updateLabelFont = [UIFont fontWithName:fontName size:13.0f];
         _updateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _updateLabel.numberOfLines = 0;
         _updateLabel.textAlignment = NSTextAlignmentCenter;
         _updateLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _updateLabel.textColor =  neutralColor;
@@ -101,7 +102,11 @@
         _socialContainer = [[UIView alloc] initWithFrame:CGRectZero];
         _socialContainer.backgroundColor = [UIColor colorWithRed:220.0/255 green:214.0/255 blue:219.0/255 alpha:1.0f];
 
-        
+        _watchLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _watchLabel.textAlignment = NSTextAlignmentRight;
+        _watchLabel.textColor = neutralColor;
+        _watchLabel.backgroundColor = [UIColor clearColor];
+        _watchLabel.font = countLabelFont;
 
         
         _feedContainer.frame = CGRectMake(feedContainerX, feedContainerX, feedContainerWidth, feedContainerHieght);
@@ -114,13 +119,15 @@
         _likeCountLabel.frame = CGRectMake(_commentCountLabel.frame.origin.x + _commentCountLabel.frame.size.width + likeCountLabelSpeator, _commentCountLabel.frame.origin.y, likeCountLabelWidth, _nameLabel.frame.size.height);
         _picImageView.frame = CGRectMake(0, _dateLabel.frame.origin.y + picImageViewSpeatorY, _feedContainer.frame.size.width, picImageViewHeight);
         _socialContainer.frame = CGRectMake(0, _updateLabel.frame.origin.y + _updateLabel.frame.size.height + socialContainerSepatorY, _feedContainer.frame.size.width, socialContainerHeight);
-        
+        _watchLabel.frame = CGRectMake(170, _profileImageView.frame.origin.y, likeCountLabelWidth, nameLabelHeight);
+
         [_feedContainer addSubview:self.picImageView];
         [_feedContainer addSubview:self.profileImageView];
         [_feedContainer addSubview:self.nameLabel];
         [_feedContainer addSubview:self.dateLabel];
         [_feedContainer addSubview:self.updateLabel];
-        
+        [_feedContainer addSubview:self.watchLabel];
+
         [_socialContainer addSubview:self.likeCountLabel];
         [_socialContainer addSubview:self.commentCountLabel];
         
@@ -137,7 +144,8 @@
     [super layoutSubviews];
 
     self.updateLabel.text = self.post.postContent;
-    
+    self.watchLabel.text = [NSString stringWithFormat:@"阅读 %@",self.post.postReadNumber];
+
     NSDate *date = [_dateFormatter dateFromString:self.post.postReleaseTime];
     self.dateLabel.text = [date formattedDateDescription];
     self.likeCountLabel.text = [NSString stringWithFormat:@"赞 %@",self.post.postPraise];

@@ -63,7 +63,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 -(void)forceSignOut:(NSNotification *)note{
-    MJLog(@"强退");
+    NSDictionary *parameters = @{@"type": @"1"};
+    [HDNet POST:@"/data/user/login_out.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *state = [responseObject objectForKey:@"state"];
+        if ([state isEqualToString:@"20001"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            [[Config sharedConfig] changeLoginState:@"0"];
+            [[Config sharedConfig] changeOnlineState:@"0"];
+            [[Config sharedConfig] friendNew:@"0"];
+            [[Config sharedConfig] matchNew:@"0"];
+            [[Config sharedConfig] fansNew:@"0"];
+            [[Config sharedConfig] postNew:@"0"];
+            [User removeDbObjectsWhere:@"1=1"];
+            [[Config sharedConfig] cleanUser];
+
+        }else{
+            
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 -(void)addUnreadMatch:(NSNotification *)note{
@@ -73,9 +92,6 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 }
 
 -(void)addUnreadFriend:(NSNotification *)note{
-    if (self.selectedIndex==2) {
-        return;
-    }
     UIViewController *vc = [self.viewControllers objectAtIndex:2];
     vc.tabBarItem.badgeValue = @"HI";
 }
@@ -111,8 +127,8 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
     }else if(item.tag == 2){//点击好友的时候 如果有更新  把HI给去掉
         if (self.selectedIndex!=2) {
             if ([[Config sharedConfig] friendNew:nil]) {
-                UIViewController *vc = [self.viewControllers objectAtIndex:2];
-                vc.tabBarItem.badgeValue = nil;
+//                UIViewController *vc = [self.viewControllers objectAtIndex:2];
+//                vc.tabBarItem.badgeValue = nil;
             }
 
         }
@@ -257,27 +273,26 @@ const CGFloat kDefaultPlaySoundInterval = 3.0;
 - (void)didLoginFromOtherDevice
 {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"你的账号已在其他地方登录"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"确定"
-                                                  otherButtonTitles:nil,
-                                  nil];
-        alertView.tag = 100;
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                            message:@"你的账号已在其他地方登录"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"确定"
+//                                                  otherButtonTitles:nil,nil];
+//        alertView.tag = 100;
+//        [alertView show];
     } onQueue:nil];
 }
 
 - (void)didRemovedFromServer {
     [[EaseMob sharedInstance].chatManager asyncLogoffWithCompletion:^(NSDictionary *info, EMError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"你的账号已被从服务器端移除"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"确定"
-                                                  otherButtonTitles:nil,
-                                  nil];
-        alertView.tag = 101;
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                            message:@"你的账号已被从服务器端移除"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"确定"
+//                                                  otherButtonTitles:nil,
+//                                  nil];
+//        alertView.tag = 101;
+//        [alertView show];
     } onQueue:nil];
 }
 

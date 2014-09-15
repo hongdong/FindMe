@@ -59,18 +59,19 @@
         NSString *state = [responseObject objectForKey:@"state"];
         
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+//            [HDTool dismissHUD];
             _user._id = [responseObject objectForKey:@"userId"];
             _user.userPhoneNumber = self.phoneText.text;
             _user.userPassword = self.passwordText.text;
             [_user getUserInfo:^{
+                [HDTool dismissHUD];
                 [_user saveToNSUserDefaults];//保存登入信息
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
             }];
             [[Config sharedConfig] changeLoginState:@"1"];
             [[Config sharedConfig] changeOnlineState:@"1"];
-//            [[Config sharedConfig] friendNew:@"1"];
             [weakSelf.navigationController popToRootViewControllerAnimated:NO];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
+
             [HDNet EaseMobLoginWithUsername:_user._id];//IM登入
             
         }else if ([state isEqualToString:@"20002"]){
@@ -86,7 +87,7 @@
         }else if ([state isEqualToString:@"20003"]){
             [HDTool dismissHUD];
             [weakSelf showHint:@"此号码还未注册，请点击注册"];
-        }else if ([state isEqualToString:@"20004"]){
+        }else if ([state isEqualToString:@"20005"]){
             [HDTool dismissHUD];
             [weakSelf showHint:@"密码不正确"];
         }else{

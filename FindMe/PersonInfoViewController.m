@@ -337,6 +337,8 @@
         if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
             _image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
 //        UIImage *image= [self scaleToSize:[info objectForKey:@"UIImagePickerControllerOriginalImage"] size:CGSizeMake(300,300)];
+            NSData *imageData = UIImageJPEGRepresentation(_image,0.5);
+            _image = [UIImage imageWithData:imageData];
             [weakSelf saveImage:_image WithName:@"myPhoto.png"];
         }
         

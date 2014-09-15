@@ -10,6 +10,8 @@
 
 @property (nonatomic, strong) UILabel* nameLabel;
 
+@property (nonatomic, strong) UILabel* watchLabel;
+
 @property (nonatomic, strong) UILabel* updateLabel;
 
 @property (nonatomic, strong) UILabel* dateLabel;

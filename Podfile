@@ -12,6 +12,7 @@ pod 'MDCFocusView'
 pod 'BlocksKit'
 pod 'TNSexyImageUploadProgress'
 pod 'MRProgress/Overlay'
+pod 'JDFlipNumberView'
 post_install do |installer|
     installer.project.targets.each do |target|
         target.build_configurations.each do |configuration|

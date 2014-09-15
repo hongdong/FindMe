@@ -63,17 +63,17 @@ static int count = 60;
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 - (IBAction)getCodePressed:(UIButton *)sender {
-    NSString* rule1 = @"^1(3|5|7|8|4)\\d{9}";
-    NSPredicate* pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",rule1];
+    NSString* rule = @"^1(3|5|7|8|4)\\d{9}";
+    NSPredicate* pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",rule];
     BOOL isMatch=[pred evaluateWithObject:self.phoneText.text];
     if (!isMatch&&self.phoneText.text.length!=11) {
         //手机号码不正确
         [HDTool ToastNotification:@"手机号码非法，请重新填写" andView:self.view andLoading:NO andIsBottom:NO];
+        return;
     }
-
+    
     count = 60;
     NSTimer* timer=[NSTimer scheduledTimerWithTimeInterval:1
                                                     target:self
@@ -125,7 +125,8 @@ static int count = 60;
                 [HDNet POST:@"/data/user/simple_rgst.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSString *state = responseObject[@"state"];
                     if ([state isEqualToString:@"20001"]) {
-                        [HDTool dismissHUD]; 
+                        [HDTool dismissHUD];
+                        _user._id = [responseObject objectForKey:@"id"];
                         [_user saveToNSUserDefaults];
                         [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
                     }else if ([state isEqualToString:@"20002"]){

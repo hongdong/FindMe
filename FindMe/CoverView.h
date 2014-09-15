@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JDDateCountdownFlipView.h"
 @protocol CoverViewDelegate <NSObject>
 
 @required
@@ -23,4 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *helpBt;
 @property (weak, nonatomic) IBOutlet UIButton *freshBt;
 
+@property (strong,nonatomic) JDDateCountdownFlipView *flipView;
+
+-(void)addTime;
 @end
