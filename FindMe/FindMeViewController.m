@@ -14,7 +14,7 @@
 #import "HYCircleLoadingView.h"
 #import "LoginView.h"
 #import "BlocksKit+UIKit.h"
-@interface FindMeViewController ()<CoverViewDelegate>{
+@interface FindMeViewController ()<CoverViewDelegate,PAImageViewDelegate>{
     User *_user;
     User *_matchUser;
     CoverView *_coverView;
@@ -94,8 +94,6 @@
     self.title = @"番迷";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"findme"]];
     
-    __weak __typeof(&*self)weakSelf = self;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStateChange:)
                                                  name:KNOTIFICATION_LOGINCHANGE
@@ -117,23 +115,12 @@
     UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_circleLoadingView];
     self.navigationItem.leftBarButtonItem = loadingItem;
     
-    self.photo.layer.cornerRadius = 75.0f;
-    self.photo.layer.masksToBounds = YES;
-    
 
-    [self.photo whenTouchedDown:^{
-        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                        weakSelf.photo.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
-        } completion:nil];
-    }];
-    
-    [self.photo whenTouchedUp:^{
-        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            weakSelf.photo.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-        } completion:nil];
-        [self performSegueWithIdentifier:@"findmeDetail" sender:_matchUser];
-    }];
-    
+    self.photo.delegate = self;
+    self.photo.placeHolderImage = [UIImage imageNamed:@"defaultImage"];
+    self.photo.backgroundProgresscolor = HDRED;
+    self.photo.progressColor = [UIColor whiteColor];
+
     [self.view addSubview:_coverView];
     
     
@@ -149,7 +136,9 @@
     }
 
 }
-
+- (void)paImageViewDidTapped:(id)view{
+    [self performSegueWithIdentifier:@"findmeDetail" sender:_matchUser];
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 //    [_coverView addTime];
@@ -180,10 +169,16 @@
 }
 
 -(void)launchGuide:(UIView *)view andText:(NSString *)text{
-    _focusView = [MDCFocusView new];
-    _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
-    _focusView.focalPointViewClass = [MDCSpotlightView class];
-    [_focusView addSubview:[self buildLabelWithText:text]];
+    if (_focusView==nil) {
+        _focusView = [MDCFocusView new];
+        _focusView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+        _focusView.focalPointViewClass = [MDCSpotlightView class];
+        [_focusView addSubview:[self buildLabelWithText:text]];
+    }else{
+        ((UILabel *)[_focusView viewWithTag:1000]).text = text;
+        
+    }
+    
     [_focusView focus:view,nil];
 }
 
@@ -276,7 +271,7 @@
                                  info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的擦肩。";
                              }
                              [weakSelf launchGuide:weakSelf.likeBt andText:info];
-                             
+                             [[Config sharedConfig] launchGuide:@"0"];
                          }
                      }];
     
@@ -334,7 +329,8 @@
 
 -(void)setMatchPeople{
     if (_matchUser!=nil) {
-        [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+//        [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
+        [self.photo setImageURL:[NSURL URLWithString:_matchUser.userPhoto]];
         CGSize size = CGSizeMake(320,2000);
         CGSize realsize = [_matchUser.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:16.0f]];
         self.nickname.bounds = (CGRect){{0,0},realsize};

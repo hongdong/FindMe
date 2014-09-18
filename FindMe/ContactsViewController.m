@@ -83,8 +83,8 @@
     if ([[Config sharedConfig] friendNew:nil]) {
 //        [self myReloadDataSource];
         [self.tableView headerBeginRefreshing];
-        [[Config sharedConfig] friendNew:@"0"];
-        self.navigationController.tabBarItem.badgeValue = nil;
+//        [[Config sharedConfig] friendNew:@"0"];
+//        self.navigationController.tabBarItem.badgeValue = nil;
     }
 }
 
@@ -310,6 +310,7 @@
     __weak __typeof(&*self)weakSelf = self;
     [HDNet GET:@"/data/user/user_friend.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.navigationController.tabBarItem.badgeValue = nil;
+        [[Config sharedConfig] friendNew:@"0"];
         NSArray *friendList = [responseObject objectForKey:@"friendList"];
         if (friendList!=nil) {
             [weakSelf.dataSource removeAllObjects];

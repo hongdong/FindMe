@@ -132,6 +132,7 @@
 		04AAE2AE196F985700D1CCA1 /* CoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAE2AD196F985700D1CCA1 /* CoverView.m */; };
 		04AAE2B1196FA3C900D1CCA1 /* PostMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAE2B0196FA3C900D1CCA1 /* PostMessageViewController.m */; };
 		04AAE2B4196FAE9500D1CCA1 /* PostNews.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAE2B3196FAE9500D1CCA1 /* PostNews.m */; };
+		04AAEAD219C925FB00800D68 /* PAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAEAD119C925FB00800D68 /* PAImageView.m */; };
 		04AB534619B6A7AE008D985B /* ClickImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB534519B6A7AE008D985B /* ClickImage.m */; };
 		04AB62ED195F9915007D31A6 /* MainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62EC195F9915007D31A6 /* MainTabViewController.m */; };
 		04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AB62F2195FDF37007D31A6 /* XHFeedController4.m */; };
@@ -512,6 +513,8 @@
 		04AAE2B0196FA3C900D1CCA1 /* PostMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMessageViewController.m; sourceTree = "<group>"; };
 		04AAE2B2196FAE9500D1CCA1 /* PostNews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNews.h; sourceTree = "<group>"; };
 		04AAE2B3196FAE9500D1CCA1 /* PostNews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNews.m; sourceTree = "<group>"; };
+		04AAEAD019C925FB00800D68 /* PAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAImageView.h; sourceTree = "<group>"; };
+		04AAEAD119C925FB00800D68 /* PAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAImageView.m; sourceTree = "<group>"; };
 		04AB534419B6A7AE008D985B /* ClickImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickImage.h; sourceTree = "<group>"; };
 		04AB534519B6A7AE008D985B /* ClickImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickImage.m; sourceTree = "<group>"; };
 		04AB62EB195F9915007D31A6 /* MainTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabViewController.h; sourceTree = "<group>"; };
@@ -1182,6 +1185,7 @@
 		04A960941954FE9A002E30AF /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				04AAEACF19C925FB00800D68 /* PAImageView */,
 				049FB322199A5A80007B10D7 /* QiniuSDK */,
 				04AD09E81998404E00FF1464 /* HYCircleLoading */,
 				04B88F5A1991B89800EC1AAE /* MJExtension */,
@@ -1267,6 +1271,15 @@
 				04A76405195D4DAE00C92480 /* ChooseConstellationViewController.m */,
 			);
 			name = LoginController;
+			sourceTree = "<group>";
+		};
+		04AAEACF19C925FB00800D68 /* PAImageView */ = {
+			isa = PBXGroup;
+			children = (
+				04AAEAD019C925FB00800D68 /* PAImageView.h */,
+				04AAEAD119C925FB00800D68 /* PAImageView.m */,
+			);
+			path = PAImageView;
 			sourceTree = "<group>";
 		};
 		04ACA24B196EA3A7003F14B1 /* HBCoreLabel */ = {
@@ -2505,6 +2518,7 @@
 				04A4E2281967DC3900E9BC63 /* SecondPageView.m in Sources */,
 				04DA3AD819666E7F00E0AE3C /* DetailViewController.m in Sources */,
 				04F007891973793D00E2F6FD /* FansCell.m in Sources */,
+				04AAEAD219C925FB00800D68 /* PAImageView.m in Sources */,
 				04AB62F3195FDF37007D31A6 /* XHFeedController4.m in Sources */,
 				04ABFEFA19B5F5EB00CD7B0A /* UIScrollView+MJRefresh.m in Sources */,
 				04F007861973791500E2F6FD /* FansViewController.m in Sources */,

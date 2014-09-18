@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "PAImageView.h"
 @interface FindMeViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UILabel *grade;
 @property (weak, nonatomic) IBOutlet UIImageView *sex;
 @property (weak, nonatomic) IBOutlet UILabel *nickname;
@@ -21,5 +20,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *likeBt;
 @property (weak, nonatomic) IBOutlet UIButton *passBt;
+@property (weak, nonatomic) IBOutlet PAImageView *photo;
 
 @end
