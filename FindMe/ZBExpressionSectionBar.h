@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol ZBExpressionSectionBarDelegate
 
+@optional
+-(void)sendFace;
+
+@end
 @interface ZBExpressionSectionBar : UIView
-
+@property (nonatomic,weak) id<ZBExpressionSectionBarDelegate>delegate;
 @end

@@ -28,6 +28,7 @@
 #import "EMTextMessageBody.h"
 #import "EMLocationMessageBody.h"
 #import "EMImageMessageBody.h"
+#import "EMCommandMessageBody.h"
 #import "EMFileMessageBody.h"
 
 // chat types
@@ -37,6 +38,7 @@
 #import "EMChatLocation.h"
 #import "EMChatImage.h"
 #import "EMChatFile.h"
+#import "EMChatCommand.h"
 
 // user types
 #import "EMBuddy.h"
@@ -44,6 +46,8 @@
 
 // chat sessions
 #import "EMGroup.h"
+#import "EMGroupStyleSetting.h"
+#import "IChatImageOptions.h"
 #import "EMConversation.h"
 #import "EMReceiptReq.h"
 #import "EMReceiptResp.h"

@@ -1,0 +1,6 @@
+#include "Pods-EaseMobSDK.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/EaseMobSDK" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/AMSmoothAlert" "${PODS_ROOT}/Headers/BBBadgeBarButtonItem" "${PODS_ROOT}/Headers/BlocksKit" "${PODS_ROOT}/Headers/DACircularProgress" "${PODS_ROOT}/Headers/DZNEmptyDataSet" "${PODS_ROOT}/Headers/EaseMobSDK" "${PODS_ROOT}/Headers/GPUImage" "${PODS_ROOT}/Headers/JDFlipNumberView" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MCSwipeTableViewCell" "${PODS_ROOT}/Headers/MDCFocusView" "${PODS_ROOT}/Headers/MRProgress" "${PODS_ROOT}/Headers/MWPhotoBrowser" "${PODS_ROOT}/Headers/PSTCollectionView" "${PODS_ROOT}/Headers/SDWebImage" "${PODS_ROOT}/Headers/THProgressView" "${PODS_ROOT}/Headers/TNSexyImageUploadProgress"
+LIBRARY_SEARCH_PATHS = ${PODS_EASEMOBSDK_LIBRARY_SEARCH_PATHS}
+OTHER_LDFLAGS = -ObjC ${PODS_EASEMOBSDK_OTHER_LDFLAGS}
+PODS_ROOT = ${SRCROOT}

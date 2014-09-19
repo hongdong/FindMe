@@ -9,6 +9,7 @@
 #import "Comment.h"
 
 @implementation Comment
+
 +(NSCache*)shareCacheForComment;
 {
     static NSCache * cache=nil;
@@ -57,7 +58,7 @@
             return parser;
         }else{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                MatchParser*parser=[self createMatch:280];
+                MatchParser*parser=[self createMatch:230];
                 if (parser) {
                     _match=parser;
                     [[self.class shareCacheForComment]  setObject:parser forKey:key];
@@ -84,9 +85,9 @@
             parser.data=self;
             
         }else{
-            MatchParser* parser=[self createMatch:280];
+            MatchParser* parser=[self createMatch:230];
             if (parser) {
-                [[self.class shareCacheForComment]  setObject:parser forKey:key];
+                [[self.class shareCacheForComment] setObject:parser forKey:key];
             }
         }
     }

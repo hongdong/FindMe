@@ -310,6 +310,8 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:FreshTime object:nil];
+    
     if ([[Config sharedConfig] isLogin]) {
         [self sysData];
     }

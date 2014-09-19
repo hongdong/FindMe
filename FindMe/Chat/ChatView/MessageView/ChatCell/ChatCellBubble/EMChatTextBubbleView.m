@@ -24,7 +24,10 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _textLabel = [[MLEmojiLabel alloc] initWithFrame:CGRectZero];
+        _textLabel.isNeedAtAndPoundSign = YES;
+        _textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+        _textLabel.customEmojiPlistName = @"expression.plist";
         _textLabel.numberOfLines = 0;
         _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _textLabel.font = [UIFont systemFontOfSize:LABEL_FONT_SIZE];
@@ -56,20 +59,15 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
-    CGSize retSize;
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        retSize = [self.model.content boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[[self class] textLabelFont]} context:nil].size;
-    }else{
-        retSize = [self.model.content getRealSize:textBlockMinSize andFont:[[self class] textLabelFont]];
-    }
     
+    CGSize retSize= [_textLabel preferredSizeWithMaxWidth:TEXTLABEL_MAX_WIDTH];
     CGFloat height = 40;
     if (2*BUBBLE_VIEW_PADDING + retSize.height > height) {
         height = 2*BUBBLE_VIEW_PADDING + retSize.height;
     }
     
     return CGSizeMake(retSize.width + BUBBLE_VIEW_PADDING*2 + BUBBLE_VIEW_PADDING, height);
+    
 }
 
 #pragma mark - setter
@@ -77,7 +75,8 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 - (void)setModel:(MessageModel *)model
 {
     [super setModel:model];
-    _textLabel.text = self.model.content;
+    [_textLabel setEmojiText:self.model.content];
+//    _textLabel.text = self.model.content;
 //    if (model.isSender) {
 //        _textLabel.textColor = [UIColor whiteColor];
 //    }

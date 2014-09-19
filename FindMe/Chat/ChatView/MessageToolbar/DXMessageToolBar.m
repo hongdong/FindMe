@@ -203,9 +203,9 @@
     else {
         if (chatText.length >= 2)
         {
-            NSString *subStr = [chatText substringFromIndex:chatText.length-2];
+            NSString *subStr = [chatText substringFromIndex:chatText.length-4];
             if ([(DXFaceView *)self.faceView stringIsFace:subStr]) {
-                self.inputTextView.text = [chatText substringToIndex:chatText.length-2];
+                self.inputTextView.text = [chatText substringToIndex:chatText.length-4];
             }
         }
         else if (chatText.length > 0) {

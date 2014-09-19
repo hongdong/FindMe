@@ -5,11 +5,11 @@
  @version 1.00 2014/01/01 Creation (1.00)
  */
 #import <Foundation/Foundation.h>
-#import "internal/IDeviceManagerProximitySensor.h"
-#import "internal/IDeviceManagerLocation.h"
-#import "internal/IDeviceManagerDevice.h"
-#import "internal/IDeviceManagerCamera.h"
-#import "internal/IDeviceManagerMedia.h"
+#import "IDeviceManagerProximitySensor.h"
+#import "IDeviceManagerLocation.h"
+#import "IDeviceManagerDevice.h"
+#import "IDeviceManagerCamera.h"
+#import "IDeviceManagerMedia.h"
 
 /*!
  @protocol

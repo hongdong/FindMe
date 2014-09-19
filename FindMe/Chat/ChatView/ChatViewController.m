@@ -8,6 +8,7 @@
 
 #import "ChatViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "EaseMobHeaders.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "DXChatBarMoreView.h"
 #import "DXRecordView.h"
@@ -31,14 +32,10 @@
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
     NSIndexPath *_longPressIndexPath;
-    
     NSInteger _recordingCount;
-    
     dispatch_queue_t _messageQueue;
     NSString *_photoUrl;
-    
     User *_user;
-    
     BOOL _isScrollToBottom;
 }
 @property (strong, nonatomic)MPMoviePlayerViewController *theMoviPlayer;
@@ -78,14 +75,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if (iOS7)
-    {
-        self.edgesForExtendedLayout = UIRectEdgeBottom;               //视图控制器，四条边不指定
-        self.extendedLayoutIncludesOpaqueBars = NO;                 //不透明的操作栏
-        self.modalPresentationCapturesStatusBarAppearance = NO;
-    }
-
+    self.edgesForExtendedLayout = UIRectEdgeBottom;               //视图控制器，四条边不指定
+    self.extendedLayoutIncludesOpaqueBars = NO;                 //不透明的操作栏
+    self.modalPresentationCapturesStatusBarAppearance = NO;
     self.view.backgroundColor = [UIColor whiteColor];
 
     [[[EaseMob sharedInstance] deviceManager] addDelegate:self onQueue:nil];
@@ -153,7 +145,6 @@
     [self.view endEditing:YES];
     // 设置当前conversation的所有message为已读,这是会给别人通知
     [_conversation markMessagesAsRead:YES];
-    
     [self stopAudioPlaying];
 }
 
@@ -481,7 +472,7 @@
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
     if ([model.messageBody messageBodyType] == eMessageBodyType_Image) {
         EMImageMessageBody *imageBody = (EMImageMessageBody *)model.messageBody;
-        if (imageBody.thumbnailDownloadSatus == EMAttachmentDownloadSuccessed) {
+        if (imageBody.thumbnailDownloadStatus == EMAttachmentDownloadSuccessed) {
             [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
             [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
                 [weakSelf hideHud];
@@ -548,13 +539,13 @@
         id<IEMFileMessageBody>fileBody = (id<IEMFileMessageBody>)[message.messageBodies firstObject];
         if ([fileBody messageBodyType] == eMessageBodyType_Image) {
             EMImageMessageBody *imageBody = (EMImageMessageBody *)fileBody;
-            if ([imageBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            if ([imageBody thumbnailDownloadStatus] == EMAttachmentDownloadSuccessed)
             {
                 [self reloadTableViewDataWithMessage:message];
             }
         }else if([fileBody messageBodyType] == eMessageBodyType_Video){
             EMVideoMessageBody *videoBody = (EMVideoMessageBody *)fileBody;
-            if ([videoBody thumbnailDownloadSatus] == EMAttachmentDownloadSuccessed)
+            if ([videoBody thumbnailDownloadStatus] == EMAttachmentDownloadSuccessed)
             {
                 [self reloadTableViewDataWithMessage:message];
             }

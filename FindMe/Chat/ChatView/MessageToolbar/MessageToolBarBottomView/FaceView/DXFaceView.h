@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ZBExpressionSectionBar.h"
 #import "FacialView.h"
 
 @protocol DXFaceDelegate <FacialViewDelegate>
@@ -19,7 +19,7 @@
 @end
 
 
-@interface DXFaceView : UIView <FacialViewDelegate>
+@interface DXFaceView : UIView <FacialViewDelegate,UIScrollViewDelegate,ZBExpressionSectionBarDelegate>
 
 @property (nonatomic, assign) id<DXFaceDelegate> delegate;
 

@@ -117,6 +117,7 @@
     
 
     self.photo.delegate = self;
+    self.photo.cacheEnabled = NO;
     self.photo.placeHolderImage = [UIImage imageNamed:@"defaultImage"];
     self.photo.backgroundProgresscolor = HDRED;
     self.photo.progressColor = [UIColor whiteColor];
@@ -141,7 +142,6 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    [_coverView addTime];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -233,7 +233,7 @@
 
 }
 - (IBAction)passPressed:(id)sender {
-        __weak __typeof(&*self)weakSelf = self;
+    __weak __typeof(&*self)weakSelf = self;
     if (_focusView.isFocused) {
         [_focusView dismiss:^{
             if ([_user.userSex isEqualToString:@"男"]) {
@@ -271,13 +271,13 @@
                                  info = @"番迷君每天至多给你推荐三个有缘人，点击了like意味着你想尝试认识一下Ta。并结束今天的擦肩。";
                              }
                              [weakSelf launchGuide:weakSelf.likeBt andText:info];
-                             [[Config sharedConfig] launchGuide:@"0"];
                          }
                      }];
     
 
 }
 -(void)showCover{
+    [self.photo setImage:[UIImage imageNamed:@"defaultImage"]];
     [UIView animateWithDuration:0.7 //速度0.7秒
                           delay:0
                         options:UIViewAnimationOptionBeginFromCurrentState
@@ -329,7 +329,6 @@
 
 -(void)setMatchPeople{
     if (_matchUser!=nil) {
-//        [self.photo sd_setImageWithURL:[NSURL URLWithString:_matchUser.userPhoto] placeholderImage:[UIImage imageNamed:@"defaultImage"]];
         [self.photo setImageURL:[NSURL URLWithString:_matchUser.userPhoto]];
         CGSize size = CGSizeMake(320,2000);
         CGSize realsize = [_matchUser.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:16.0f]];
@@ -389,7 +388,6 @@
             self.navigationItem.rightBarButtonItem = nil;
         }
         [_coverView addTime];
-//        [self getMatch:nil andSender:nil];
     }else{
         [self showCover];
         if (IS_IPHONE_5) {

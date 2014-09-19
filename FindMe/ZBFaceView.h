@@ -28,7 +28,7 @@
 /*
  * 初始化表情页面
  * @param frame     大小
- * @param indexPath 创建第几个
+ * @param indexPath 创建第几页
  *
  */
 - (id)initWithFrame:(CGRect)frame forIndexPath:(NSInteger)index;

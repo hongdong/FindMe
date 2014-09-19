@@ -25,6 +25,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCover:) name:CoverChange object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(freshTime:) name:FreshTime object:nil];
     }
     return self;
 }
@@ -54,6 +55,10 @@
        [self changeCover:nil]; 
     }
 
+}
+
+-(void)freshTime:(NSNotification *)note{
+    [self addTime];
 }
 
 -(void)addTime{
@@ -116,6 +121,7 @@
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:CoverChange object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FreshTime object:nil];
 }
 
 @end
