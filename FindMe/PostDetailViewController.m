@@ -357,7 +357,7 @@
     
     [self hideInputBar];
     [self hideFaceView];
-    [HDTool showHUD:@"发送中..."];
+    [HDTool showHDJGHUD:@"发送中..."];
 
     NSDictionary *parameters = @{@"postId": self.post._id,
                                  @"postMsgContent":self.messageToolView.messageInputTextView.text};
@@ -367,7 +367,7 @@
         
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             weakSelf.post.postMsgNumber = [NSNumber numberWithInt:[weakSelf.post.postMsgNumber intValue]+1];
             _didChange = @"1";
             [weakSelf resetHead];
@@ -378,10 +378,10 @@
             weakSelf.messageToolView.sendButton.enabled = NO;
             
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
     
 }

@@ -293,6 +293,7 @@
 		04B597F019CBABD800279A98 /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04B597EE19CBABD800279A98 /* EaseMob.bundle */; };
 		04B597F619CBFFF000279A98 /* MLEmojiLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B597F519CBFFF000279A98 /* MLEmojiLabel.m */; };
 		04B597FA19CC07D700279A98 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B597F919CC07D700279A98 /* TTTAttributedLabel.m */; };
+		04B5D93919CD07D30032A8C0 /* UIView+HDJGHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B5D93719CD07D30032A8C0 /* UIView+HDJGHUD.m */; };
 		04B8640B19624DCF00326067 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B8640A19624DCF00326067 /* NewPostViewController.m */; };
 		04B8640D1962B7E700326067 /* CustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04B8640C1962B7E700326067 /* CustomView.xib */; };
 		04B877B21984830C00727555 /* NSString+HD.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B877B11984830C00727555 /* NSString+HD.m */; };
@@ -840,6 +841,8 @@
 		04B597F519CBFFF000279A98 /* MLEmojiLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLEmojiLabel.m; sourceTree = "<group>"; };
 		04B597F819CC07D700279A98 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		04B597F919CC07D700279A98 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		04B5D93719CD07D30032A8C0 /* UIView+HDJGHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HDJGHUD.m"; sourceTree = "<group>"; };
+		04B5D93819CD07D30032A8C0 /* UIView+HDJGHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HDJGHUD.h"; sourceTree = "<group>"; };
 		04B8640919624DCF00326067 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewController.h; sourceTree = "<group>"; };
 		04B8640A19624DCF00326067 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewController.m; sourceTree = "<group>"; };
 		04B8640C1962B7E700326067 /* CustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomView.xib; sourceTree = "<group>"; };
@@ -1188,6 +1191,8 @@
 				04B877BB1985273C00727555 /* UINavigationBar+HD.m */,
 				04B9C8BB1989C0DF00FEA7B1 /* UIView+HDHUD.h */,
 				04B9C8BC1989C0DF00FEA7B1 /* UIView+HDHUD.m */,
+				04B5D93819CD07D30032A8C0 /* UIView+HDJGHUD.h */,
+				04B5D93719CD07D30032A8C0 /* UIView+HDJGHUD.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -2542,6 +2547,7 @@
 				04AA9B8B195C2168001C83C2 /* ChooseDepartmentViewController.m in Sources */,
 				049FB337199A5A80007B10D7 /* QiniuResumableUploader.m in Sources */,
 				04DA3AD51966623100E0AE3C /* MeViewController.m in Sources */,
+				04B5D93919CD07D30032A8C0 /* UIView+HDJGHUD.m in Sources */,
 				04B877B91984D0D200727555 /* UIViewController+ScrollingNavbar.m in Sources */,
 				04ADC8611960E99B009106A7 /* ChatSendHelper.m in Sources */,
 				04A4E2251967DC2500E9BC63 /* FirstPageView.m in Sources */,

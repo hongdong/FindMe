@@ -122,7 +122,7 @@
     }
 }
 -(void)deleteRequest:(NSInteger)tag{
-    [HDTool showHUD:@"删除中..."];
+    [HDTool showHDJGHUD:@"删除中..."];
     
     NSString *del = _user.userAlbum[tag-10000];
     __weak __typeof(&*self)weakSelf = self;
@@ -130,17 +130,17 @@
     [HDNet GET:@"/data/user/del_album_uphoto_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             [_user.userAlbum removeObjectAtIndex:tag-10000];
             [_user saveToNSUserDefaults];
             [weakSelf.view cleanSubViews];
             [weakSelf showPhoto];
             
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 
 }

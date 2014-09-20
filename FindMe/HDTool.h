@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "UIView+HDHUD.h"
+#import "UIView+HDJGHUD.h"
 @interface HDTool : NSObject
 
 + (UIImage *) scale:(UIImage *)sourceImg toSize:(CGSize)size;
@@ -47,10 +48,16 @@
 
 
 +(NSURL *)getSImage:(NSString *)url;
-+(void)showHUD:(NSString *)title;
-+(void)dismissHUD;
-+(void)successHUD;
-+(void)errorHUD;
+
+//+(void)showHUD:(NSString *)title;
+//+(void)dismissHUD;
+//+(void)successHUD;
+//+(void)errorHUD;
+
++(void)showHDJGHUD:(NSString *)title;
++(void)dismissHDJGHUD;
++(void)successHDJGHUD;
++(void)errorHDJGHUD;
 
 +(void)autoSex:(UIImageView *)imageView;
 

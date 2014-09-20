@@ -30,7 +30,7 @@
 }
 - (IBAction)sendPressed:(id)sender {
     [self.view endEditing:YES];
-    [HDTool showHUD:@"发送中..."];
+    [HDTool showHDJGHUD:@"发送中..."];
 
     if (_existImage) {
         NSString *filePath = [[self documentFolderPath] stringByAppendingString:@"/postImage.png"];
@@ -43,11 +43,11 @@
                 _uploader.delegate = self;
                 [_uploader uploadFile:filePath key:[HDTool generateImgName] extra:nil];
             }else{
-                [HDTool errorHUD];
+                [HDTool errorHDJGHUD];
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }];
 
     }else{
@@ -82,20 +82,20 @@
     [HDNet POST:@"/data/post/release_post_qn.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PostListwillRefresh" object:nil];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 }
 
 - (void)uploadFailed:(NSString *)theFilePath error:(NSError *)error
 {
-    [HDTool errorHUD];
+    [HDTool errorHDJGHUD];
 }
 
 - (IBAction)addimagePressed:(id)sender {

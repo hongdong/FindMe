@@ -53,7 +53,7 @@
     if (![self check]) {
         return;
     }
-    [HDTool showHUD:@"登入中..."];
+    [HDTool showHDJGHUD:@"登入中..."];
     __weak __typeof(&*self)weakSelf = self;
     [HDNet login:self.phoneText.text andPassword:self.passwordText.text andBack:@"0" success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
@@ -64,7 +64,7 @@
             _user.userPhoneNumber = self.phoneText.text;
             _user.userPassword = self.passwordText.text;
             [_user getUserInfo:^{
-                [HDTool dismissHUD];
+                [HDTool dismissHDJGHUD];
                 [_user saveToNSUserDefaults];//保存登入信息
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"isBack": @"0"}];
             }];
@@ -76,25 +76,25 @@
             
         }else if ([state isEqualToString:@"20002"]){
             
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             _user.userPhoneNumber = weakSelf.phoneText.text;
             _user.userPassword = weakSelf.passwordText.text;
             [_user saveToNSUserDefaults];
             [weakSelf performSegueWithIdentifier:@"chooseSchool2" sender:nil];
             
         }else if([state isEqualToString:@"10001"]){
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }else if ([state isEqualToString:@"20003"]){
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             [weakSelf showHint:@"此号码还未注册，请点击注册"];
         }else if ([state isEqualToString:@"20005"]){
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             [weakSelf showHint:@"密码不正确"];
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 }
 

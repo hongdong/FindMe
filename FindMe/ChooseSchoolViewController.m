@@ -108,7 +108,7 @@
         selectedScName = [dataArray[indexPath.row] objectForKey:@"scName"];
     }
     _user.school = [[NSMutableDictionary alloc] initWithDictionary:@{@"_id": selectedScNo,@"schoolName": selectedScName}];
-    [HDTool showHUD:@"加载中..."];
+    [HDTool showHDJGHUD:@"加载中..."];
     [self departmentList:selectedScNo];
 }
 
@@ -155,14 +155,14 @@
     NSDictionary *parameters = @{@"schoolId": deptScNo};
     [HDNet GET:@"/data/school/dept_list.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject&&[responseObject objectForKey:@"department"]) {
-            [HDTool successHUD];
+            [HDTool successHDJGHUD];
             _deptArr = [responseObject objectForKey:@"department"];
             [weakSelf performSegueWithIdentifier:@"chooseDepartment" sender:nil];
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 }
 

@@ -210,6 +210,23 @@
 +(void)errorHUD{
     [[[UIApplication sharedApplication] keyWindow] showError];
 }
+
+
++(void)showHDJGHUD:(NSString *)title{
+    [[[UIApplication sharedApplication] keyWindow] showHDJGHUDWithTitle:title];
+}
++(void)dismissHDJGHUD{
+    [[[UIApplication sharedApplication] keyWindow] dismissHDJGHUD];
+    
+}
++(void)successHDJGHUD{
+    [[[UIApplication sharedApplication] keyWindow] showHDJGHUDSuccess];
+    
+}
++(void)errorHDJGHUD{
+    [[[UIApplication sharedApplication] keyWindow] showHDJGHUDError];
+}
+
 +(void)autoSex:(UIImageView *)imageView{
     User *user = [User getUserFromNSUserDefaults];
     if ([user.userSex isEqualToString:@"男"]) {

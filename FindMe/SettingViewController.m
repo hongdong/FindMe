@@ -63,7 +63,7 @@
     }];
     [self.jcgxView whenTouchedUp:^{
         weakSelf.jcgxView.backgroundColor = [UIColor whiteColor];
-        [HDTool showHUD:@"检测中..."];
+        [HDTool showHDJGHUD:@"检测中..."];
         [[iVersion sharedInstance] checkForNewVersion];
     }];
     
@@ -94,11 +94,11 @@
 }
 #pragma delegate
 - (void)iVersionDidNotDetectNewVersion{
-    [HDTool dismissHUD];
+    [HDTool dismissHDJGHUD];
     [self showHint:@"已经是最新版本了"];
 }
 - (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
-    [HDTool dismissHUD];
+    [HDTool dismissHDJGHUD];
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
@@ -114,11 +114,11 @@
 }
 
 - (IBAction)signOutPressed:(id)sender {
-    [HDTool showHUD:@"注销中..."];
+    [HDTool showHDJGHUD:@"注销中..."];
     [HDNet POST:@"/data/user/login_out.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *state = [responseObject objectForKey:@"state"];
         if ([state isEqualToString:@"20001"]) {
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
 //            [[Config sharedConfig] initBadge];
             [[Config sharedConfig] changeLoginState:@"0"];
             [[Config sharedConfig] changeOnlineState:@"0"];
@@ -145,10 +145,10 @@
                 }
             } onQueue:nil];
         }else{
-            [HDTool errorHUD];
+            [HDTool errorHDJGHUD];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 }
 

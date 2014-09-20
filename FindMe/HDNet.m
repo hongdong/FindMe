@@ -200,7 +200,7 @@
              
              EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
              options.displayStyle = ePushNotificationDisplayStyle_messageSummary;
-//             options.nickname = _user.userNickName;
+//             options.nickname = _user.userNickName;  
              [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
              
          }else {

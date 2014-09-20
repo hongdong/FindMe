@@ -50,19 +50,19 @@
     }
     
     [self.view endEditing:YES];
-    [HDTool showHUD:@"加载中..."];
+    [HDTool showHDJGHUD:@"加载中..."];
     __weak __typeof(&*self)weakSelf = self;
     
     [HDNet GET:@"/data/user/auth_code.do" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *codeInfo = [responseObject objectForKey:@"codeInfo"];
         if ([[codeInfo objectForKey:@"hashCode"] boolValue]) {
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             NSString *codeName = [codeInfo objectForKey:@"codeName"];
             if (codeName!=nil) {
                 NSString *codeUrl = [NSString stringWithFormat:@"%@/upload/code/%@",Host,codeName];
                 HDCodeView *codeView = [HDCodeView HDCodeViewWithAfterDismiss:^(int buttonIndex, NSString *text) {
                     if (buttonIndex==1) {
-                        [HDTool showHUD:@"认证中..."];
+                        [HDTool showHDJGHUD:@"认证中..."];
                         NSDictionary *parameters = @{@"username": weakSelf.schoolId.text,
                                                      @"pwd":weakSelf.schoolPwd.text,
                                                      @"code":text};
@@ -71,7 +71,7 @@
                 } andUrl:codeUrl];
                 [codeView show];
             }else{
-                [HDTool errorHUD];
+                [HDTool errorHDJGHUD];
             }
             
         }else{
@@ -80,7 +80,7 @@
             [weakSelf user_authParameters:parameters];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
 
 }
@@ -93,17 +93,17 @@
         if ([state isEqualToString:@"20001"]) {
             [_user getUserInfo:^{
                 [_user saveToNSUserDefaults];
-                [HDTool successHUD];
+                [HDTool successHDJGHUD];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }];
             
         }else{
             NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
-            [HDTool dismissHUD];
+            [HDTool dismissHDJGHUD];
             [weakSelf showHint:msg];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HDTool errorHUD];
+        [HDTool errorHDJGHUD];
     }];
     
 }

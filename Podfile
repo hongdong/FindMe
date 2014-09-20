@@ -13,6 +13,7 @@ pod 'BlocksKit'
 pod 'TNSexyImageUploadProgress'
 pod 'MRProgress/Overlay'
 pod 'JDFlipNumberView'
+pod 'JGProgressHUD'
 post_install do |installer|
     installer.project.targets.each do |target|
         target.build_configurations.each do |configuration|

@@ -49,6 +49,7 @@ PODS:
   - JDFlipNumberView/DefaultImageBundle (2.2.3):
     - JDFlipNumberView/Core
   - JDFlipNumberView/FlipImageView (2.2.3)
+  - JGProgressHUD (1.2.2)
   - MBProgressHUD (0.9)
   - MCSwipeTableViewCell (2.1.0)
   - MDCFocusView (0.1.0)
@@ -90,6 +91,7 @@ DEPENDENCIES:
   - BlocksKit
   - DZNEmptyDataSet
   - JDFlipNumberView
+  - JGProgressHUD
   - MBProgressHUD
   - MCSwipeTableViewCell
   - MDCFocusView
@@ -108,6 +110,7 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 381e880cb3bb2d33885cb0325218443df265bc98
   GPUImage: 5114a47f5fc33eb312f3731550a3cea379416d04
   JDFlipNumberView: 1a6ce9aabcac4c6ec7b533ac4842df44a1e36a6b
+  JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
   MDCFocusView: 186d3e1b7b707f64435fa7ff4bcd5874a17fd940

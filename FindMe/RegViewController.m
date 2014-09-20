@@ -115,7 +115,7 @@ static int count = 60;
         return;
     }
     __weak __typeof(&*self)weakSelf = self;
-    [HDTool showHUD:@"注册中..."];
+    [HDTool showHDJGHUD:@"注册中..."];
     _user.userPassword = self.passwordText.text;
     [SMS_SDK commitVerifyCode:self.codeText.text result:^(enum SMS_ResponseState state) {
             if (1==state) {
@@ -125,28 +125,28 @@ static int count = 60;
                 [HDNet POST:@"/data/user/simple_rgst.do" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSString *state = responseObject[@"state"];
                     if ([state isEqualToString:@"20001"]) {
-                        [HDTool dismissHUD];
+                        [HDTool dismissHDJGHUD];
                         _user._id = [responseObject objectForKey:@"id"];
                         [_user saveToNSUserDefaults];
                         [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
                     }else if ([state isEqualToString:@"20002"]){
-                        [HDTool dismissHUD];
+                        [HDTool dismissHDJGHUD];
                         [weakSelf showHint:@"用户名已被注册，请返回直接登入"];
                     }else if ([state isEqualToString:@"10001"]){
-                        [HDTool errorHUD];
+                        [HDTool errorHDJGHUD];
                     }else{
-                        [HDTool errorHUD];
+                        [HDTool errorHDJGHUD];
                     }
 
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [HDTool errorHUD];
+                    [HDTool errorHDJGHUD];
                 }];
             }else if(0==state)
             {
-                [HDTool errorHUD];
+                [HDTool errorHDJGHUD];
 
             }else{
-                [HDTool errorHUD];
+                [HDTool errorHDJGHUD];
             }
         }];
 
