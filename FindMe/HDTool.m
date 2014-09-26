@@ -226,6 +226,9 @@
 +(void)errorHDJGHUD{
     [[[UIApplication sharedApplication] keyWindow] showHDJGHUDError];
 }
++(void)showHDJGHUDHint:(NSString *)hint{
+    [[[UIApplication sharedApplication] keyWindow] showHint:hint];
+}
 
 +(void)autoSex:(UIImageView *)imageView{
     User *user = [User getUserFromNSUserDefaults];

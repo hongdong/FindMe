@@ -59,7 +59,6 @@
         NSString *state = [responseObject objectForKey:@"state"];
         
         if ([state isEqualToString:@"20001"]) {
-//            [HDTool dismissHUD];
             _user._id = [responseObject objectForKey:@"userId"];
             _user.userPhoneNumber = self.phoneText.text;
             _user.userPassword = self.passwordText.text;

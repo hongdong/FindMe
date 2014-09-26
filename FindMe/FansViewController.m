@@ -40,18 +40,18 @@
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [backgroundView setBackgroundColor:[UIColor colorWithRed:227.0 / 255.0 green:227.0 / 255.0 blue:227.0 / 255.0 alpha:1.0]];
     [self.tableView setBackgroundView:backgroundView];
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.emptyDataSetSource = self;
     self.tableView.emptyDataSetDelegate = self;
     
     self.tableView.tableHeaderView = [[UIView alloc] init];
-    
+    self.tableView.tableFooterView = [[UIView alloc] init];
     [self getFans];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self showHint:@"向右YES，向左NO"];
+    [HDTool showHDJGHUDHint:@"向右YES，向左NO"];
 }
 
 -(void)getFans{

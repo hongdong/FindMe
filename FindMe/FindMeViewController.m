@@ -117,7 +117,7 @@
     
 
     self.photo.delegate = self;
-    self.photo.cacheEnabled = NO;
+//    self.photo.cacheEnabled = NO;
     self.photo.placeHolderImage = [UIImage imageNamed:@"defaultImage"];
     self.photo.backgroundProgresscolor = HDRED;
     self.photo.progressColor = [UIColor whiteColor];
@@ -199,36 +199,36 @@
         if ([state isEqualToString:@"20001"]) {
             if ([_user.userSex isEqualToString:@"男"]) {
                 [weakSelf getMatch:nil andSender:nil];
-                [weakSelf showHint:@"番迷君知道该怎么做了"];
+//                [weakSelf showHint:@"番迷君知道该怎么做了"];
             }else if ([_user.userSex isEqualToString:@"女"]){
                 if ([_matchUser._id isEqualToString:@"888888"]) {//如果是番迷君，like过后还要请求
                     [weakSelf getMatch:nil andSender:nil];
                 }
-                [weakSelf showHint:@"番迷君知道该怎么做了"];
+//                [weakSelf showHint:@"番迷君知道该怎么做了"];
             }else{
                 
             }
         }else if ([state isEqualToString:@"20002"]){
             [[NSNotificationCenter defaultCenter] postNotificationName:FriendChange object:nil];
             if ([_user.userSex isEqualToString:@"男"]) {
-                [weakSelf showHint:@"番迷君得知她喜欢你已久"];
+                [HDTool showHDJGHUDHint:@"番迷君得知她喜欢你已久"];
                 [weakSelf getMatch:nil andSender:sender];
             }else if ([_user.userSex isEqualToString:@"女"]){
-                [weakSelf showHint:@"番迷君得知他喜欢你已久"];
+                [HDTool showHDJGHUDHint:@"番迷君得知他喜欢你已久"];
             }else{
                 
             }
         }else if([state isEqualToString:@"10003"]){
-            [weakSelf showHint:@"用户已经失效，正在帮你刷新"];
+            [HDTool showHDJGHUDHint:@"用户已经失效，正在帮你刷新"];
             [weakSelf getMatch:nil andSender:nil];
         }else if ([state isEqualToString:@"10004"]){
-            [weakSelf showHint:@"请先上传真实头像哦"];
+            [HDTool showHDJGHUDHint:@"请先上传真实头像哦"];
             [weakSelf hideCover];
         }else{
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf showHint:@"错误"];
+        [HDTool showHDJGHUDHint:@"错误"];
     }];
 
 }
@@ -329,7 +329,7 @@
 
 -(void)setMatchPeople{
     if (_matchUser!=nil) {
-        [self.photo setImageURL:[NSURL URLWithString:_matchUser.userPhoto]];
+        [self.photo setImageURL:[HDTool getSImage:_matchUser.userPhoto]];
         CGSize size = CGSizeMake(320,2000);
         CGSize realsize = [_matchUser.userNickName getRealSize:size andFont:[UIFont systemFontOfSize:16.0f]];
         self.nickname.bounds = (CGRect){{0,0},realsize};

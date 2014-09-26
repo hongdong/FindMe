@@ -58,6 +58,7 @@
 +(void)dismissHDJGHUD;
 +(void)successHDJGHUD;
 +(void)errorHDJGHUD;
++(void)showHDJGHUDHint:(NSString *)hint;
 
 +(void)autoSex:(UIImageView *)imageView;
 

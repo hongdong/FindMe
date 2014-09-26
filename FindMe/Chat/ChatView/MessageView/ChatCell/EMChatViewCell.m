@@ -221,7 +221,7 @@ NSString *const kShouldResendCell = @"kShouldResendCell";
     if (model.isChatGroup && !model.isSender) {
         headHeight += NAME_LABEL_HEIGHT;
     }
-    return MAX(headHeight, bubbleHeight) + CELLPADDING;
+    return MAX(headHeight, bubbleHeight) + 16;
 }
 
 

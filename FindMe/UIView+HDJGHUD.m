@@ -64,4 +64,22 @@ static const void *HDJGHUDKey = &HDJGHUDKey;
     [[self HDJGHUD] dismissAfterDelay:0.4];
 }
 
+- (void)showHint:(NSString *)hint{
+    JGProgressHUD *hud = [[JGProgressHUD alloc] initWithStyle:JGProgressHUDStyleExtraLight];
+    hud.indicatorView = nil;
+    hud.contentInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+    hud.position = JGProgressHUDPositionBottomCenter;
+    hud.textLabel.text = hint;
+    hud.animation = [JGProgressHUDFadeZoomAnimation animation];
+    hud.layoutChangeAnimationDuration = 0.0;
+    hud.interactionType = JGProgressHUDInteractionTypeBlockAllTouches;
+    hud.HUDView.layer.shadowColor = HDRED.CGColor;
+    hud.HUDView.layer.shadowOffset = CGSizeZero;
+    hud.HUDView.layer.shadowOpacity = 0.4f;
+    hud.HUDView.layer.shadowRadius = 8.0f;
+    [hud showInView:self];
+    [hud dismissAfterDelay:1.0f];
+}
+
+
 @end

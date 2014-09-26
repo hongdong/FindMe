@@ -86,18 +86,20 @@ NSString *const kRouterEventTextBubbleTapEventName = @"kRouterEventTextBubbleTap
 
 +(CGFloat)heightForBubbleWithObject:(MessageModel *)object
 {
-    CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
+    
+    MLEmojiLabel *label = [[MLEmojiLabel alloc] initWithFrame:CGRectZero];
+    label.isNeedAtAndPoundSign = YES;
+    label.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+    label.customEmojiPlistName = @"expression.plist";
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByCharWrapping;
+    label.font = [UIFont systemFontOfSize:LABEL_FONT_SIZE];
+    label.backgroundColor = [UIColor clearColor];
+    label.userInteractionEnabled = NO;
+    label.multipleTouchEnabled = NO;
+    [label setEmojiText:object.content];
     CGSize size;
-    static float systemVersion;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-    });
-    if (systemVersion >= 7.0) {
-        size = [object.content boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[self textLabelFont]} context:nil].size;
-    }else{
-        size = [object.content getRealSize:textBlockMinSize andFont:[self textLabelFont]];
-    }
+    size = [label preferredSizeWithMaxWidth:TEXTLABEL_MAX_WIDTH];
     return 2 * BUBBLE_VIEW_PADDING + size.height;
 }
 
