@@ -43,13 +43,13 @@ static const void *HDJGHUDKey = &HDJGHUDKey;
     if ([self HDJGHUD]==nil) {
         return;
     }
-    [self HDJGHUD].indicatorView = nil;
-    
-    [self HDJGHUD].textLabel.text = hint;
-    
     [self HDJGHUD].position = JGProgressHUDPositionBottomCenter;
+    [self HDJGHUD].square = NO;
+    [self HDJGHUD].contentInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+    [self HDJGHUD].layoutChangeAnimationDuration = 0.3;
+    [self HDJGHUD].indicatorView = nil;
+    [self HDJGHUD].textLabel.text = hint;
 
-    [self HDJGHUD].marginInsets = UIEdgeInsetsMake(8, 10, 8, 10);
     [[self HDJGHUD] dismissAfterDelay:1.0f];
 }
 

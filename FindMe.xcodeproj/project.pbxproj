@@ -273,7 +273,6 @@
 		04B317561956FDE600F93C73 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B317541956FDE600F93C73 /* NSDateFormatter+Category.m */; };
 		04B3175C1957013300F93C73 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3175B1957013300F93C73 /* UIResponder+Router.m */; };
 		04B331E41994AB1C00DBFCCB /* SinaWeiboConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B331E31994AB1C00DBFCCB /* SinaWeiboConnection.framework */; };
-		04B3AE1519DC40070067B0BE /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B3AE1419DC40070067B0BE /* Reveal.framework */; };
 		04B3AE2319DC4F090067B0BE /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3AE1819DC4F090067B0BE /* MJRefreshBaseView.m */; };
 		04B3AE2419DC4F090067B0BE /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3AE1A19DC4F090067B0BE /* MJRefreshFooterView.m */; };
 		04B3AE2519DC4F090067B0BE /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3AE1C19DC4F090067B0BE /* MJRefreshHeaderView.m */; };
@@ -799,7 +798,6 @@
 		04B3175A1957013300F93C73 /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
 		04B3175B1957013300F93C73 /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
 		04B331E31994AB1C00DBFCCB /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
-		04B3AE1419DC40070067B0BE /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		04B3AE1619DC4F090067B0BE /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
 		04B3AE1719DC4F090067B0BE /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
 		04B3AE1819DC4F090067B0BE /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
@@ -913,7 +911,6 @@
 				04AF5C5019B4AE6900C5ACDC /* MessageUI.framework in Frameworks */,
 				04AF5C4E19B4AE5100C5ACDC /* AddressBookUI.framework in Frameworks */,
 				04ACA24A196E0B54003F14B1 /* CoreText.framework in Frameworks */,
-				04B3AE1519DC40070067B0BE /* Reveal.framework in Frameworks */,
 				04B30B71198B1CD6008DE328 /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 				04A9614319551F7D002E30AF /* Security.framework in Frameworks */,
 				04B27605195AF99E007AE0CE /* CoreFoundation.framework in Frameworks */,
@@ -1309,7 +1306,6 @@
 		04AF0FF51951515500A3E74B = {
 			isa = PBXGroup;
 			children = (
-				04B3AE1419DC40070067B0BE /* Reveal.framework */,
 				04AF10071951515500A3E74B /* FindMe */,
 				04AF10261951515500A3E74B /* FindMeTests */,
 				04AF10001951515500A3E74B /* Frameworks */,

@@ -34,7 +34,7 @@
     
     if (sender.selected) {
         [self performBlock:^{
-            [HDTool successHDJGHUD];
+            [HDTool dismissHDJGHUDWithHint:@"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"];
             weakSelf.text.hidden = NO;
         } afterDelay:1.0];
     }else{
