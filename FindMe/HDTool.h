@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "UIView+HDHUD.h"
 #import "UIView+HDJGHUD.h"
 @interface HDTool : NSObject
 
@@ -49,13 +48,11 @@
 
 +(NSURL *)getSImage:(NSString *)url;
 
-//+(void)showHUD:(NSString *)title;
-//+(void)dismissHUD;
-//+(void)successHUD;
-//+(void)errorHUD;
+
 
 +(void)showHDJGHUD:(NSString *)title;
 +(void)dismissHDJGHUD;
++(void)dismissHDJGHUDWithHint:(NSString *)hint;
 +(void)successHDJGHUD;
 +(void)errorHDJGHUD;
 +(void)showHDJGHUDHint:(NSString *)hint;

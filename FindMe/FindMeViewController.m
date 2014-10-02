@@ -154,7 +154,7 @@
 
 -(void)fansButtonPressed:(id)sender{
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"你还没登入"];
+        [HDTool showHDJGHUDHint:@"你还没登入"];
         return;
     }else if (_focusView.isFocused){
         [_focusView dismiss:^{
@@ -162,7 +162,7 @@
         }];
         return;
     }else if (![_user.userSex isEqualToString:@"女"]){
-        [self showHint:@"目前只有女生开通了粉丝服务"];
+        [HDTool showHDJGHUDHint:@"目前只有女生开通了粉丝服务"];
         return;
     }
     [self performSegueWithIdentifier:@"fans" sender:_fansItem];

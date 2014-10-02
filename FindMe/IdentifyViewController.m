@@ -99,8 +99,7 @@
             
         }else{
             NSString *msg = [[responseObject objectForKey:@"authInfo"] objectForKey:@"msg"];
-            [HDTool dismissHDJGHUD];
-            [weakSelf showHint:msg];
+            [HDTool dismissHDJGHUDWithHint:msg];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [HDTool errorHDJGHUD];

@@ -61,7 +61,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     if ([HDTool isFirstLoad2]) {
-        [self showHint:@"长按可以删除照片"];
+        [HDTool showHDJGHUDHint:@"长按可以删除照片"];
     }
 }
 
@@ -155,7 +155,6 @@
 
 - (void)didClickOnButtonIndex:(NSInteger *)buttonIndex
 {
-    __weak __typeof(&*self)weakSelf = self;
     switch ((int)buttonIndex) {
         case 0:
         {
@@ -166,7 +165,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             _imagePicker.allowsEditing = YES;
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请拍照"];
+                [HDTool showHDJGHUDHint:@"请拍照"];
             }];
             
             break;}
@@ -179,7 +178,7 @@
             _imagePicker.allowsEditing = YES;
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请选择照片"];
+                [HDTool showHDJGHUDHint:@"请选择照片"];
             }];
             break;}
         default:
@@ -316,14 +315,14 @@
                                [weakSelf showPhoto];
                             }else if ([state isEqualToString:@"10001"]){
                                 [_progress removeFromSuperview];
-                                [weakSelf showHint:@"超时"];
+                                [HDTool showHDJGHUDHint:@"超时"];
                             }else{
                                 [_progress removeFromSuperview];
-                                [weakSelf showHint:@"超时"];
+                                [HDTool showHDJGHUDHint:@"超时"];
                             }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [_progress removeFromSuperview];
-        [weakSelf showHint:@"超时"];
+        [HDTool showHDJGHUDHint:@"超时"];
     }];
 
 }
@@ -331,7 +330,7 @@
 - (void)uploadFailed:(NSString *)theFilePath error:(NSError *)error
 {
     [_progress removeFromSuperview];
-    [self showHint:@"超时"];
+    [HDTool showHDJGHUDHint:@"超时"];
 }
 
 -(void)dealloc{

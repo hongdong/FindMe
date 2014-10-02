@@ -94,7 +94,7 @@
     [self.addVView whenTouchedUp:^{
         weakSelf.addVView.backgroundColor = [UIColor whiteColor];
         if ([_user.userAuth intValue]==1) {
-            [weakSelf showHint:@"你已经认证过了"];
+            [HDTool showHDJGHUDHint:@"你已经认证过了"];
             return;
         }
         [weakSelf performSegueWithIdentifier:@"attestation" sender:nil];

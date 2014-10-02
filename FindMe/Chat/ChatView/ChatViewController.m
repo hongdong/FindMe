@@ -395,12 +395,12 @@
     id <IEMFileMessageBody> body = [model.message.messageBodies firstObject];
     EMAttachmentDownloadStatus downloadStatus = [body attachmentDownloadStatus];
     if (downloadStatus == EMAttachmentDownloading) {
-        [self showHint:@"正在下载语音，稍后点击"];
+        [HDTool showHDJGHUDHint:@"正在下载语音，稍后点击"];
         return;
     }
     else if (downloadStatus == EMAttachmentDownloadFailure)
     {
-        [self showHint:@"正在下载语音，稍后点击"];
+        [HDTool showHDJGHUDHint:@"正在下载语音，稍后点击"];
         [[EaseMob sharedInstance].chatManager asyncFetchMessage:model.message progress:nil];
         
         return;
@@ -443,16 +443,16 @@
 - (void)chatVideoCellPressed:(MessageModel *)model{
     __weak ChatViewController *weakSelf = self;
     id <IChatManager> chatManager = [[EaseMob sharedInstance] chatManager];
-    [weakSelf showHudInView:weakSelf.view hint:@"正在获取视频..."];
+    [HDTool showHDJGHUD:@"正在获取视频..."];
     [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
-        [weakSelf hideHud];
         if (!error) {
+            [HDTool dismissHDJGHUD];
             NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
             if (localPath && localPath.length > 0) {
                 [weakSelf playVideoWithVideoPath:localPath];
             }
         }else{
-            [weakSelf showHint:@"视频获取失败!"];
+            [HDTool dismissHDJGHUDWithHint:@"视频获取失败!"];
         }
     } onQueue:nil];
 }
@@ -473,10 +473,10 @@
     if ([model.messageBody messageBodyType] == eMessageBodyType_Image) {
         EMImageMessageBody *imageBody = (EMImageMessageBody *)model.messageBody;
         if (imageBody.thumbnailDownloadStatus == EMAttachmentDownloadSuccessed) {
-            [weakSelf showHudInView:weakSelf.view hint:@"正在获取大图..."];
+            [HDTool showHDJGHUD:@"正在获取大图..."];
             [chatManager asyncFetchMessage:model.message progress:nil completion:^(EMMessage *aMessage, EMError *error) {
-                [weakSelf hideHud];
                 if (!error) {
+                    [HDTool dismissHDJGHUD];
                     NSString *localPath = aMessage == nil ? model.localPath : [[aMessage.messageBodies firstObject] localPath];
                     if (localPath && localPath.length > 0) {
                         NSURL *url = [NSURL fileURLWithPath:localPath];
@@ -484,8 +484,9 @@
                         [weakSelf.messageReadManager showBrowserWithImages:@[url]];
                         return ;
                     }
+                }else{
+                    [HDTool dismissHDJGHUDWithHint:@"大图获取失败!"];
                 }
-                [weakSelf showHint:@"大图获取失败!"];
             } onQueue:nil];
         }else{
             //获取缩略图
@@ -493,7 +494,7 @@
                 if (!error) {
                     [weakSelf reloadTableViewDataWithMessage:model.message];
                 }else{
-                    [weakSelf showHint:@"缩略图获取失败!"];
+                    [HDTool showHDJGHUDHint:@"缩略图获取失败!"];
                 }
                 
             } onQueue:nil];
@@ -502,6 +503,7 @@
 }
 
 #pragma mark - IChatManagerDelegate
+
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error;
 {
@@ -603,7 +605,7 @@
     [self keyBoardHidden];
     
 #if TARGET_IPHONE_SIMULATOR
-    [self showHint:@"模拟器不支持拍照"];
+    [HDTool showHDJGHUDHint:@"模拟器不支持拍照"];
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
@@ -624,7 +626,7 @@
     [self keyBoardHidden];
     
 #if TARGET_IPHONE_SIMULATOR
-    [self showHint:@"模拟器不支持录像"];
+    [HDTool showHDJGHUDHint:@"模拟器不支持录像"];
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
@@ -719,7 +721,7 @@
          if (!error) {
              [self sendAudioMessage:aChatVoice];
          }else{
-             [self showHint:error.domain];
+             [HDTool showHDJGHUDHint:error.domain];
          }
          
      } onQueue:nil];

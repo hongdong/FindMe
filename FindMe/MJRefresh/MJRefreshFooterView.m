@@ -76,7 +76,6 @@
         // 调整frame
         [self adjustFrameWithContentSize];
     } else if ([MJRefreshContentOffset isEqualToString:keyPath]) {
-
         // 如果正在刷新，直接返回
         if (self.state == MJRefreshStateRefreshing) return;
         

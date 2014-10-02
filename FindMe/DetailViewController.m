@@ -81,7 +81,7 @@
                                                         
                                                         if(buttonIndex == 1){
                                                             if (![weakSelf isOK:text]) {
-                                                                [weakSelf showHint:@"不能为空"];
+                                                                [HDTool showHDJGHUDHint:@"不能为空"];
                                                                 return;
                                                             }
                                                             if ([text isEqualToString:_user.userNickName]) {
@@ -108,7 +108,7 @@
                                                     afterDismiss:^(int buttonIndex, NSString *text) {
                                                         if(buttonIndex == 1){
                                                             if (![weakSelf isOK:text]) {
-                                                                [weakSelf showHint:@"不能为空"];
+                                                                [HDTool showHDJGHUDHint:@"不能为空"];
                                                                 return;
                                                             }
                                                             if ([text isEqualToString:_user.userSignature]) {
@@ -191,7 +191,6 @@
 
 - (void)didClickOnButtonIndex:(NSInteger *)buttonIndex
 {
-    __weak __typeof(&*self)weakSelf = self;
     switch ((int)buttonIndex) {
         case 0:
         {
@@ -202,7 +201,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             _imagePicker.allowsEditing = YES;
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请拍照"];
+                [HDTool showHDJGHUDHint:@"请拍照"];
             }];
             
             break;}
@@ -216,7 +215,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             //[self presentModalViewController:_imagePicker animated:YES];
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请选择照片"];
+                [HDTool showHDJGHUDHint:@"请选择照片"];
             }];
             break;}
         default:

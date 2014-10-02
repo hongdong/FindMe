@@ -147,14 +147,14 @@
 }
 -(void)newPost:(id)sender{
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"你还没登入"];
+        [HDTool showHDJGHUDHint:@"你还没登入"];
         return;
     }
     [self performSegueWithIdentifier:@"newPost" sender:nil];
 }
 -(void)postMessage:(id)sender{
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"你还没登入"];
+        [HDTool showHDJGHUDHint:@"你还没登入"];
         return;
     }
    [self performSegueWithIdentifier:@"postMessage" sender:_postMessageItem];

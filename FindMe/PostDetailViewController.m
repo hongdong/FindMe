@@ -54,9 +54,8 @@
     _jbButton.titleLabel.font = [UIFont systemFontOfSize: 16.0];
     _jbButton.contentMode = UIViewContentModeRight;
     [_jbButton setTitle:@"举报" forState:UIControlStateNormal];
-    __weak __typeof(&*self)weakSelf = self;
     [_jbButton bk_addEventHandler:^(id sender) {
-        [weakSelf showHint:@"举报成功"];
+        [HDTool showHDJGHUDHint:@"举报成功"];
     } forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *jbItem = [[UIBarButtonItem alloc] initWithCustomView:_jbButton];
     UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc] initWithCustomView:_circleLoadingView];
@@ -159,14 +158,14 @@
 }
 - (IBAction)replyPressed:(id)sender {
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"请先登入"];
+        [HDTool showHDJGHUDHint:@"请先登入"];
         return;
     }
     [self.messageToolView.messageInputTextView becomeFirstResponder];
 }
 - (IBAction)prisePressed:(id)sender {
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"请先登入"];
+        [HDTool showHDJGHUDHint:@"请先登入"];
         return;
     }
     self.likeButton.enabled = NO;

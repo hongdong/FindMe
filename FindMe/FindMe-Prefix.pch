@@ -14,7 +14,6 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "HDDefine.h"
-    #import "UIViewController+HUD.h"
     #import "MJExtension.h"
     #import "Config.h"
     #import "HDTool.h"
@@ -22,4 +21,4 @@
     #import "UIViewController+DismissKeyboard.h"
     #import "MJConst.h"
 #endif
-#define AppVersion @"1.0"
+#define AppVersion @"1.2"

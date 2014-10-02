@@ -50,7 +50,7 @@
     [_jbButton setTitle:@"举报" forState:UIControlStateNormal];
     __weak __typeof(&*self)weakSelf = self;
     [_jbButton bk_addEventHandler:^(id sender) {
-        [weakSelf showHint:@"举报成功"];
+        [HDTool showHDJGHUDHint:@"举报成功"];
     } forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *jbItem = [[UIBarButtonItem alloc] initWithCustomView:_jbButton];
     UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc] initWithCustomView:_circleLoadingView];

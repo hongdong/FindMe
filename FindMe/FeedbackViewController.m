@@ -29,21 +29,21 @@
     __weak __typeof(&*self)weakSelf = self;
     sender.selected = !sender.selected;
     [self.view endEditing:YES];
-//    [HDTool showHDJGHUD:@"逗你玩"];
-//    
-//    
-//    if (sender.selected) {
-//        [self performBlock:^{
-//            [HDTool successHDJGHUD];
-//            weakSelf.text.hidden = NO;
-//        } afterDelay:1.0];
-//    }else{
-//        [self performBlock:^{
-//            [HDTool errorHDJGHUD];
-//            weakSelf.text.hidden = YES;
-//        } afterDelay:1.0];
-//    }
-    [HDTool showHDJGHUDHint:@"逗你玩"];
+    [HDTool showHDJGHUD:@"逗你玩"];
+    
+    
+    if (sender.selected) {
+        [self performBlock:^{
+            [HDTool successHDJGHUD];
+            weakSelf.text.hidden = NO;
+        } afterDelay:1.0];
+    }else{
+        [self performBlock:^{
+            [HDTool errorHDJGHUD];
+            weakSelf.text.hidden = YES;
+        } afterDelay:1.0];
+    }
+
 }
 - (void)didReceiveMemoryWarning
 {

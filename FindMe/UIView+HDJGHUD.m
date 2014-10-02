@@ -38,6 +38,21 @@ static const void *HDJGHUDKey = &HDJGHUDKey;
     
     [[self HDJGHUD] dismiss];
 }
+
+- (void)dismissHDJGHUDWithHint:(NSString *)hint{
+    if ([self HDJGHUD]==nil) {
+        return;
+    }
+    [self HDJGHUD].indicatorView = nil;
+    
+    [self HDJGHUD].textLabel.text = hint;
+    
+    [self HDJGHUD].position = JGProgressHUDPositionBottomCenter;
+
+    [self HDJGHUD].marginInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+    [[self HDJGHUD] dismissAfterDelay:1.0f];
+}
+
 -(void)showHDJGHUDSuccess{
     if ([self HDJGHUD]==nil) {
         return;

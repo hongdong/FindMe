@@ -55,7 +55,7 @@
     }];
     [self.qchcView whenTouchedUp:^{
         weakSelf.qchcView.backgroundColor = [UIColor whiteColor];
-        [weakSelf showHint:@"清理完成"];
+        [HDTool showHDJGHUDHint:@"清理完成"];
     }];
     
     [self.jcgxView whenTouchedDown:^{
@@ -94,8 +94,7 @@
 }
 #pragma delegate
 - (void)iVersionDidNotDetectNewVersion{
-    [HDTool dismissHDJGHUD];
-    [self showHint:@"已经是最新版本了"];
+    [HDTool dismissHDJGHUDWithHint:@"已经是最新版本了"];
 }
 - (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
     [HDTool dismissHDJGHUD];

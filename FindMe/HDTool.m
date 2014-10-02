@@ -196,21 +196,6 @@
     return [NSURL URLWithString:temp];
 }
 
-+(void)showHUD:(NSString *)title{
-    [[[UIApplication sharedApplication] keyWindow] showHDHUDWithTitle:title];
-}
-+(void)dismissHUD{
-    [[[UIApplication sharedApplication] keyWindow] dismissHDHUD];
-    
-}
-+(void)successHUD{
-    [[[UIApplication sharedApplication] keyWindow] showSuccess];
-    
-}
-+(void)errorHUD{
-    [[[UIApplication sharedApplication] keyWindow] showError];
-}
-
 
 +(void)showHDJGHUD:(NSString *)title{
     [[[UIApplication sharedApplication] keyWindow] showHDJGHUDWithTitle:title];
@@ -219,6 +204,11 @@
     [[[UIApplication sharedApplication] keyWindow] dismissHDJGHUD];
     
 }
+
++(void)dismissHDJGHUDWithHint:(NSString *)hint{
+    [[[UIApplication sharedApplication] keyWindow] dismissHDJGHUDWithHint:hint];
+}
+
 +(void)successHDJGHUD{
     [[[UIApplication sharedApplication] keyWindow] showHDJGHUDSuccess];
     

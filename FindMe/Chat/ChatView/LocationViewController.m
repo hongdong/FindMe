@@ -135,8 +135,7 @@ static LocationViewController *defaultLocation = nil;
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
-    [self hideHud];
-    [self showHint:@"定位失败"];
+    [HDTool dismissHDJGHUDWithHint:@"定位失败"];
 }
 
 #pragma mark - public
@@ -147,7 +146,7 @@ static LocationViewController *defaultLocation = nil;
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    [self showHudInView:self.view hint:@"正在定位..."];
+    [HDTool showHDJGHUD:@"正在定位..."];
 }
 
 -(void)createAnnotationWithCoords:(CLLocationCoordinate2D)coords
@@ -164,8 +163,7 @@ static LocationViewController *defaultLocation = nil;
 
 - (void)removeToLocation:(CLLocationCoordinate2D)locationCoordinate
 {
-    [self hideHud];
-    
+    [HDTool dismissHDJGHUD];
     _currentLocationCoordinate = locationCoordinate;
     float zoomLevel = 0.01;
     MKCoordinateRegion region = MKCoordinateRegionMake(_currentLocationCoordinate, MKCoordinateSpanMake(zoomLevel, zoomLevel));

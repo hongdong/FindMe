@@ -45,8 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self showHint:@"第一次登入，认真填写信息哦"];
-
+    [HDTool showHDJGHUDHint:@"第一次登入，认真填写信息哦"];
 }
 
 - (void)didReceiveMemoryWarning

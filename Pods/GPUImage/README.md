@@ -2,6 +2,8 @@
 
 <div style="float: right"><img src="http://sunsetlakesoftware.com/sites/default/files/GPUImageLogo.png" /></div>
 
+<a href="https://zenodo.org/record/10416#.U5YGaF773Md"><img src="https://zenodo.org/badge/doi/10.5281/zenodo.10416.png" /></a>
+
 Brad Larson
 
 http://www.sunsetlakesoftware.com
@@ -50,6 +52,8 @@ For example, an application that takes in live video from the camera, converts t
 
 ## Adding the static library to your iOS project ##
 
+Note: if you want to use this in a Swift project, you need to use the steps in the "Adding this as a framework" section instead of the following. Swift needs modules for third-party code.
+
 Once you have the latest source code for the framework, it's fairly straightforward to add it to your application. Start by dragging the GPUImage.xcodeproj file into your application's Xcode project to embed the framework in your project. Next, go to your application's target and add GPUImage as a Target Dependency. Finally, you'll want to drag the libGPUImage.a library from the GPUImage framework's Products folder to the Link Binary With Libraries build phase in your application's target.
 
 GPUImage needs a few other frameworks to be linked into your application, so you'll need to add the following as linked libraries in your application target:
@@ -72,7 +76,7 @@ Also, if you need to deploy this to iOS 4.x, it appears that the current version
 
 Additionally, this is an ARC-enabled framework, so if you want to use this within a manual reference counted application targeting iOS 4.x, you'll need to add -fobjc-arc to your Other Linker Flags as well.
 
-### Building static library at the command line ###
+### Building a static library at the command line ###
 
 If you don't want to include the project as a dependency in your application's Xcode project, you can build a universal static library for the iOS Simulator or device. To do this, run `build.sh` at the command line. The resulting library and header files will be located at `build/Release-iphone`. You may also change the version of the iOS SDK by changing the `IOSSDK_VER` variable in `build.sh` (all available versions can be found using `xcodebuild -showsdks`).
 
@@ -87,6 +91,8 @@ This should cause GPUImage to build as a framework. Under Xcode 6, this will als
     import GPUImage
 
 to pull it in.
+
+You then need to add a new Copy Files build phase, set the Destination to Frameworks, and add the GPUImage.framework build product to that. This will allow the framework to be bundled with your application (otherwise, you'll see cryptic "dyld: Library not loaded: @rpath/GPUImage.framework/GPUImage" errors on execution).
 
 ### Documentation ###
 
@@ -141,13 +147,13 @@ This will give you a live, filtered feed of the still camera's preview video. No
 Once you want to capture a photo, you use a callback block like the following:
 
 	[stillCamera capturePhotoProcessedUpToFilter:filter withCompletionHandler:^(UIImage *processedImage, NSError *error){
-	    NSData *dataForPNGFile = UIImageJPEGRepresentation(processedImage, 0.8);
+	    NSData *dataForJPEGFile = UIImageJPEGRepresentation(processedImage, 0.8);
     
 	    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	    NSString *documentsDirectory = [paths objectAtIndex:0];
     
 	    NSError *error2 = nil;
-	    if (![dataForPNGFile writeToFile:[documentsDirectory stringByAppendingPathComponent:@"FilteredPhoto.jpg"] options:NSAtomicWrite error:&error2])
+	    if (![dataForJPEGFile writeToFile:[documentsDirectory stringByAppendingPathComponent:@"FilteredPhoto.jpg"] options:NSAtomicWrite error:&error2])
 	    {
 	        return;
 	    }
@@ -167,7 +173,7 @@ There are a couple of ways to process a still image and create a result. The fir
 	GPUImageSepiaFilter *stillImageFilter = [[GPUImageSepiaFilter alloc] init];
 
 	[stillImageSource addTarget:stillImageFilter];
-	[stillImageFilter useNextFrameForImageCapture]
+	[stillImageFilter useNextFrameForImageCapture];
 	[stillImageSource processImage];
 
 	UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];

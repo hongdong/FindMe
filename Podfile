@@ -1,5 +1,4 @@
 platform :ios ,'7.0'
-pod 'MBProgressHUD'
 pod 'AFNetworking'
 pod 'THProgressView'
 pod 'SDWebImage'
@@ -11,7 +10,6 @@ pod 'DZNEmptyDataSet'
 pod 'MDCFocusView'
 pod 'BlocksKit'
 pod 'TNSexyImageUploadProgress'
-pod 'MRProgress/Overlay'
 pod 'JDFlipNumberView'
 pod 'JGProgressHUD'
 post_install do |installer|

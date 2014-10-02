@@ -127,7 +127,6 @@
 
 - (void)didClickOnButtonIndex:(NSInteger *)buttonIndex
 {
-    __weak __typeof(&*self)weakSelf = self;
     switch ((int)buttonIndex) {
         case 0:
         {
@@ -138,7 +137,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             _imagePicker.allowsEditing = YES;
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请拍照"];
+                [HDTool showHDJGHUDHint:@"请拍照"];
             }];
             
             break;}
@@ -152,7 +151,7 @@
             _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
             //[self presentModalViewController:_imagePicker animated:YES];
             [self presentViewController:_imagePicker animated:YES completion:^{
-                [weakSelf showHint:@"请选择照片"];
+                [HDTool showHDJGHUDHint:@"请选择照片"];
             }];
             break;}
         case 2:
@@ -161,7 +160,7 @@
                 [self.addimage setImage:[UIImage imageNamed:@"addimage"] forState:UIControlStateNormal];
                 _existImage = NO;
             }else{
-                [self showHint:@"没有照片"];
+                [HDTool showHDJGHUDHint:@"没有照片"];
             }
             break;}
         default:

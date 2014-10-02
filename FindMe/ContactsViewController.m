@@ -51,18 +51,17 @@
     
     self.title = @"好友";
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendTitleView"]];
-    __weak __typeof(&*self)weakSelf = self;
 
     UIView *headView = [HDTool loadCustomViewByIndex:RandomHiViewIndex];
     [((UIButton *)[headView viewWithTag:1000]) bk_addEventHandler:^(id sender) {
         if (![[Config sharedConfig] isOnline]) {
-            [weakSelf showHint:@"请先登入"];
+            [HDTool showHDJGHUDHint:@"请先登入"];
             return;
         }
         NSMutableArray *allUsers = [User allDbObjects];
         int i = arc4random()%[allUsers count];
         [ChatSendHelper sendTextMessageWithString:@"HI" toUser:allUsers[i]];
-        [weakSelf showHint:@"已经帮你随机问候了"];
+        [HDTool showHDJGHUDHint:@"已经帮你随机问候了"];
         
     } forControlEvents:UIControlEventTouchUpInside];
     headView.backgroundColor = HDRED;
@@ -83,8 +82,7 @@
     if ([[Config sharedConfig] friendNew:nil]) {
 //        [self myReloadDataSource];
         [self.tableView headerBeginRefreshing];
-//        [[Config sharedConfig] friendNew:@"0"];
-//        self.navigationController.tabBarItem.badgeValue = nil;
+
     }
 }
 
@@ -386,7 +384,7 @@
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
     if (![[Config sharedConfig] isOnline]) {
-        [self showHint:@"请先登入"];
+        [HDTool showHDJGHUDHint:@"请先登入"];
         return;
     }
     [self myReloadDataSource];

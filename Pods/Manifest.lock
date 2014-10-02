@@ -40,7 +40,7 @@ PODS:
     - BlocksKit/DynamicDelegate
   - DACircularProgress (2.2.0)
   - DZNEmptyDataSet (1.4.1)
-  - GPUImage (0.1.5)
+  - GPUImage (0.1.6)
   - JDFlipNumberView (2.2.3):
     - JDFlipNumberView/Core
     - JDFlipNumberView/DefaultImageBundle
@@ -51,32 +51,13 @@ PODS:
   - JDFlipNumberView/FlipImageView (2.2.3)
   - JGProgressHUD (1.2.2)
   - MBProgressHUD (0.9)
-  - MCSwipeTableViewCell (2.1.0)
+  - MCSwipeTableViewCell (2.1.2)
   - MDCFocusView (0.1.0)
-  - MRProgress/ActivityIndicator (0.7.0):
-    - MRProgress/Stopable
-  - MRProgress/Blur (0.7.0):
-    - MRProgress/Helper
-  - MRProgress/Circular (0.7.0):
-    - MRProgress/Helper
-    - MRProgress/ProgressBaseClass
-    - MRProgress/Stopable
-  - MRProgress/Helper (0.7.0)
-  - MRProgress/Icons (0.7.0)
-  - MRProgress/Overlay (0.7.0):
-    - MRProgress/ActivityIndicator
-    - MRProgress/Blur
-    - MRProgress/Circular
-    - MRProgress/Helper
-    - MRProgress/Icons
-  - MRProgress/ProgressBaseClass (0.7.0)
-  - MRProgress/Stopable (0.7.0):
-    - MRProgress/Helper
-  - MWPhotoBrowser (1.4.0):
+  - MWPhotoBrowser (1.4.1):
     - DACircularProgress
     - MBProgressHUD (~> 0.8)
     - PSTCollectionView (~> 1.2)
-    - SDWebImage (~> 3.5.4)
+    - SDWebImage (~> 3.7)
   - PSTCollectionView (1.2.3)
   - SDWebImage (3.7.1):
     - SDWebImage/Core
@@ -92,10 +73,8 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - JDFlipNumberView
   - JGProgressHUD
-  - MBProgressHUD
   - MCSwipeTableViewCell
   - MDCFocusView
-  - MRProgress/Overlay
   - MWPhotoBrowser
   - SDWebImage
   - THProgressView
@@ -108,14 +87,13 @@ SPEC CHECKSUMS:
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   DZNEmptyDataSet: 381e880cb3bb2d33885cb0325218443df265bc98
-  GPUImage: 5114a47f5fc33eb312f3731550a3cea379416d04
+  GPUImage: cecb0830bb9428f50192042e3c7b53810f51388e
   JDFlipNumberView: 1a6ce9aabcac4c6ec7b533ac4842df44a1e36a6b
   JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
+  MCSwipeTableViewCell: 8e78ff197ab06ba7bfd5c938a00149de8a33afa9
   MDCFocusView: 186d3e1b7b707f64435fa7ff4bcd5874a17fd940
-  MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
-  MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537
+  MWPhotoBrowser: be05b3b7521e961382a4ba5579685bf5a00b93d8
   PSTCollectionView: d9f466e4554cc83260ca9bde7beb27f308e8fd76
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   THProgressView: 083589a96d15ee94329a27cab1d1a79111722efa

@@ -130,8 +130,7 @@ static int count = 60;
                         [_user saveToNSUserDefaults];
                         [weakSelf performSegueWithIdentifier:@"chooseSchool" sender:nil];
                     }else if ([state isEqualToString:@"20002"]){
-                        [HDTool dismissHDJGHUD];
-                        [weakSelf showHint:@"用户名已被注册，请返回直接登入"];
+                        [HDTool dismissHDJGHUDWithHint:@"用户名已被注册，请返回直接登入"];
                     }else if ([state isEqualToString:@"10001"]){
                         [HDTool errorHDJGHUD];
                     }else{
@@ -154,11 +153,11 @@ static int count = 60;
 
 - (BOOL)check{
     if (self.passwordText.text.length<6||self.passwordText.text.length>18) {
-        [self showHint:@"密码非法"];
+        [HDTool showHDJGHUDHint:@"密码非法"];
         return NO;
     }
     if (self.codeText.text.length!=4) {
-        [self showHint:@"验证码非法"];
+        [HDTool showHDJGHUDHint:@"验证码非法"];
         return NO;
     }
     return YES;

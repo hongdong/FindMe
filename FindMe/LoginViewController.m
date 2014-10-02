@@ -84,11 +84,9 @@
         }else if([state isEqualToString:@"10001"]){
             [HDTool errorHDJGHUD];
         }else if ([state isEqualToString:@"20003"]){
-            [HDTool dismissHDJGHUD];
-            [weakSelf showHint:@"此号码还未注册，请点击注册"];
+            [HDTool dismissHDJGHUDWithHint:@"此号码还未注册，请点击注册"];
         }else if ([state isEqualToString:@"20005"]){
-            [HDTool dismissHDJGHUD];
-            [weakSelf showHint:@"密码不正确"];
+            [HDTool dismissHDJGHUDWithHint:@"密码不正确"];
         }else{
             [HDTool errorHDJGHUD];
         }
@@ -99,11 +97,11 @@
 
 -(BOOL)check{
     if (self.phoneText.text.length!=11) {
-        [self showHint:@"电话号码非法"];
+        [HDTool showHDJGHUDHint:@"电话号码非法"];
         return NO;
     }
     if (self.passwordText.text.length<6) {
-        [self showHint:@"密码非法"];
+        [HDTool showHDJGHUDHint:@"密码非法"];
         return NO;
     }
     return YES;
